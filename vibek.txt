@@ -1,0 +1,1 @@
+Setuping the spring environment in Sts and adding DB to it.
