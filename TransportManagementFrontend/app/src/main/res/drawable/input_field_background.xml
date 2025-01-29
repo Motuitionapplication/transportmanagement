@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Selected state -->
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/selectedColor" /> <!-- Background for selected state -->
+            <corners android:radius="12dp" /> <!-- Rounded corners -->
+            <stroke android:width="3dp" android:color="@color/borderColor" /> <!-- Border for selected state -->
+        </shape>
+    </item>
+
+    <!-- Pressed state -->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="12dp" /> <!-- Rounded corners -->
+            <stroke android:width="2dp" android:color="@color/borderColor" /> <!-- Border for pressed state -->
+        </shape>
+    </item>
+
+    <!-- Disabled state -->
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/disabledColor" /> <!-- Disabled background color -->
+            <corners android:radius="12dp" /> <!-- Rounded corners -->
+            <stroke android:width="2dp" android:color="@color/disabledBorderColor" /> <!-- Disabled border color -->
+        </shape>
+    </item>
+
+    <!-- Default state -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/defaultColor" /> <!-- Default background color -->
+            <corners android:radius="12dp" /> <!-- Rounded corners -->
+            <stroke android:width="2dp" android:color="@color/borderColor" /> <!-- Default border color -->
+        </shape>
+    </item>
+
+</selector>

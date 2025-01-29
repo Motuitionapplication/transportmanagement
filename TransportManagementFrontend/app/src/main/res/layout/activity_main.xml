@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_image"
+    android:fitsSystemWindows="true">
+
+    <!-- Main Content -->
+    <LinearLayout
+        android:id="@+id/mainContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <!-- Logo -->
+        <ImageView
+            android:id="@+id/logoImageView"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:src="@drawable/logo"
+            android:contentDescription="Logo"
+            android:layout_marginBottom="10dp" /> <!-- Increased margin slightly for more space -->
+
+        <!-- App Name -->
+        <TextView
+            android:id="@+id/appNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ShipXpress"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="5dp" /> <!-- Slightly increased margin for app name -->
+
+        <!-- Tagline -->
+        <TextView
+            android:id="@+id/taglineTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MOVE WITH EASE"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="10dp" /> <!-- Slightly increased margin for tagline -->
+
+        <!-- Get Started Button -->
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get Started"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:backgroundTint="#4CAF50"
+            android:textColor="@android:color/white"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <!-- Popup Overlay -->
+    <FrameLayout
+        android:id="@+id/popupOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#B3000000"
+        android:visibility="gone">
+
+        <!-- Popup Container -->
+        <LinearLayout
+            android:id="@+id/popupContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:orientation="vertical"
+            android:padding="30dp"
+            android:elevation="10dp"
+            android:background="@drawable/rounded_popup_bg"
+            android:layout_gravity="center">
+
+            <!-- Register Text -->
+            <TextView
+                android:id="@+id/registerText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="REGISTER AS :"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:gravity="center"
+                android:layout_marginBottom="20dp" />
+
+            <!-- First Row of Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+
+                <Button
+                    android:id="@+id/btnVendor"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="VENDOR"
+                    android:backgroundTint="#87CEEB"
+                    android:textColor="@android:color/white"
+                    android:padding="14dp" />
+
+                <Button
+                    android:id="@+id/btnCustomer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:text="CUSTOMER"
+                    android:backgroundTint="#87CEEB"
+                    android:textColor="@android:color/white"
+                    android:padding="14dp" />
+            </LinearLayout>
+
+            <!-- Second Row of Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnOwner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:text="OWNER"
+                    android:backgroundTint="#87CEEB"
+                    android:textColor="@android:color/white"
+                    android:padding="14dp" />
+
+                <Button
+                    android:id="@+id/btnDriver"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:text="DRIVER"
+                    android:backgroundTint="#87CEEB"
+                    android:textColor="@android:color/white"
+                    android:padding="14dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</RelativeLayout>
