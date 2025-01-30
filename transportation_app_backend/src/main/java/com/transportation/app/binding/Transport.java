@@ -6,6 +6,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 
+/**
+ * This is transport Object.
+ */
 @Entity
 @Table(name = "TRANSPORT_DB")
 
