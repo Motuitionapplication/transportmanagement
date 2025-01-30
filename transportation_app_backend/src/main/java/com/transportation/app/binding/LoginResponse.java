@@ -1,5 +1,8 @@
 package com.transportation.app.binding;
 
+/**
+ * THIS IS LOGIN RESPONSE
+ */
 public class LoginResponse {
 	
 	private String status;
