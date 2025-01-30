@@ -5,6 +5,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 
 
+/**
+ * This transport object.
+ */
 public class LoginParam {
 
 	@Schema(description = "Username used for login", example = "vibek123")
