@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Transport Management Frontend</string>
+    <string name="logo_description">App Logo</string>
+    <string name="login_activity_label">Login</string>
+    <string name="register_activity_label">Register</string>
+    <string name="forgot_password_activity_label">Forgot Password</string>
+    <string name="verification_code_activity_label">Verification Code</string>
+    <string name="change_password_activity_label">Change Password</string>
+
+</resources>

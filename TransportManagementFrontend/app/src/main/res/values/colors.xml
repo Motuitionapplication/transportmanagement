@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFFFFF</color> <!-- White color -->
+
+    <!-- Define color for selection -->
+    <color name="selectedColor">#4CAF50</color> <!-- Green or any color you like -->
+
+    <!-- Define color for unselected items -->
+    <color name="unselectedColor">#B0BEC5</color> <!-- Gray color for unselected buttons -->
+
+    <!-- Define black color if it doesn't exist -->
+    <color name="black">#000000</color> <!-- Black color -->
+
+    <!-- Default Colors -->
+    <color name="defaultColor">#D3D3D3</color> <!-- Light gray -->
+
+    <color name="borderColor">#000000</color> <!-- Black -->
+
+    <!-- Define gray color -->
+    <color name="gray">#808080</color> <!-- Gray color for borders or other UI elements -->
+
+    <!-- Define color for selection -->
+    <color name="green">#4CAF50</color>
+
+    <color name="backgroundColor">#F5F5F5</color> <!-- Light gray -->
+
+
+    <!-- Disabled Colors -->
+    <color name="disabledColor">#B0BEC5</color> <!-- Light gray for disabled state -->
+    <color name="disabledBorderColor">#9E9E9E</color> <!-- Light gray border for disabled state -->
+</resources>
