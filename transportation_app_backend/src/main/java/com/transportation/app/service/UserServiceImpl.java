@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
 			if (user.get().getPassword().equals(loginParam.getPassword())) {
 			response.setStatus("Success");
-			
+			response.setSuccess(true);
 			return response;
 			}
 		} catch (Exception e) {

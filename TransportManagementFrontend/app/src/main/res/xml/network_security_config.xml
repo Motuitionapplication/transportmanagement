@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <!-- Add your backend domain here, e.g., localhost or IP address -->
+        <domain includeSubdomains="true">10.0.2.2</domain>
+        <!-- Allow cleartext traffic for all subdomains of localhost -->
+    </domain-config>
+</network-security-config>
