@@ -57,6 +57,34 @@
             android:name=".ChangePasswordActivity"
             android:exported="true"
             android:label="@string/change_password_activity_label" />
+        <!-- HomeActivity -->
+        <activity
+            android:name=".HomeActivity"
+            android:exported="true"
+            android:label="@string/home_activity_label" />
+        <!-- Customer Home Activity -->
+        <activity
+            android:name=".CustomerHomeActivity"
+            android:exported="true"
+            android:label="Customer Home"/>
+
+        <!-- Admin Home Activity -->
+        <activity
+            android:name=".AdminHomeActivity"
+            android:exported="true"
+            android:label="Admin Home"/>
+
+        <!-- Owner Home Activity -->
+        <activity
+            android:name=".OwnerHomeActivity"
+            android:exported="true"
+            android:label="Owner Home"/>
+
+        <!-- Driver Home Activity -->
+        <activity
+            android:name=".DriverHomeActivity"
+            android:exported="true"
+            android:label="Driver Home"/>
 
     </application>
     <uses-permission android:name="android.permission.INTERNET" />

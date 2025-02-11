@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<UserParameter, Serializabl
 
 	UserParameter findByPassword(String password);
 
-	UserParameter findByUsername(String username);
+	UserParameter findByEmail(String email);
 
 }
 

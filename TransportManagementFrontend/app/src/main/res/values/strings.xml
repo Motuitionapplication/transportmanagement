@@ -6,5 +6,5 @@
     <string name="forgot_password_activity_label">Forgot Password</string>
     <string name="verification_code_activity_label">Verification Code</string>
     <string name="change_password_activity_label">Change Password</string>
-
+    <string name="home_activity_label">Home</string>
 </resources>

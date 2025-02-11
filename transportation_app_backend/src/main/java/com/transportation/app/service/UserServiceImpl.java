@@ -12,60 +12,37 @@ import com.transportation.app.repo.UserRepository;
 @Service
 public class UserServiceImpl implements UserService {
 
-	@Autowired
-	private UserRepository userRepo;
+    @Autowired
+    private UserRepository userRepo;
 
-	@Override
-	public String createUser(UserParameter userParameter) {
-		userRepo.save(userParameter);
-		return "user created";
-	}
+    @Override
+    public String createUser(UserParameter userParameter) {
+        userRepo.save(userParameter);
+        return "user created";
+    }
 
-//	@Override
-//	public LoginResponse checkLogin(LoginParam loginParam) {
-//		Optional<UserParameter> user = userRepo.findByUsernameAndPassword(loginParam.getUsername(),
-//				loginParam.getPassword());
-//
-//		LoginResponse response = new LoginResponse();
-//
-//		if (user.isPresent()) {
-//			response.setStatus("Success");
-//		} else {
-//			response.setStatus("Invalid Username or Password");
-//		}
-//
-//		return response;
-//	}
-
-	
-	/**
-	 * This method is used for userLogin & Password.
-	 * @author vibek
-	 */
-	@Override
-	public LoginResponse checkLogin(LoginParam loginParam) {
-		LoginResponse response = new LoginResponse();
-		Optional<UserParameter> user = java.util.Optional.empty();
-		try {
-			user = Optional.ofNullable(userRepo.findByUsername(loginParam.getUsername()));
-
-			if (user.get().getPassword().equals(loginParam.getPassword())) {
-			response.setStatus("Success");
-			response.setSuccess(true);
-			return response;
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		
-		response.setStatus("Invalid User Name & Password");
-
-		return response;
-
-		
-	}
-
+    /**
+     * This method is used for user login with email and password.
+     */
+    @Override
+    public LoginResponse checkLogin(LoginParam loginParam) {
+        LoginResponse response = new LoginResponse();
+        
+        // Retrieve the user based on email safely using Optional
+        Optional<UserParameter> userOptional = Optional.ofNullable(userRepo.findByEmail(loginParam.getEmail()));
+        
+        if (userOptional.isPresent()) {
+            UserParameter user = userOptional.get();
+            // Compare the provided password with the user's password
+            if (user.getPassword().equals(loginParam.getPassword())) {
+                response.setStatus("Success");
+                response.setSuccess(true);
+                return response;
+            }
+        }
+        
+        // If no user is found or password doesn't match, return an error status
+        response.setStatus("Invalid Email & Password");
+        return response;
+    }
 }

@@ -16,27 +16,46 @@ public class UserParameter {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Schema(description = "Identifies the First Name", example = "Vibek")
 	private String firstName;
 
-	@Schema(description = "Identifies the Last Name", example = "Kumar")
 	private String lastName;
 
-	@Schema(description = "Age of the user", example = "25")
 	private int age;
 
-	@Schema(description = "Gender of the user", example = "Male")
-	private String gender;
-
-	@Schema(description = "Residential address of the user", example = "123 Main St, Springfield")
 	private String address;
 
-	@Schema(description = "Username used for login", example = "vibek123")
-	private String username;
+	private String email;
 
-	@Schema(description = "Password for the user account", example = "password123")
 	private String password;
 
+	private String role;
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public long getPhone() {
+		return phone;
+	}
+
+	public void setPhone(long phone) {
+		this.phone = phone;
+	}
+
+	private long phone;
+	
 	public UserParameter() {
 	}
 
@@ -65,14 +84,6 @@ public class UserParameter {
 		this.age = age;
 	}
 
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
 	public String getAddress() {
 		return address;
 	}
@@ -81,13 +92,6 @@ public class UserParameter {
 		this.address = address;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
 
 	public String getPassword() {
 		return password;
