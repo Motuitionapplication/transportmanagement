@@ -9,91 +9,133 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "USER_REG_DETAILS")
-
 public class UserParameter {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	@Schema(description = "Identifies the First Name", example = "Vibek")
-	private String firstName;
+    @Schema(description = "Identifies the First Name", example = "Vibek")
+    private String firstName;
 
-	@Schema(description = "Identifies the Last Name", example = "Kumar")
-	private String lastName;
+    @Schema(description = "Identifies the Last Name", example = "Kumar")
+    private String lastName;
 
-	@Schema(description = "Age of the user", example = "25")
-	private int age;
+    @Schema(description = "Age of the user", example = "25")
+    private int age;
 
-	@Schema(description = "Gender of the user", example = "Male")
-	private String gender;
+    @Schema(description = "Gender of the user", example = "Male")
+    private String gender;
 
-	@Schema(description = "Residential address of the user", example = "123 Main St, Springfield")
-	private String address;
+    @Schema(description = "Residential address of the user", example = "123 Main St, Springfield")
+    private String address;
 
-	@Schema(description = "Username used for login", example = "vibek123")
-	private String username;
+    @Schema(description = "Username used for login", example = "vibek123")
+    private String username;
 
-	@Schema(description = "Password for the user account", example = "password123")
-	private String password;
+    @Schema(description = "Password for the user account", example = "password123")
+    private String password;
 
-	public UserParameter() {
-	}
+    @Schema(description = "Specifies the type of user (e.g., admin, regular)", example = "admin")
+    private String userType;
 
-	
-	public String getFirstName() {
-		return firstName;
-	}
+    @Schema(description = "Mobile number of the user", example = "9938325746")
+    private long mobileNumber;
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    @Schema(description = "OTP for verification", example = "123456")
+    private String otp;
 
-	public String getLastName() {
-		return lastName;
-	}
+    // Default constructor
+    public UserParameter() {
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    // Getters and Setters
 
-	public int getAge() {
-		return age;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setAge(int age) {
-		this.age = age;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public String getGender() {
-		return gender;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public int getAge() {
+        return age;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setAge(int age) {
+        this.age = age;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public String getGender() {
+        return gender;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public long getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(long mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
 }
