@@ -31,7 +31,6 @@
             android:name=".LoginActivity"
             android:exported="true"
             android:label="@string/login_activity_label">
-            <!-- If LoginActivity is to be launched from MainActivity, you may pass extra data such as role -->
         </activity>
 
         <!-- RegisterActivity -->
@@ -57,11 +56,13 @@
             android:name=".ChangePasswordActivity"
             android:exported="true"
             android:label="@string/change_password_activity_label" />
+
         <!-- HomeActivity -->
         <activity
             android:name=".HomeActivity"
             android:exported="true"
             android:label="@string/home_activity_label" />
+
         <!-- Customer Home Activity -->
         <activity
             android:name=".CustomerHomeActivity"
@@ -86,7 +87,19 @@
             android:exported="true"
             android:label="Driver Home"/>
 
+        <!-- Google Maps API Key -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
     </application>
+
+    <!--  Required Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- realtime tracking -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
 
 </manifest>

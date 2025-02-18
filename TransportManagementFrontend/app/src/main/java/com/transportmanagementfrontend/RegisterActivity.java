@@ -98,7 +98,7 @@ public class RegisterActivity extends AppCompatActivity {
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                if (response.errorBody() != null && response.body() != null) {
+                if (response.isSuccessful()  && response.body() != null) {
                     // Retrieve the plain string message from the response
                     String message = response.body();
                     Toast.makeText(RegisterActivity.this, "Welcome to " + selectedRole + " Page! " + message, Toast.LENGTH_SHORT).show();
@@ -107,6 +107,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Intent intent = getHomePageIntent(selectedRole);
                     if (intent != null) {
                         intent.putExtra("ROLE", selectedRole);
+                        intent.putExtra("FIRST_NAME", firstName); // Pass first name
                         startActivity(intent);
                         finish();
                     }
@@ -129,7 +130,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private Intent getHomePageIntent(String role) {
         Intent intent = null;
