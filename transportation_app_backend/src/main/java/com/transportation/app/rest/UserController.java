@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/generateOTP/{mobileNumber}")
-    public ResponseEntity<String> generateOTP(@PathVariable long mobileNumber) {
+    public ResponseEntity<String> generateOTP(@PathVariable String mobileNumber) {
         String response = userService.generateOTP(mobileNumber);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

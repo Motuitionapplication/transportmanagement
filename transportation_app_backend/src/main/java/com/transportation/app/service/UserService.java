@@ -11,5 +11,5 @@ public interface UserService {
     public LoginResponse checkLogin(LoginParam loginParam);
     
     // Updated to return String instead of void
-    public String generateOTP(long mobileNumber);
+    public String generateOTP(String mobileNumber);
 }

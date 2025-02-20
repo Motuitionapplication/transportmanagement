@@ -12,5 +12,5 @@ public interface UserRepository extends JpaRepository<UserParameter, Serializabl
     UserParameter findByUsername(String username);
     
     // Added method to find a user by mobile number
-    Optional<UserParameter> findByMobileNumber(long mobileNumber);
+    Optional<UserParameter> findByMobileNumber(String mobileNumber);
 }

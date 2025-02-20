@@ -40,7 +40,7 @@ public class UserParameter {
     private String userType;
 
     @Schema(description = "Mobile number of the user", example = "9938325746")
-    private long mobileNumber;
+    private String mobileNumber;
 
     @Schema(description = "OTP for verification", example = "123456")
     private String otp;
@@ -75,7 +75,15 @@ public class UserParameter {
         this.lastName = lastName;
     }
 
-    public int getAge() {
+    public String getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
+
+	public int getAge() {
         return age;
     }
 
@@ -123,13 +131,7 @@ public class UserParameter {
         this.userType = userType;
     }
 
-    public long getMobileNumber() {
-        return mobileNumber;
-    }
-
-    public void setMobileNumber(long mobileNumber) {
-        this.mobileNumber = mobileNumber;
-    }
+   
 
     public String getOtp() {
         return otp;

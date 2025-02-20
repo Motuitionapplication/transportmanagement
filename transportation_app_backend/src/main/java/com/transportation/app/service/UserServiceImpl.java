@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepo;
 
     @Autowired
-    private Fast2SMSService fast2SMSService;
+    private SmsService fast2SMSService;
 
     @Override
     public String createUser(UserParameter userParameter) {
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
      * @return a response string indicating success or failure
      */
     @Override
-    public String generateOTP(long mobileNumber) {
+    public String generateOTP(String mobileNumber) {
         // Convert mobile number to string (ensure it is in the correct format)
         String mobileStr = String.valueOf(mobileNumber);
         
@@ -66,4 +66,6 @@ public class UserServiceImpl implements UserService {
             return "User with mobile number " + mobileNumber + " not found.";
         }
     }
+
+	
 }
