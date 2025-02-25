@@ -9,95 +9,135 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "USER_REG_DETAILS")
-
 public class UserParameter {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	private String firstName;
+    @Schema(description = "Identifies the First Name", example = "Vibek")
+    private String firstName;
 
-	private String lastName;
+    @Schema(description = "Identifies the Last Name", example = "Kumar")
+    private String lastName;
 
-	private int age;
+    @Schema(description = "Age of the user", example = "25")
+    private int age;
 
-	private String address;
+    @Schema(description = "Gender of the user", example = "Male")
+    private String gender;
 
-	private String email;
+    @Schema(description = "Residential address of the user", example = "123 Main St, Springfield")
+    private String address;
 
-	private String password;
+    @Schema(description = "Username used for login", example = "vibek123")
+    private String username;
 
-	private String role;
+    @Schema(description = "Password for the user account", example = "password123")
+    private String password;
 
-	public String getRole() {
-		return role;
+    @Schema(description = "Specifies the type of user (e.g., admin, regular)", example = "admin")
+    private String userType;
+
+    @Schema(description = "Mobile number of the user", example = "9938325746")
+    private String mobileNumber;
+
+    @Schema(description = "OTP for verification", example = "123456")
+    private String otp;
+
+    // Default constructor
+    public UserParameter() {
+    }
+
+    // Getters and Setters
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getMobileNumber() {
+		return mobileNumber;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public long getPhone() {
-		return phone;
-	}
-
-	public void setPhone(long phone) {
-		this.phone = phone;
-	}
-
-	private long phone;
-	
-	public UserParameter() {
-	}
-
-	
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
 	}
 
 	public int getAge() {
-		return age;
-	}
+        return age;
+    }
 
-	public void setAge(int age) {
-		this.age = age;
-	}
+    public void setAge(int age) {
+        this.age = age;
+    }
 
-	public String getAddress() {
-		return address;
-	}
+    public String getGender() {
+        return gender;
+    }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
+    public String getAddress() {
+        return address;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+   
+
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
 }

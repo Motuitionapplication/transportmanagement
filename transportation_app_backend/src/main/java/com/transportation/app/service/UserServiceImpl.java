@@ -1,7 +1,6 @@
 package com.transportation.app.service;
 
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.transportation.app.binding.LoginParam;
@@ -15,34 +14,58 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepo;
 
+    @Autowired
+    private SmsService fast2SMSService;
+
     @Override
     public String createUser(UserParameter userParameter) {
         userRepo.save(userParameter);
-        return "user created";
+        return "User created";
     }
 
-    /**
-     * This method is used for user login with email and password.
-     */
     @Override
     public LoginResponse checkLogin(LoginParam loginParam) {
         LoginResponse response = new LoginResponse();
-        
-        // Retrieve the user based on email safely using Optional
-        Optional<UserParameter> userOptional = Optional.ofNullable(userRepo.findByEmail(loginParam.getEmail()));
-        
-        if (userOptional.isPresent()) {
-            UserParameter user = userOptional.get();
-            // Compare the provided password with the user's password
-            if (user.getPassword().equals(loginParam.getPassword())) {
+        Optional<UserParameter> user = Optional.empty();
+        try {
+            user = Optional.ofNullable(userRepo.findByUsername(loginParam.getUsername()));
+            if (user.get().getPassword().equals(loginParam.getPassword())) {
                 response.setStatus("Success");
                 response.setSuccess(true);
                 return response;
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        
-        // If no user is found or password doesn't match, return an error status
-        response.setStatus("Invalid Email & Password");
+        response.setStatus("Invalid User Name & Password");
         return response;
     }
+
+    /**
+     * This method generates an OTP and sends it via Fast2SMS.
+     *
+     * @param mobileNumber the mobile number for which the OTP is generated
+     * @return a response string indicating success or failure
+     */
+    @Override
+    public String generateOTP(String mobileNumber) {
+        // Convert mobile number to string (ensure it is in the correct format)
+        String mobileStr = String.valueOf(mobileNumber);
+        
+        // Send the OTP via Fast2SMS and capture the generated OTP
+        String otp = fast2SMSService.sendOTP(mobileStr);
+
+        // If needed, store the OTP in the user record or a separate OTP storage
+        Optional<UserParameter> userOptional = userRepo.findByMobileNumber(mobileNumber);
+        if (userOptional.isPresent()) {
+            UserParameter user = userOptional.get();
+            user.setOtp(otp);
+            userRepo.save(user);
+            return "OTP sent successfully to " + mobileNumber;
+        } else {
+            return "User with mobile number " + mobileNumber + " not found.";
+        }
+    }
+
+	
 }
