@@ -1,11 +1,14 @@
 package com.transportmanagementfrontend;
 
-import android.Manifest;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,103 +17,82 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
+import com.codebyashish.googledirectionapi.AbstractRouting;
+import com.codebyashish.googledirectionapi.ErrorHandling;
+import com.codebyashish.googledirectionapi.RouteDrawing;
+import com.codebyashish.googledirectionapi.RouteInfoModel;
+import com.codebyashish.googledirectionapi.RouteListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.RoundCap;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CustomerHomeActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class CustomerHomeActivity extends AppCompatActivity implements OnMapReadyCallback, RouteListener {
 
     private GoogleMap mMap;
-    private FusedLocationProviderClient fusedLocationClient;
-    private Marker pickupMarker, destinationMarker;
-    private LatLng pickupLatLng, destinationLatLng;
-    private LocationCallback locationCallback;
+    private ProgressDialog dialog;
 
-    private static final int LOCATION_PERMISSION_REQUEST = 1001;
+    // UI elements
+    private EditText pickupLocation, destinationLocation;
+    private TextView welcomeText, distanceText;
+
     private static final int AUTOCOMPLETE_PICKUP_REQUEST = 1002;
     private static final int AUTOCOMPLETE_DEST_REQUEST = 1003;
 
-    private TextView welcomeText, distanceText;
-    private EditText pickupLocation, destinationLocation;
+    private LatLng pickupLatLng, destinationLatLng;
+    private Marker pickupMarker, destinationMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_home);
 
-        // Initialize Google Places API (Move key to local properties or AndroidManifest.xml)
-        if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
-        }
-
-        // Initialize UI elements
         welcomeText = findViewById(R.id.welcomeText);
         distanceText = findViewById(R.id.distanceText);
         pickupLocation = findViewById(R.id.pickupLocation);
         destinationLocation = findViewById(R.id.destinationLocation);
 
-        // Welcome message
-        Intent intent = getIntent();
-        String firstName = intent.getStringExtra("FIRST_NAME");
+        String firstName = getIntent().getStringExtra("FIRST_NAME");
         welcomeText.setText(firstName != null && !firstName.isEmpty() ? "Hello, " + firstName + "!" : "Hello, Customer!");
 
-        // Initialize the map
+        pickupLocation.setOnClickListener(view -> startPlaceAutocomplete(AUTOCOMPLETE_PICKUP_REQUEST));
+        destinationLocation.setOnClickListener(view -> startPlaceAutocomplete(AUTOCOMPLETE_DEST_REQUEST));
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        dialog = new ProgressDialog(this);
 
-        // Autocomplete listeners
-        pickupLocation.setOnClickListener(view -> startPlaceAutocomplete(AUTOCOMPLETE_PICKUP_REQUEST));
-        destinationLocation.setOnClickListener(view -> startPlaceAutocomplete(AUTOCOMPLETE_DEST_REQUEST));
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
+        }
     }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         LatLng india = new LatLng(20.5937, 78.9629);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(india, 5f));
-
-        mMap.getUiSettings().setMapToolbarEnabled(true);
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-
-        if (checkLocationPermission()) {
-            enableUserLocation();
-        }
-    }
-
-    private boolean checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST);
-            return false;
-        }
-        return true;
-    }
-
-    private void enableUserLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-        }
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(india, 5f));
+        mMap.addMarker(new MarkerOptions().position(india).title("India"));
     }
 
     private void startPlaceAutocomplete(int requestCode) {
@@ -123,11 +105,15 @@ public class CustomerHomeActivity extends AppCompatActivity implements OnMapRead
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null) {
             Place place = Autocomplete.getPlaceFromIntent(data);
             LatLng latLng = place.getLatLng();
-            if (latLng == null) return;
+            if (latLng == null) {
+                Log.e("MAP_ERROR", "Selected place has no LatLng.");
+                return;
+            }
+
+            Log.d("MAP_DEBUG", "Selected location: " + place.getName() + " Lat: " + latLng.latitude + " Lng: " + latLng.longitude);
 
             if (!isWithinIndia(latLng)) {
                 Toast.makeText(this, "Please select a location within India.", Toast.LENGTH_SHORT).show();
@@ -144,33 +130,39 @@ public class CustomerHomeActivity extends AppCompatActivity implements OnMapRead
                 destinationMarker = updateMarker(destinationMarker, destinationLatLng, "Destination Location");
             }
 
-            // If both locations are selected, adjust the camera to show both markers.
-            // Otherwise, move the camera to the selected location.
             if (pickupLatLng != null && destinationLatLng != null) {
                 com.google.android.gms.maps.model.LatLngBounds.Builder builder = new com.google.android.gms.maps.model.LatLngBounds.Builder();
                 builder.include(pickupLatLng);
                 builder.include(destinationLatLng);
                 com.google.android.gms.maps.model.LatLngBounds bounds = builder.build();
-                int padding = 100; // offset in pixels from the edges of the map
-                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, padding));
-            } else {
-                if (requestCode == AUTOCOMPLETE_PICKUP_REQUEST) {
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pickupLatLng, 15));
-                } else if (requestCode == AUTOCOMPLETE_DEST_REQUEST) {
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 15));
-                }
-            }
+                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
 
-            if (pickupLatLng != null && destinationLatLng != null) {
                 calculateDistance();
+                getRoute(pickupLatLng, destinationLatLng);
             }
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private Marker updateMarker(Marker marker, LatLng latLng, String title) {
         if (mMap == null) return null;
         if (marker != null) marker.remove();
-        return mMap.addMarker(new MarkerOptions().position(latLng).title(title));
+        return mMap.addMarker(new MarkerOptions()
+                .position(latLng)
+                .title(title)
+                .icon(setIcon(this, R.drawable.baseline_location_on_24)));
+    }
+
+    public BitmapDescriptor setIcon(Activity context, int drawableID) {
+        Drawable drawable = ActivityCompat.getDrawable(context, drawableID);
+        if (drawable == null) {
+            return BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
+        }
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     private void calculateDistance() {
@@ -179,14 +171,22 @@ public class CustomerHomeActivity extends AppCompatActivity implements OnMapRead
             return;
         }
         float[] results = new float[1];
-        Location.distanceBetween(
-                pickupLatLng.latitude, pickupLatLng.longitude,
-                destinationLatLng.latitude, destinationLatLng.longitude,
-                results
-        );
-
+        Location.distanceBetween(pickupLatLng.latitude, pickupLatLng.longitude,
+                destinationLatLng.latitude, destinationLatLng.longitude, results);
         float distanceKm = results[0] / 1000;
         distanceText.setText("Distance: " + String.format("%.2f", distanceKm) + " km");
+    }
+
+    private void getRoute(LatLng origin, LatLng destination) {
+        dialog.setMessage("Route is generating, please wait");
+        dialog.show();
+        RouteDrawing routeDrawing = new RouteDrawing.Builder()
+                .travelMode(AbstractRouting.TravelMode.DRIVING)
+                .withListener(this)
+                .alternativeRoutes(true)
+                .waypoints(origin, destination)
+                .build();
+        routeDrawing.execute();
     }
 
     private boolean isWithinIndia(LatLng latLng) {
@@ -194,5 +194,28 @@ public class CustomerHomeActivity extends AppCompatActivity implements OnMapRead
         double minLng = 68.0, maxLng = 98.0;
         return latLng.latitude >= minLat && latLng.latitude <= maxLat &&
                 latLng.longitude >= minLng && latLng.longitude <= maxLng;
+    }
+
+    @Override
+    public void onRouteFailure(ErrorHandling e) {
+        dialog.dismiss();
+        Toast.makeText(this, "Route Failed", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRouteStart() {
+        Toast.makeText(this, "Route Started", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRouteSuccess(ArrayList<RouteInfoModel> list, int indexing) {
+        Toast.makeText(this, "Route Success", Toast.LENGTH_SHORT).show();
+        dialog.dismiss();
+    }
+
+    @Override
+    public void onRouteCancelled() {
+        dialog.dismiss();
+        Toast.makeText(this, "Route Canceled", Toast.LENGTH_SHORT).show();
     }
 }
