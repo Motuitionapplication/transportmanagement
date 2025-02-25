@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
         LoginResponse response = new LoginResponse();
         Optional<UserParameter> user = Optional.empty();
         try {
-            user = Optional.ofNullable(userRepo.findByUsername(loginParam.getUsername()));
+            user = Optional.ofNullable(userRepo.findByEmail(loginParam.getEmail()));
             if (user.get().getPassword().equals(loginParam.getPassword())) {
                 response.setStatus("Success");
                 response.setSuccess(true);
@@ -48,22 +48,22 @@ public class UserServiceImpl implements UserService {
      * @return a response string indicating success or failure
      */
     @Override
-    public String generateOTP(String mobileNumber) {
+    public String generateOTP(String phone) {
         // Convert mobile number to string (ensure it is in the correct format)
-        String mobileStr = String.valueOf(mobileNumber);
+        String mobileStr = String.valueOf(phone);
         
         // Send the OTP via Fast2SMS and capture the generated OTP
         String otp = fast2SMSService.sendOTP(mobileStr);
 
         // If needed, store the OTP in the user record or a separate OTP storage
-        Optional<UserParameter> userOptional = userRepo.findByMobileNumber(mobileNumber);
+        Optional<UserParameter> userOptional = userRepo.findByPhone(phone);
         if (userOptional.isPresent()) {
             UserParameter user = userOptional.get();
             user.setOtp(otp);
             userRepo.save(user);
-            return "OTP sent successfully to " + mobileNumber;
+            return "OTP sent successfully to " + phone;
         } else {
-            return "User with mobile number " + mobileNumber + " not found.";
+            return "User with mobile number " + phone + " not found.";
         }
     }
 

@@ -33,7 +33,7 @@ public class SmsService {
      * @param mobileNumber Mobile number to which the OTP will be sent.
      * @return The generated OTP as String.
      */
-    public String sendOTP(String mobileNumber) {
+    public String sendOTP(String phone) {
         // Generate a random 6-digit OTP
         String otp = String.valueOf(new Random().nextInt(900000) + 100000);
 
@@ -42,12 +42,12 @@ public class SmsService {
 
         // Send the SMS using Twilio
         Message.creator(
-                new PhoneNumber(mobileNumber),
+                new PhoneNumber(phone),
                 new PhoneNumber(trialNumber),
                 message
         ).create();
 
-        System.out.println("OTP sent to " + mobileNumber + ": " + otp);
+        System.out.println("OTP sent to " + phone + ": " + otp);
 
         // Return the OTP so you can store it if needed
         return otp;

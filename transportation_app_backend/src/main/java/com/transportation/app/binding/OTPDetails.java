@@ -2,7 +2,7 @@ package com.transportation.app.binding;
 import java.time.LocalDateTime;
 
 public class OTPDetails {
-	 private long mobileNumber;
+	 private long phone;
 	    private int otp;
 	    private LocalDateTime generatedTime;
 	    private LocalDateTime expiryTime;
@@ -10,27 +10,29 @@ public class OTPDetails {
 	    // Constructors
 	    public OTPDetails() {}
 
-	    public OTPDetails(long mobileNumber, int otp, LocalDateTime generatedTime, LocalDateTime expiryTime) {
-	        this.mobileNumber = mobileNumber;
+	    public OTPDetails(long phone, int otp, LocalDateTime generatedTime, LocalDateTime expiryTime) {
+	        this.phone = phone;
 	        this.otp = otp;
 	        this.generatedTime = generatedTime;
 	        this.expiryTime = expiryTime;
 	    }
 
 	    // Getters and Setters
-	    public long getMobileNumber() {
-	        return mobileNumber;
-	    }
 
-	    public void setMobileNumber(long mobileNumber) {
-	        this.mobileNumber = mobileNumber;
-	    }
 
 	    public int getOtp() {
 	        return otp;
 	    }
 
-	    public void setOtp(int otp) {
+	    public long getPhone() {
+			return phone;
+		}
+
+		public void setPhone(long phone) {
+			this.phone = phone;
+		}
+
+		public void setOtp(int otp) {
 	        this.otp = otp;
 	    }
 
@@ -50,14 +52,12 @@ public class OTPDetails {
 	        this.expiryTime = expiryTime;
 	    }
 
-	    @Override
-	    public String toString() {
-	        return "OTPDetails{" +
-	                "mobileNumber=" + mobileNumber +
-	                ", otp=" + otp +
-	                ", generatedTime=" + generatedTime +
-	                ", expiryTime=" + expiryTime +
-	                '}';
-	    }
+		@Override
+		public String toString() {
+			return "OTPDetails [phone=" + phone + ", otp=" + otp + ", generatedTime=" + generatedTime + ", expiryTime="
+					+ expiryTime + "]";
+		}
+
+	
 
 }
