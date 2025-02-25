@@ -7,18 +7,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class LoginParam {
 
-	@Schema(description = "Username used for login", example = "vibek123")
-	private String username;
+	private String email;
 
-	@Schema(description = "Password for the user account", example = "password123")
 	private String password;
 
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassword() {
