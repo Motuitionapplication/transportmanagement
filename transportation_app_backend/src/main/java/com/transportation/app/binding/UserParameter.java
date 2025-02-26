@@ -28,7 +28,7 @@ public class UserParameter {
 	private String address;
 
 	@Schema(description = "Username used for login", example = "vibek123")
-	private String email;
+	private String username;
 
 	@Schema(description = "Password for the user account", example = "password123")
 	private String password;
@@ -48,16 +48,16 @@ public class UserParameter {
 
 	// Getters and Setters
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public String getRole() {
 		return role;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public void setRole(String role) {

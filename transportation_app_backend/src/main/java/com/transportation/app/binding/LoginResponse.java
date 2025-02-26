@@ -1,12 +1,23 @@
 package com.transportation.app.binding;
 
+import java.util.Optional;
+
 public class LoginResponse {
 
 	private boolean success;
 	
 	private String status;
-
+    
+	private Optional<UserParameter> user;
 	
+	public Optional<UserParameter> getUser() {
+		return user;
+	}
+
+	public void setUser(Optional<UserParameter> user2) {
+		this.user = user2;
+	}
+
 	public boolean isSuccess() {
 		return success;
 	}

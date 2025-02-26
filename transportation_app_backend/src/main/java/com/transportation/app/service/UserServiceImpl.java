@@ -28,10 +28,12 @@ public class UserServiceImpl implements UserService {
         LoginResponse response = new LoginResponse();
         Optional<UserParameter> user = Optional.empty();
         try {
-            user = Optional.ofNullable(userRepo.findByEmail(loginParam.getEmail()));
+            user = Optional.ofNullable(userRepo.findByUsername(loginParam.getUsername()));
             if (user.get().getPassword().equals(loginParam.getPassword())) {
                 response.setStatus("Success");
                 response.setSuccess(true);
+                response.setUser(user);
+
                 return response;
             }
         } catch (Exception e) {
