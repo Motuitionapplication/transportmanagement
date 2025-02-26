@@ -43,14 +43,14 @@ public class LoginActivity extends AppCompatActivity {
 
     // Method to handle login logic
     private void handleLogin() {
-        EditText emailEditText = findViewById(R.id.emailEditText);
+        EditText usernameEditText = findViewById(R.id.usernameEditText);
         EditText passwordEditText = findViewById(R.id.passwordEditText);
 
-        String email = emailEditText.getText().toString().trim();
+        String username = usernameEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
 
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Please enter email and password", Toast.LENGTH_LONG).show();
+        if (username.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Please enter username and password", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
 
         ApiService apiService = retrofit.create(ApiService.class);
 
-        LoginRequest loginRequest = new LoginRequest(email, password);
+        LoginRequest loginRequest = new LoginRequest(username, password);
         Call<LoginResponse> call = apiService.loginUser(loginRequest);
 
         call.enqueue(new Callback<LoginResponse>() {
@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(LoginActivity.this, response.body().getStatus(), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    intent.putExtra("EMAIL", email);
+                    intent.putExtra("USERNAME", username);
                     intent.putExtra("ROLE", selectedRole);
                     startActivity(intent);
                     finish();

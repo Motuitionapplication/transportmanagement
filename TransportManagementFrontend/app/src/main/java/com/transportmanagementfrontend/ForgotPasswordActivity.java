@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class ForgotPasswordActivity extends AppCompatActivity {
 
     // Declare UI elements
-    private EditText emailEditText;
+    private EditText usernameEditText;
     private Button nextButton;
 
     @Override
@@ -21,7 +21,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forgot_password);  // Use the correct layout file
 
         // Initialize views
-        emailEditText = findViewById(R.id.email);
+        usernameEditText = findViewById(R.id.username);
         nextButton = findViewById(R.id.nextButton);
 
         // Set click listener for the Next button
@@ -30,23 +30,23 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     // Method to handle "Next" button logic (Validate email and navigate to verification)
     private void handleNext() {
-        String email = emailEditText.getText().toString().trim();
+        String username = usernameEditText.getText().toString().trim();
 
         // Input validation for empty email field
-        if (TextUtils.isEmpty(email)) {
+        if (TextUtils.isEmpty(username)) {
             Toast.makeText(ForgotPasswordActivity.this, "Please enter your email address", Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Validate the email format
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(ForgotPasswordActivity.this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(username).matches()) {
+//            Toast.makeText(ForgotPasswordActivity.this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
 
         // Email validation passed, move to Verification Code Activity
         Intent intent = new Intent(ForgotPasswordActivity.this, VerificationCodeActivity.class);
-        intent.putExtra("email", email);  // Passing email to the next activity
+        intent.putExtra("username", username);  // Passing email to the next activity
         startActivity(intent);
     }
 }

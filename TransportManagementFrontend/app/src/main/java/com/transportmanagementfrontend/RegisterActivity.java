@@ -20,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText firstNameEditText, lastNameEditText, ageEditText, addressEditText, emailEditText, phoneEditText, passwordEditText;
+    private EditText firstNameEditText, lastNameEditText, ageEditText, addressEditText, usernameEditText, phoneEditText, passwordEditText;
     private Button createAccountButton;
     private String selectedRole; // Store the role selected on the previous screen
 
@@ -44,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
         lastNameEditText = findViewById(R.id.lastName);
         ageEditText = findViewById(R.id.age);
         addressEditText = findViewById(R.id.address);
-        emailEditText = findViewById(R.id.email);
+        usernameEditText = findViewById(R.id.username);
         phoneEditText = findViewById(R.id.phone);
         passwordEditText = findViewById(R.id.password);
         createAccountButton = findViewById(R.id.createAccountButton);
@@ -55,19 +55,19 @@ public class RegisterActivity extends AppCompatActivity {
             String lastName = getSafeText(lastNameEditText);
             String age = getSafeText(ageEditText);
             String address = getSafeText(addressEditText);
-            String email = getSafeText(emailEditText);
+            String username = getSafeText(usernameEditText);
             String phone = getSafeText(phoneEditText);
             String password = getSafeText(passwordEditText);
 
             // Validate that no field is empty
             if (firstName.isEmpty() || lastName.isEmpty() || age.isEmpty() || address.isEmpty() ||
-                    email.isEmpty() || phone.isEmpty() || password.isEmpty()) {
+                    username.isEmpty() || phone.isEmpty() || password.isEmpty()) {
                 Toast.makeText(RegisterActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             // Call the API for registration
-            registerUser(firstName, lastName, age, address, email, phone, password, selectedRole);
+            registerUser(firstName, lastName, age, address, username, phone, password, selectedRole);
         });
     }
 
@@ -75,7 +75,7 @@ public class RegisterActivity extends AppCompatActivity {
         return (editText != null && editText.getText() != null) ? editText.getText().toString().trim() : "";
     }
 
-    private void registerUser(String firstName, String lastName, String age, String address, String email,
+    private void registerUser(String firstName, String lastName, String age, String address, String username,
                               String phone, String password, String role) {
         // Enable lenient JSON parsing
         Gson gson = new GsonBuilder()
@@ -91,7 +91,7 @@ public class RegisterActivity extends AppCompatActivity {
                 .build();
 
         ApiService apiService = retrofit.create(ApiService.class);
-        RegisterRequest registerRequest = new RegisterRequest(firstName, lastName, age, address, email, phone, password, role);
+        RegisterRequest registerRequest = new RegisterRequest(firstName, lastName, age, address, username, phone, password, role);
 
         // Make the API call, now expecting a String response
         Call<String> call = apiService.registerUser(registerRequest);
