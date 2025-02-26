@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class HomeActivity extends AppCompatActivity {
 
     private TextView welcomeTextView;
-    private TextView emailTextView;
+    private TextView usernameTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,16 +17,16 @@ public class HomeActivity extends AppCompatActivity {
 
         // Initialize the TextViews
         welcomeTextView = findViewById(R.id.welcomeTextView);
-        emailTextView = findViewById(R.id.emailTextView);
+        usernameTextView = findViewById(R.id.usernameTextView);
 
         // Get the email and selected role from the Intent
-        String email = getIntent().getStringExtra("EMAIL");
+        String username = getIntent().getStringExtra("USERNAME");
         String selectedRole = getIntent().getStringExtra("ROLE");
 
         // Set the welcome message
-        if (selectedRole != null && email != null) {
+        if (selectedRole != null && username != null) {
             welcomeTextView.setText("Welcome, " + selectedRole);
-            emailTextView.setText("Your email: " + email);
+            usernameTextView.setText("Your username: " + username);
         } else {
             welcomeTextView.setText("Welcome!");
         }

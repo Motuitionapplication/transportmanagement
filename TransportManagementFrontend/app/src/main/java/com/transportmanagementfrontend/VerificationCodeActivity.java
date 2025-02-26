@@ -14,7 +14,7 @@ public class VerificationCodeActivity extends AppCompatActivity {
 
     private EditText verificationCodeInput;
     private Button submitButton;
-    private TextView emailTextView;
+    private TextView usernameTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +24,12 @@ public class VerificationCodeActivity extends AppCompatActivity {
         // Initialize views
         verificationCodeInput = findViewById(R.id.verificationCodeInput);
         submitButton = findViewById(R.id.submitButton);
-        emailTextView = findViewById(R.id.emailTextView);  // Correct reference here
+        usernameTextView = findViewById(R.id.usernameTextView);  // Correct reference here
 
         // Get email from the Intent
         Intent intent = getIntent();
-        String email = intent.getStringExtra("email");
-        emailTextView.setText("Code sent to: " + email);  // Display email
+        String username = intent.getStringExtra("username");
+        usernameTextView.setText("Code sent to: " + username);  // Display email
 
         // Set click listener for the Submit button
         submitButton.setOnClickListener(v -> handleSubmit());

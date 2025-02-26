@@ -96,6 +96,7 @@ public class CustomerHomeActivity extends AppCompatActivity implements OnMapRead
     }
 
     private void startPlaceAutocomplete(int requestCode) {
+        Log.d("MAP_DEBUG", "Starting place autocomplete for requestCode: " + requestCode);
         List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
         Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
                 .setCountry("IN")
@@ -103,55 +104,43 @@ public class CustomerHomeActivity extends AppCompatActivity implements OnMapRead
         startActivityForResult(intent, requestCode);
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("MAP_DEBUG", "onActivityResult triggered with requestCode: " + requestCode);
+
         if (resultCode == RESULT_OK && data != null) {
             Place place = Autocomplete.getPlaceFromIntent(data);
-            LatLng latLng = place.getLatLng();
-            if (latLng == null) {
-                Log.e("MAP_ERROR", "Selected place has no LatLng.");
-                return;
-            }
-
-            Log.d("MAP_DEBUG", "Selected location: " + place.getName() + " Lat: " + latLng.latitude + " Lng: " + latLng.longitude);
-
-            if (!isWithinIndia(latLng)) {
-                Toast.makeText(this, "Please select a location within India.", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            Log.d("MAP_DEBUG", "Selected place: " + place.getName());
 
             if (requestCode == AUTOCOMPLETE_PICKUP_REQUEST) {
-                pickupLatLng = latLng;
+                pickupLatLng = place.getLatLng();
                 pickupLocation.setText(place.getName());
                 pickupMarker = updateMarker(pickupMarker, pickupLatLng, "Pickup Location");
+                Log.d("MAP_DEBUG", "Updated pickup location: " + pickupLatLng);
             } else if (requestCode == AUTOCOMPLETE_DEST_REQUEST) {
-                destinationLatLng = latLng;
+                destinationLatLng = place.getLatLng();
                 destinationLocation.setText(place.getName());
                 destinationMarker = updateMarker(destinationMarker, destinationLatLng, "Destination Location");
+                Log.d("MAP_DEBUG", "Updated destination location: " + destinationLatLng);
             }
-
-            if (pickupLatLng != null && destinationLatLng != null) {
-                com.google.android.gms.maps.model.LatLngBounds.Builder builder = new com.google.android.gms.maps.model.LatLngBounds.Builder();
-                builder.include(pickupLatLng);
-                builder.include(destinationLatLng);
-                com.google.android.gms.maps.model.LatLngBounds bounds = builder.build();
-                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
-
-                calculateDistance();
-                getRoute(pickupLatLng, destinationLatLng);
-            }
+        } else {
+            Log.e("MAP_ERROR", "onActivityResult failed or cancelled.");
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+
     private Marker updateMarker(Marker marker, LatLng latLng, String title) {
-        if (mMap == null) return null;
+        if (mMap == null || latLng == null) return null;
         if (marker != null) marker.remove();
+
         return mMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .title(title)
-                .icon(setIcon(this, R.drawable.baseline_location_on_24)));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
     }
+
 
     public BitmapDescriptor setIcon(Activity context, int drawableID) {
         Drawable drawable = ActivityCompat.getDrawable(context, drawableID);

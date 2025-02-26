@@ -17,10 +17,10 @@
 
     <!-- Email message -->
     <TextView
-        android:id="@+id/emailTextView"
+        android:id="@+id/usernameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Your email: "
+        android:text="Your username: "
         android:textSize="16sp"
         android:textColor="@android:color/black"
         android:layout_below="@id/welcomeTextView"
