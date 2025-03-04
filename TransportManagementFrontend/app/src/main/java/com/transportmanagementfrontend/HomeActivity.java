@@ -22,10 +22,11 @@ public class HomeActivity extends AppCompatActivity {
         // Get the email and selected role from the Intent
         String username = getIntent().getStringExtra("USERNAME");
         String selectedRole = getIntent().getStringExtra("ROLE");
+        String firstName = getIntent().getStringExtra("FIRSTNAME");
 
         // Set the welcome message
         if (selectedRole != null && username != null) {
-            welcomeTextView.setText("Welcome, " + selectedRole);
+            welcomeTextView.setText("Welcome, " + firstName);
             usernameTextView.setText("Your username: " + username);
         } else {
             welcomeTextView.setText("Welcome!");

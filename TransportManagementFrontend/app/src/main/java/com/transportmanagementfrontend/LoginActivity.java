@@ -72,6 +72,8 @@ public class LoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     intent.putExtra("USERNAME", username);
                     intent.putExtra("ROLE", selectedRole);
+                    intent.putExtra("FIRSTNAME", response.body().getUser().getFirstName());
+
                     startActivity(intent);
                     finish();
                 } else {
