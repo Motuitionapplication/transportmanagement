@@ -69,11 +69,15 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(LoginActivity.this, response.body().getStatus(), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    intent.putExtra("USERNAME", username);
-                    intent.putExtra("ROLE", selectedRole);
-                    startActivity(intent);
-                    finish();
+
+                    // Redirect user based on role
+                    Intent intent = getHomePageIntent(selectedRole);
+                    if (intent != null) {
+                        intent.putExtra("USERNAME", username);
+                        intent.putExtra("ROLE", selectedRole);
+                        startActivity(intent);
+                        finish();
+                    }
                 } else {
                     Toast.makeText(LoginActivity.this, "Invalid credentials. Try again.", Toast.LENGTH_SHORT).show();
                 }
@@ -84,6 +88,29 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private Intent getHomePageIntent(String role) {
+        Intent intent = null;
+        if (role != null) {
+            switch (role.toLowerCase()) {
+                case "customer":
+                    intent = new Intent(LoginActivity.this, CustomerHomeActivity.class);
+                    break;
+                case "owner":
+                    intent = new Intent(LoginActivity.this, OwnerHomeActivity.class);
+                    break;
+                case "driver":
+                    intent = new Intent(LoginActivity.this, DriverHomeActivity.class);
+                    break;
+                case "admin":
+                    intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
+                    break;
+                default:
+                    Toast.makeText(LoginActivity.this, "Error: Invalid Role!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        return intent;
     }
 
     private void handleForgotPassword() {
