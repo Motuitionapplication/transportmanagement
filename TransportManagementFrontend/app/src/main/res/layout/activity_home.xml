@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- Welcome message -->
+    <TextView
+        android:id="@+id/welcomeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome!"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:textStyle="bold"/>
+
+    <!-- Email message -->
+    <TextView
+        android:id="@+id/usernameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your username: "
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:layout_below="@id/welcomeTextView"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"/>
+</RelativeLayout>

@@ -4,78 +4,83 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout; // FrameLayout instead of LinearLayout for overlay
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button selectedButton = null; // Track the selected button
+    private String selectedRole = null; // Store the selected role
+    private boolean isRegistering = false; // Track if the user is registering or logging in
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Set the layout for the activity
         setContentView(R.layout.activity_main);
 
-        // Find the "Get Started" button by its ID
-        Button getStartedButton = findViewById(R.id.btnLogin);
-
-        // Find the popup overlay layout (FrameLayout should be used for overlay)
+        // Find the popup overlay and container
         FrameLayout popupOverlay = findViewById(R.id.popupOverlay);
+        LinearLayout popupContainer = findViewById(R.id.popupContainer);
+        TextView popupTitle = findViewById(R.id.popupTitle); // Find the title text view
 
-        // Set an OnClickListener for the "Get Started" button
-        getStartedButton.setOnClickListener(v -> {
-            // Show the popup overlay
-            popupOverlay.setVisibility(View.VISIBLE);
-        });
-
-        // Find the buttons inside the popup overlay
-        Button btnVendor = findViewById(R.id.btnVendor);
+        // Find role buttons inside the popup overlay
+        Button btnAdmin = findViewById(R.id.btnAdmin);
         Button btnDriver = findViewById(R.id.btnDriver);
         Button btnCustomer = findViewById(R.id.btnCustomer);
         Button btnOwner = findViewById(R.id.btnOwner);
 
-        // OnClickListener for the role buttons
+        // Find main buttons (LOGIN and REGISTER)
+        Button btnLoginMain = findViewById(R.id.btnLogin);
+        Button btnRegisterMain = findViewById(R.id.btnRegister);
+
+        // LOGIN button click event
+        btnLoginMain.setOnClickListener(v -> {
+            isRegistering = false; // Set flag to false (user is logging in)
+            btnAdmin.setVisibility(View.VISIBLE);  // Show Admin for LOGIN
+            popupTitle.setText("LOGIN AS:");  // Change popup title
+            popupOverlay.setVisibility(View.VISIBLE); // Show popup
+        });
+
+        // REGISTER button click event
+        btnRegisterMain.setOnClickListener(v -> {
+            isRegistering = true; // Set flag to true (user is registering)
+            btnAdmin.setVisibility(View.GONE);  // Hide Admin for REGISTER
+            popupTitle.setText("REGISTER AS:");  // Change popup title
+            popupOverlay.setVisibility(View.VISIBLE); // Show popup
+        });
+
+        // Role selection listener
         View.OnClickListener roleClickListener = v -> {
-            // Get the text of the button clicked
-            String role = ((Button) v).getText().toString();
+            selectedRole = ((Button) v).getText().toString();
 
-            // Example: Show role as a toast message
-            showToast("Logging In As: " + role);
-
-            // Redirect to Login page with selected role
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            intent.putExtra("ROLE", role); // Pass the selected role to the LoginActivity
-            startActivity(intent);
-
-            // Change the background color of the selected button and revert the others
-            if (selectedButton != null) {
-                // Reset the previously selected button's background
-                selectedButton.setBackgroundTintList(getResources().getColorStateList(android.R.color.holo_blue_light));
+            if (isRegistering) {
+                showToast("Registering As: " + selectedRole);
+                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+                intent.putExtra("ROLE", selectedRole);
+                startActivity(intent);
+            } else {
+                showToast("Logging In As: " + selectedRole);
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                intent.putExtra("ROLE", selectedRole);
+                startActivity(intent);
             }
-
-            // Set the new selected button color
-            selectedButton = (Button) v;
-            selectedButton.setBackgroundTintList(getResources().getColorStateList(android.R.color.holo_orange_light)); // Change to selected color
         };
 
-        // Assign listeners to the role buttons
-        btnVendor.setOnClickListener(roleClickListener);
+        // Assign listener to each role button
+        btnAdmin.setOnClickListener(roleClickListener);
         btnDriver.setOnClickListener(roleClickListener);
         btnCustomer.setOnClickListener(roleClickListener);
         btnOwner.setOnClickListener(roleClickListener);
 
-        // Set an OnClickListener to dismiss the popup when clicking outside the popup container
+        // Click outside popup to close
         popupOverlay.setOnClickListener(v -> popupOverlay.setVisibility(View.GONE));
 
-        // Prevent the popup overlay itself from dismissing when clicked inside the container
-        LinearLayout popupContainer = findViewById(R.id.popupContainer); // This should be the ID of the layout inside the popup
+        // Prevent closing popup when clicking inside
         popupContainer.setOnClickListener(v -> {
-            // Do nothing to prevent dismissing when clicking inside the popup
+            // Do nothing to prevent dismissing
         });
     }
 

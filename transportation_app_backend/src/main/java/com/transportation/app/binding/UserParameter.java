@@ -9,7 +9,6 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "USER_REG_DETAILS")
-
 public class UserParameter {
 
 	@Id
@@ -25,9 +24,6 @@ public class UserParameter {
 	@Schema(description = "Age of the user", example = "25")
 	private int age;
 
-	@Schema(description = "Gender of the user", example = "Male")
-	private String gender;
-
 	@Schema(description = "Residential address of the user", example = "123 Main St, Springfield")
 	private String address;
 
@@ -37,10 +33,46 @@ public class UserParameter {
 	@Schema(description = "Password for the user account", example = "password123")
 	private String password;
 
+	@Schema(description = "Specifies the type of user (e.g., admin, regular)", example = "admin")
+	private String role;
+
+	@Schema(description = "Mobile number of the user", example = "9938325746")
+	private String phone;
+
+	@Schema(description = "OTP for verification", example = "123456")
+	private String otp;
+
+	// Default constructor
 	public UserParameter() {
 	}
 
-	
+	// Getters and Setters
+
+	public String getRole() {
+		return role;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -65,14 +97,6 @@ public class UserParameter {
 		this.age = age;
 	}
 
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
 	public String getAddress() {
 		return address;
 	}
@@ -81,19 +105,19 @@ public class UserParameter {
 		this.address = address;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
 	public String getPassword() {
 		return password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getOtp() {
+		return otp;
+	}
+
+	public void setOtp(String otp) {
+		this.otp = otp;
 	}
 }
