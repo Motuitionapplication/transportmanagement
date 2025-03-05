@@ -69,8 +69,10 @@ public class CustomerHomeActivity extends AppCompatActivity implements OnMapRead
         pickupLocation = findViewById(R.id.pickupLocation);
         destinationLocation = findViewById(R.id.destinationLocation);
 
+        String username = getIntent().getStringExtra("USERNAME");
+
         String firstName = getIntent().getStringExtra("FIRST_NAME");
-        welcomeText.setText(firstName != null && !firstName.isEmpty() ? "Hello, " + firstName + "!" : "Hello, Customer!");
+        welcomeText.setText(firstName != null && !firstName.isEmpty() ? "Hello, " + firstName + "!" : "");
 
         pickupLocation.setOnClickListener(view -> startPlaceAutocomplete(AUTOCOMPLETE_PICKUP_REQUEST));
         destinationLocation.setOnClickListener(view -> startPlaceAutocomplete(AUTOCOMPLETE_DEST_REQUEST));

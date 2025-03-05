@@ -4,6 +4,8 @@ public class LoginResponse {
     private boolean success;
     private String status;
     private UserParameter user; // Include UserParameter object
+    private String role;
+  //  private String token; // If the backend returns a JWT token
 
     // Constructor
     public LoginResponse(boolean success, String status, UserParameter user) {
@@ -19,6 +21,9 @@ public class LoginResponse {
 
     public String getStatus() {
         return status;
+    }
+    public String getRole() {
+        return role;
     }
 
     public UserParameter getUser() {

@@ -30,8 +30,7 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true"
-            android:label="@string/login_activity_label">
-        </activity>
+            android:label="@string/login_activity_label" />
 
         <!-- RegisterActivity -->
         <activity
@@ -94,12 +93,12 @@
 
     </application>
 
-    <!--  Required Permissions -->
+    <!-- Required Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- realtime tracking -->
+    <!-- Realtime tracking -->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
 
 </manifest>
