@@ -31,7 +31,6 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginParam loginParam) {
         LoginResponse result = userService.checkLogin(loginParam);
-        System.out.println("line after exception");
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -40,4 +39,18 @@ public class UserController {
         String response = userService.generateOTP(phone);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+    
+    // Updated endpoint for forgot password functionality: only email
+    @PostMapping("/forgotpassword")
+    public ResponseEntity<String> forgotPassword(@RequestBody String email) {
+        // Optionally clean the email if needed:
+        email = email.trim();
+        String result = userService.forgotPassword(email);
+        if ("Password sent to your email.".equals(result)) {
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
