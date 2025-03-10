@@ -34,7 +34,7 @@
 
         <!-- RegisterActivity -->
         <activity
-            android:name=".RegisterActivity"
+            android:name=".CustomerRegisterActivity"
             android:exported="true"
             android:label="@string/register_activity_label" />
 

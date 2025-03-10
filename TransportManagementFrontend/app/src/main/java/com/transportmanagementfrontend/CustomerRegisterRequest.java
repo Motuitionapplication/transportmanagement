@@ -1,6 +1,6 @@
 package com.transportmanagementfrontend;
 
-public class RegisterRequest {
+public class CustomerRegisterRequest {
     private String firstName;
     private String lastName;
     private String age;
@@ -10,7 +10,7 @@ public class RegisterRequest {
     private String password;
     private String role;
 
-    public RegisterRequest(String firstName, String lastName, String age, String address, String username, String phone, String password, String role) {
+    public CustomerRegisterRequest(String firstName, String lastName, String age, String address, String username, String phone, String password, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;

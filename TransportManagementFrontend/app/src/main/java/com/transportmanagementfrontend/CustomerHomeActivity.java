@@ -2,14 +2,16 @@ package com.transportmanagementfrontend;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,11 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.codebyashish.googledirectionapi.AbstractRouting;
-import com.codebyashish.googledirectionapi.ErrorHandling;
-import com.codebyashish.googledirectionapi.RouteDrawing;
-import com.codebyashish.googledirectionapi.RouteInfoModel;
-import com.codebyashish.googledirectionapi.RouteListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -32,20 +29,29 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.maps.model.RoundCap;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.widget.Autocomplete;
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class CustomerHomeActivity extends AppCompatActivity implements OnMapReadyCallback, RouteListener {
+public class CustomerHomeActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    private static final String TAG = "CustomerHomeActivity";
     private GoogleMap mMap;
     private ProgressDialog dialog;
 
@@ -53,11 +59,11 @@ public class CustomerHomeActivity extends AppCompatActivity implements OnMapRead
     private EditText pickupLocation, destinationLocation;
     private TextView welcomeText, distanceText;
 
-    private static final int AUTOCOMPLETE_PICKUP_REQUEST = 1002;
-    private static final int AUTOCOMPLETE_DEST_REQUEST = 1003;
-
     private LatLng pickupLatLng, destinationLatLng;
     private Marker pickupMarker, destinationMarker;
+
+    // Background thread for Geocoder and network calls
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +75,9 @@ public class CustomerHomeActivity extends AppCompatActivity implements OnMapRead
         pickupLocation = findViewById(R.id.pickupLocation);
         destinationLocation = findViewById(R.id.destinationLocation);
 
-        String username = getIntent().getStringExtra("USERNAME");
-
+        // Get user details (if any)
         String firstName = getIntent().getStringExtra("FIRST_NAME");
         welcomeText.setText(firstName != null && !firstName.isEmpty() ? "Hello, " + firstName + "!" : "");
-
-        pickupLocation.setOnClickListener(view -> startPlaceAutocomplete(AUTOCOMPLETE_PICKUP_REQUEST));
-        destinationLocation.setOnClickListener(view -> startPlaceAutocomplete(AUTOCOMPLETE_DEST_REQUEST));
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
@@ -87,63 +89,191 @@ public class CustomerHomeActivity extends AppCompatActivity implements OnMapRead
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
         }
+
+        // Listen for action on pickup and destination EditTexts
+        pickupLocation.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                getLocationFromAddress(pickupLocation.getText().toString().trim(), true);
+                return true;
+            }
+            return false;
+        });
+
+        destinationLocation.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                getLocationFromAddress(destinationLocation.getText().toString().trim(), false);
+                return true;
+            }
+            return false;
+        });
     }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
+        // Move camera to a default location
         LatLng india = new LatLng(20.5937, 78.9629);
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(india, 5f));
         mMap.addMarker(new MarkerOptions().position(india).title("India"));
     }
 
-    private void startPlaceAutocomplete(int requestCode) {
-        Log.d("MAP_DEBUG", "Starting place autocomplete for requestCode: " + requestCode);
-        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG);
-        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
-                .setCountry("IN")
-                .build(this);
-        startActivityForResult(intent, requestCode);
-    }
+    private void getLocationFromAddress(String cityName, boolean isPickup) {
+        if (cityName.isEmpty()) return;
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("MAP_DEBUG", "onActivityResult triggered with requestCode: " + requestCode);
-
-        if (resultCode == RESULT_OK && data != null) {
-            Place place = Autocomplete.getPlaceFromIntent(data);
-            Log.d("MAP_DEBUG", "Selected place: " + place.getName());
-
-            if (requestCode == AUTOCOMPLETE_PICKUP_REQUEST) {
-                pickupLatLng = place.getLatLng();
-                pickupLocation.setText(place.getName());
-                pickupMarker = updateMarker(pickupMarker, pickupLatLng, "Pickup Location");
-                Log.d("MAP_DEBUG", "Updated pickup location: " + pickupLatLng);
-            } else if (requestCode == AUTOCOMPLETE_DEST_REQUEST) {
-                destinationLatLng = place.getLatLng();
-                destinationLocation.setText(place.getName());
-                destinationMarker = updateMarker(destinationMarker, destinationLatLng, "Destination Location");
-                Log.d("MAP_DEBUG", "Updated destination location: " + destinationLatLng);
+        Log.d(TAG, "Searching for: " + cityName);
+        executorService.execute(() -> {
+            Geocoder geocoder = new Geocoder(this);
+            List<Address> addresses;
+            try {
+                addresses = geocoder.getFromLocationName(cityName, 1);
+                if (addresses != null && !addresses.isEmpty()) {
+                    Address location = addresses.get(0);
+                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                    runOnUiThread(() -> {
+                        if (isPickup) {
+                            pickupLatLng = latLng;
+                            pickupMarker = updateMarker(pickupMarker, pickupLatLng, "Pickup: " + cityName);
+                        } else {
+                            destinationLatLng = latLng;
+                            destinationMarker = updateMarker(destinationMarker, destinationLatLng, "Destination: " + cityName);
+                        }
+                        // Smooth camera movement
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12f), 1000, null);
+                        // Calculate distance and draw route if both locations are available
+                        if (pickupLatLng != null && destinationLatLng != null) {
+                            calculateDistance();
+                        }
+                    });
+                } else {
+                    runOnUiThread(() -> Toast.makeText(this, "City not found: " + cityName, Toast.LENGTH_SHORT).show());
+                }
+            } catch (IOException e) {
+                Log.e(TAG, "Geocoder failed: " + e.getMessage());
+                e.printStackTrace();
             }
-        } else {
-            Log.e("MAP_ERROR", "onActivityResult failed or cancelled.");
-        }
-        super.onActivityResult(requestCode, resultCode, data);
+        });
     }
-
 
     private Marker updateMarker(Marker marker, LatLng latLng, String title) {
         if (mMap == null || latLng == null) return null;
-        if (marker != null) marker.remove();
-
-        return mMap.addMarker(new MarkerOptions()
-                .position(latLng)
-                .title(title)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+        if (marker == null) {
+            return mMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title(title)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+        } else {
+            marker.setPosition(latLng);
+            marker.setTitle(title);
+            return marker;
+        }
     }
 
+    private void calculateDistance() {
+        if (pickupLatLng != null && destinationLatLng != null) {
+            float[] results = new float[1];
+            Location.distanceBetween(
+                    pickupLatLng.latitude, pickupLatLng.longitude,
+                    destinationLatLng.latitude, destinationLatLng.longitude,
+                    results);
+            float distanceInKm = results[0] / 1000; // Convert meters to kilometers
+            distanceText.setText(String.format("Distance: %.2f km", distanceInKm));
 
+            // Draw the route using the Directions API
+            drawRoute(pickupLatLng, destinationLatLng);
+        }
+    }
+
+    /**
+     * Draws the route using the legacy Google Directions API.
+     */
+    private void drawRoute(LatLng origin, LatLng destination) {
+        // Build the URL for the Directions API request.
+        String url = "https://maps.googleapis.com/maps/api/directions/json?origin="
+                + origin.latitude + "," + origin.longitude
+                + "&destination=" + destination.latitude + "," + destination.longitude
+                + "&mode=driving&key=" + getString(R.string.google_maps_key);
+
+        executorService.execute(() -> {
+            try {
+                URL urlObj = new URL(url);
+                HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+                connection.setRequestMethod("GET");
+                connection.connect();
+
+                // Read the response
+                InputStream stream = connection.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+                StringBuilder responseStr = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    responseStr.append(line);
+                }
+                reader.close();
+                connection.disconnect();
+
+                Log.d(TAG, "Directions API Response: " + responseStr.toString());
+
+                // Parse the JSON response
+                JSONObject jsonResponse = new JSONObject(responseStr.toString());
+                JSONArray routes = jsonResponse.getJSONArray("routes");
+                if (routes.length() > 0) {
+                    JSONObject route = routes.getJSONObject(0);
+                    JSONObject overviewPolyline = route.getJSONObject("overview_polyline");
+                    String encodedPolyline = overviewPolyline.getString("points");
+                    if (encodedPolyline == null || encodedPolyline.isEmpty()) {
+                        Log.e(TAG, "Empty encoded polyline received");
+                        return;
+                    }
+                    List<LatLng> polylinePoints = decodePoly(encodedPolyline);
+                    runOnUiThread(() -> {
+                        mMap.addPolyline(new PolylineOptions()
+                                .addAll(polylinePoints)
+                                .width(10)
+                                .color(Color.RED));
+                    });
+                } else {
+                    Log.e(TAG, "No routes found in the response.");
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Error in drawRoute: " + e.getMessage());
+                e.printStackTrace();
+            }
+        });
+    }
+
+    /**
+     * Decodes an encoded polyline string into a list of LatLng points.
+     */
+    private List<LatLng> decodePoly(String encoded) {
+        List<LatLng> poly = new ArrayList<>();
+        int index = 0, len = encoded.length();
+        int lat = 0, lng = 0;
+        while (index < len) {
+            int b, shift = 0, result = 0;
+            do {
+                b = encoded.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lat += dlat;
+            shift = 0;
+            result = 0;
+            do {
+                b = encoded.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lng += dlng;
+            poly.add(new LatLng(lat / 1E5, lng / 1E5));
+        }
+        return poly;
+    }
+
+    /**
+     * Utility method to convert a drawable resource to a BitmapDescriptor.
+     */
     public BitmapDescriptor setIcon(Activity context, int drawableID) {
         Drawable drawable = ActivityCompat.getDrawable(context, drawableID);
         if (drawable == null) {
@@ -154,59 +284,5 @@ public class CustomerHomeActivity extends AppCompatActivity implements OnMapRead
         Canvas canvas = new Canvas(bitmap);
         drawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
-    }
-
-    private void calculateDistance() {
-        if (pickupLatLng == null || destinationLatLng == null) {
-            distanceText.setText("Select both locations to calculate distance.");
-            return;
-        }
-        float[] results = new float[1];
-        Location.distanceBetween(pickupLatLng.latitude, pickupLatLng.longitude,
-                destinationLatLng.latitude, destinationLatLng.longitude, results);
-        float distanceKm = results[0] / 1000;
-        distanceText.setText("Distance: " + String.format("%.2f", distanceKm) + " km");
-    }
-
-    private void getRoute(LatLng origin, LatLng destination) {
-        dialog.setMessage("Route is generating, please wait");
-        dialog.show();
-        RouteDrawing routeDrawing = new RouteDrawing.Builder()
-                .travelMode(AbstractRouting.TravelMode.DRIVING)
-                .withListener(this)
-                .alternativeRoutes(true)
-                .waypoints(origin, destination)
-                .build();
-        routeDrawing.execute();
-    }
-
-    private boolean isWithinIndia(LatLng latLng) {
-        double minLat = 6.0, maxLat = 38.0;
-        double minLng = 68.0, maxLng = 98.0;
-        return latLng.latitude >= minLat && latLng.latitude <= maxLat &&
-                latLng.longitude >= minLng && latLng.longitude <= maxLng;
-    }
-
-    @Override
-    public void onRouteFailure(ErrorHandling e) {
-        dialog.dismiss();
-        Toast.makeText(this, "Route Failed", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onRouteStart() {
-        Toast.makeText(this, "Route Started", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onRouteSuccess(ArrayList<RouteInfoModel> list, int indexing) {
-        Toast.makeText(this, "Route Success", Toast.LENGTH_SHORT).show();
-        dialog.dismiss();
-    }
-
-    @Override
-    public void onRouteCancelled() {
-        dialog.dismiss();
-        Toast.makeText(this, "Route Canceled", Toast.LENGTH_SHORT).show();
     }
 }

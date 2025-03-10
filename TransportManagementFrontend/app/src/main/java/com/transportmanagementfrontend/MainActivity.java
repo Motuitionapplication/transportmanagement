@@ -58,7 +58,21 @@ public class MainActivity extends AppCompatActivity {
 
             if (isRegistering) {
                 showToast("Registering As: " + selectedRole);
-                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+                Intent intent;
+                switch (selectedRole.toLowerCase()) {
+                    case "customer":
+                        intent = new Intent(MainActivity.this, CustomerRegisterActivity.class);
+                        break;
+                    case "owner":
+                        intent = new Intent(MainActivity.this, OwnerRegisterActivity.class);
+                        break;
+                    case "driver":
+                        intent = new Intent(MainActivity.this, DriverRegisterActivity.class);
+                        break;
+                    default:
+                        showToast("Invalid role selected!");
+                        return;
+                }
                 intent.putExtra("ROLE", selectedRole);
                 startActivity(intent);
             } else {

@@ -9,5 +9,8 @@ public interface ApiService {
     Call<LoginResponse> loginUser(@Body LoginRequest loginRequest);
 
     @POST("addUser") //  backend API
-    Call<String> registerUser(@Body RegisterRequest registerRequest);
+    Call<String> registerUser(@Body CustomerRegisterRequest registerRequest);
+
+    @POST("addDriver") // Driver registration
+    Call<String> registerDriver(@Body DriverRegisterRequest registerRequest);
 }
