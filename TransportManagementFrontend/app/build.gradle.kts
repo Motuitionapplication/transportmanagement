@@ -44,9 +44,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation("com.github.dangiashish:Google-Direction-Api:1.6")
+   // implementation("com.github.dangiashish:Google-Direction-Api:1.6")
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation("com.google.android.gms:play-services-maps:18.1.0")
-    implementation ("com.google.android.libraries.places:places:3.3.0")
+    implementation ("com.google.android.libraries.places:places:3.4.0")
     implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation ("com.google.maps.android:android-maps-utils:2.2.3")
+
 
 }

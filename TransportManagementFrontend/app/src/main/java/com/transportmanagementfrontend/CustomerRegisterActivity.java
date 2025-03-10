@@ -18,7 +18,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RegisterActivity extends AppCompatActivity {
+public class CustomerRegisterActivity extends AppCompatActivity {
 
     private EditText firstNameEditText, lastNameEditText, ageEditText, addressEditText, usernameEditText, phoneEditText, passwordEditText;
     private Button createAccountButton;
@@ -27,14 +27,14 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_customer_register);
 
         // Retrieve the selected role from the intent.
         selectedRole = getIntent().getStringExtra("ROLE");
 
-        // Ensure role is passed
-        if (selectedRole == null || selectedRole.trim().isEmpty()) {
-            Toast.makeText(RegisterActivity.this, "Error: Role not provided", Toast.LENGTH_SHORT).show();
+        // Ensure role is "customer", otherwise exit
+        if (selectedRole == null || !selectedRole.equalsIgnoreCase("customer")) {
+            Toast.makeText(this, "Error: Invalid Role!", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -62,12 +62,12 @@ public class RegisterActivity extends AppCompatActivity {
             // Validate that no field is empty
             if (firstName.isEmpty() || lastName.isEmpty() || age.isEmpty() || address.isEmpty() ||
                     username.isEmpty() || phone.isEmpty() || password.isEmpty()) {
-                Toast.makeText(RegisterActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CustomerRegisterActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             // Call the API for registration
-            registerUser(firstName, lastName, age, address, username, phone, password, selectedRole);
+            registerUser(firstName, lastName, age, address, username, phone, password);
         });
     }
 
@@ -76,14 +76,13 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void registerUser(String firstName, String lastName, String age, String address, String username,
-                              String phone, String password, String role) {
+                              String phone, String password) {
         // Enable lenient JSON parsing
         Gson gson = new GsonBuilder()
-                .setLenient()  // Allow minor JSON formatting issues
+                .setLenient()
                 .create();
 
-        // Create Retrofit instance using both ScalarsConverterFactory and GsonConverterFactory.
-        // IMPORTANT: ScalarsConverterFactory must be added first.
+        // Create Retrofit instance
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8080/api/")
                 .addConverterFactory(retrofit2.converter.scalars.ScalarsConverterFactory.create())
@@ -91,26 +90,23 @@ public class RegisterActivity extends AppCompatActivity {
                 .build();
 
         ApiService apiService = retrofit.create(ApiService.class);
-        RegisterRequest registerRequest = new RegisterRequest(firstName, lastName, age, address, username, phone, password, role);
+        CustomerRegisterRequest registerRequest = new CustomerRegisterRequest(firstName, lastName, age, address, username, phone, password, "customer");
 
-        // Make the API call, now expecting a String response
+        // Make the API call
         Call<String> call = apiService.registerUser(registerRequest);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                if (response.isSuccessful()  && response.body() != null) {
-                    // Retrieve the plain string message from the response
+                if (response.isSuccessful() && response.body() != null) {
                     String message = response.body();
-                    Toast.makeText(RegisterActivity.this, "Welcome to " + selectedRole + " Page! " + message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CustomerRegisterActivity.this, "Welcome to Customer Page! " + message, Toast.LENGTH_SHORT).show();
 
-                    // Redirect user to their respective home screen
-                    Intent intent = getHomePageIntent(selectedRole);
-                    if (intent != null) {
-                        intent.putExtra("ROLE", selectedRole);
-                        intent.putExtra("FIRST_NAME", firstName); // Pass first name
-                        startActivity(intent);
-                        finish();
-                    }
+                    // Redirect to Customer Home Page
+                    Intent intent = new Intent(CustomerRegisterActivity.this, CustomerHomeActivity.class);
+                    intent.putExtra("ROLE", "customer");
+                    intent.putExtra("FIRST_NAME", firstName);
+                    startActivity(intent);
+                    finish();
                 } else {
                     // Log the raw error response for debugging
                     try {
@@ -119,33 +115,15 @@ public class RegisterActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         Log.e("API_ERROR", "Error reading error response", e);
                     }
-                    Toast.makeText(RegisterActivity.this, "Registration Failed. Try Again.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CustomerRegisterActivity.this, "Registration Failed. Try Again.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(RegisterActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(CustomerRegisterActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 Log.e("API_FAILURE", "Request failed", t);
             }
         });
-    }
-
-    private Intent getHomePageIntent(String role) {
-        Intent intent = null;
-        switch (role.toLowerCase()) {
-            case "customer":
-                intent = new Intent(RegisterActivity.this, CustomerHomeActivity.class);
-                break;
-            case "owner":
-                intent = new Intent(RegisterActivity.this, OwnerHomeActivity.class);
-                break;
-            case "driver":
-                intent = new Intent(RegisterActivity.this, DriverHomeActivity.class);
-                break;
-            default:
-                Toast.makeText(RegisterActivity.this, "Error: Invalid Role!", Toast.LENGTH_SHORT).show();
-        }
-        return intent;
     }
 }

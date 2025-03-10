@@ -2,11 +2,11 @@ package com.transportmanagementfrontend;
 
 import com.google.gson.annotations.SerializedName;
 
-public class RegisterResponse {
+public class DriverRegisterResponse {
     @SerializedName("message")
     private String message;
 
-    public RegisterResponse(String message) {
+    public DriverRegisterResponse(String message) {
         this.message = message;
     }
 
