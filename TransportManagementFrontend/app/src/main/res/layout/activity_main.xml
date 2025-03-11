@@ -46,7 +46,7 @@
             android:textColor="@android:color/white"
             android:layout_marginBottom="10dp" />
 
-        <!-- New Button Container for LOGIN and REGISTER (Now Vertical) -->
+        <!-- Buttons Container -->
         <LinearLayout
             android:id="@+id/buttonContainer"
             android:layout_width="wrap_content"
@@ -132,7 +132,7 @@
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     android:text="ADMIN"
-                    android:backgroundTint="#87CEEB"
+                    android:backgroundTint="@color/midnight_blue"
                     android:textColor="@android:color/white"
                     android:padding="14dp" />
 
@@ -143,7 +143,7 @@
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
                     android:text="CUSTOMER"
-                    android:backgroundTint="#87CEEB"
+                    android:backgroundTint="@color/midnight_blue"
                     android:textColor="@android:color/white"
                     android:padding="14dp" />
             </LinearLayout>
@@ -161,7 +161,7 @@
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
                     android:text="OWNER"
-                    android:backgroundTint="#87CEEB"
+                    android:backgroundTint="@color/midnight_blue"
                     android:textColor="@android:color/white"
                     android:padding="14dp" />
 
@@ -172,11 +172,10 @@
                     android:layout_weight="1"
                     android:layout_marginStart="8dp"
                     android:text="DRIVER"
-                    android:backgroundTint="#87CEEB"
+                    android:backgroundTint="@color/midnight_blue"
                     android:textColor="@android:color/white"
                     android:padding="14dp" />
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>
 </RelativeLayout>
-
