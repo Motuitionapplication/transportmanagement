@@ -6,10 +6,12 @@ import com.transportation.app.binding.UserParameter;
 
 public interface UserService {
 
-    public String createUser(UserParameter userParameter);
+    String createUser(UserParameter userParameter);
 
-    public LoginResponse checkLogin(LoginParam loginParam);
+    LoginResponse checkLogin(LoginParam loginParam);
     
-    // Updated to return String instead of void
-    public String generateOTP(String phone);
+    String generateOTP(String phone);
+    
+    // Forgot password now accepts only an email address
+    String forgotPassword(String email);
 }
