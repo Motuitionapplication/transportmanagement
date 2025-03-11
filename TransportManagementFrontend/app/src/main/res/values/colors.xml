@@ -24,6 +24,7 @@
 
     <color name="backgroundColor">#F5F5F5</color> <!-- Light gray -->
 
+    <color name="midnight_blue">#191970</color>
 
     <!-- Disabled Colors -->
     <color name="disabledColor">#B0BEC5</color> <!-- Light gray for disabled state -->

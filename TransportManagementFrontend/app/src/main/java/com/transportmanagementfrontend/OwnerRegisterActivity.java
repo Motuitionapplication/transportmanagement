@@ -20,32 +20,22 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class OwnerRegisterActivity extends AppCompatActivity {
 
-    private EditText firstNameEditText, lastNameEditText, ageEditText, addressEditText, usernameEditText, phoneEditText, passwordEditText;
+    private EditText firstNameEditText, lastNameEditText, phoneEditText, addressEditText, vehicleTypeEditText, usernameEditText, passwordEditText;
     private Button createAccountButton;
-    private String selectedRole; // Store the role selected on the previous screen
+    private String selectedRole = "Owner"; // Fixed role for owner registration
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_customer_register);
-
-        // Retrieve the selected role from the intent.
-        selectedRole = getIntent().getStringExtra("ROLE");
-
-        // Ensure role is passed
-        if (selectedRole == null || selectedRole.trim().isEmpty()) {
-            Toast.makeText(OwnerRegisterActivity.this, "Error: Role not provided", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
+        setContentView(R.layout.activity_owner_register);
 
         // Initialize views
         firstNameEditText = findViewById(R.id.firstName);
         lastNameEditText = findViewById(R.id.lastName);
-        ageEditText = findViewById(R.id.age);
-        addressEditText = findViewById(R.id.address);
-        usernameEditText = findViewById(R.id.username);
         phoneEditText = findViewById(R.id.phone);
+        addressEditText = findViewById(R.id.address);
+        vehicleTypeEditText = findViewById(R.id.vehicleType);
+        usernameEditText = findViewById(R.id.username);
         passwordEditText = findViewById(R.id.password);
         createAccountButton = findViewById(R.id.createAccountButton);
 
@@ -53,21 +43,21 @@ public class OwnerRegisterActivity extends AppCompatActivity {
         createAccountButton.setOnClickListener(v -> {
             String firstName = getSafeText(firstNameEditText);
             String lastName = getSafeText(lastNameEditText);
-            String age = getSafeText(ageEditText);
-            String address = getSafeText(addressEditText);
-            String username = getSafeText(usernameEditText);
             String phone = getSafeText(phoneEditText);
+            String address = getSafeText(addressEditText);
+            String vehicleType = getSafeText(vehicleTypeEditText);
+            String username = getSafeText(usernameEditText);
             String password = getSafeText(passwordEditText);
 
-            // Validate that no field is empty
-            if (firstName.isEmpty() || lastName.isEmpty() || age.isEmpty() || address.isEmpty() ||
-                    username.isEmpty() || phone.isEmpty() || password.isEmpty()) {
+            // Validate fields
+            if (firstName.isEmpty() || lastName.isEmpty() || phone.isEmpty() || address.isEmpty() ||
+                    vehicleType.isEmpty() || username.isEmpty() || password.isEmpty()) {
                 Toast.makeText(OwnerRegisterActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             // Call the API for registration
-            registerUser(firstName, lastName, age, address, username, phone, password, selectedRole);
+            registerOwner(firstName, lastName, phone, address, vehicleType, username, password, selectedRole);
         });
     }
 
@@ -75,44 +65,39 @@ public class OwnerRegisterActivity extends AppCompatActivity {
         return (editText != null && editText.getText() != null) ? editText.getText().toString().trim() : "";
     }
 
-    private void registerUser(String firstName, String lastName, String age, String address, String username,
-                              String phone, String password, String role) {
+    private void registerOwner(String firstName, String lastName, String phone, String address, String vehicleType, String username,
+                               String password, String role) {
         // Enable lenient JSON parsing
         Gson gson = new GsonBuilder()
-                .setLenient()  // Allow minor JSON formatting issues
+                .setLenient() // Allow minor JSON formatting issues
                 .create();
 
-        // Create Retrofit instance using both ScalarsConverterFactory and GsonConverterFactory.
-        // IMPORTANT: ScalarsConverterFactory must be added first.
+        // Create Retrofit instance
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8080/api/")
-                .addConverterFactory(retrofit2.converter.scalars.ScalarsConverterFactory.create())
+                .baseUrl("http://10.0.2.2:8080/api/") // Replace with your actual API URL
+                .addConverterFactory(retrofit2.converter.scalars.ScalarsConverterFactory.create()) // Scalars converter first
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         ApiService apiService = retrofit.create(ApiService.class);
-        CustomerRegisterRequest registerRequest = new CustomerRegisterRequest(firstName, lastName, age, address, username, phone, password, role);
+        OwnerRegisterRequest ownerRegisterRequest = new OwnerRegisterRequest(firstName, lastName, phone, address, vehicleType, username, password, role);
 
-        // Make the API call, now expecting a String response
-        Call<String> call = apiService.registerUser(registerRequest);
+        // Make the API call
+        Call<String> call = apiService.registerOwner(ownerRegisterRequest);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                if (response.isSuccessful()  && response.body() != null) {
-                    // Retrieve the plain string message from the response
+                if (response.isSuccessful() && response.body() != null) {
                     String message = response.body();
-                    Toast.makeText(OwnerRegisterActivity.this, "Welcome to " + selectedRole + " Page! " + message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OwnerRegisterActivity.this, "Welcome to Owner Page! " + message, Toast.LENGTH_SHORT).show();
 
-                    // Redirect user to their respective home screen
-                    Intent intent = getHomePageIntent(selectedRole);
-                    if (intent != null) {
-                        intent.putExtra("ROLE", selectedRole);
-                        intent.putExtra("FIRST_NAME", firstName); // Pass first name
-                        startActivity(intent);
-                        finish();
-                    }
+                    // Redirect user to Owner Home Screen
+                    Intent intent = new Intent(OwnerRegisterActivity.this, OwnerHomeActivity.class);
+                    intent.putExtra("ROLE", selectedRole);
+                    intent.putExtra("FIRST_NAME", firstName);
+                    startActivity(intent);
+                    finish();
                 } else {
-                    // Log the raw error response for debugging
                     try {
                         String errorResponse = response.errorBody().string();
                         Log.e("API_ERROR", "Raw error response: " + errorResponse);
@@ -129,23 +114,5 @@ public class OwnerRegisterActivity extends AppCompatActivity {
                 Log.e("API_FAILURE", "Request failed", t);
             }
         });
-    }
-
-    private Intent getHomePageIntent(String role) {
-        Intent intent = null;
-        switch (role.toLowerCase()) {
-            case "customer":
-                intent = new Intent(OwnerRegisterActivity.this, CustomerHomeActivity.class);
-                break;
-            case "owner":
-                intent = new Intent(OwnerRegisterActivity.this, OwnerHomeActivity.class);
-                break;
-            case "driver":
-                intent = new Intent(OwnerRegisterActivity.this, DriverHomeActivity.class);
-                break;
-            default:
-                Toast.makeText(OwnerRegisterActivity.this, "Error: Invalid Role!", Toast.LENGTH_SHORT).show();
-        }
-        return intent;
     }
 }

@@ -13,4 +13,8 @@ public interface ApiService {
 
     @POST("addDriver") // Driver registration
     Call<String> registerDriver(@Body DriverRegisterRequest registerRequest);
+
+    @POST("addOwner") // Owner registration
+    Call<String> registerOwner(@Body OwnerRegisterRequest registerRequest);
 }
+

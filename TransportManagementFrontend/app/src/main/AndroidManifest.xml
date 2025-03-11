@@ -32,9 +32,21 @@
             android:exported="true"
             android:label="@string/login_activity_label" />
 
-        <!-- RegisterActivity -->
+        <!-- CustomerRegisterActivity -->
         <activity
             android:name=".CustomerRegisterActivity"
+            android:exported="true"
+            android:label="@string/register_activity_label" />
+
+        <!-- DriverRegisterActivity -->
+        <activity
+            android:name=".DriverRegisterActivity"
+            android:exported="true"
+            android:label="@string/register_activity_label" />
+
+        <!-- OwnerRegisterActivity -->
+        <activity
+            android:name=".OwnerRegisterActivity"
             android:exported="true"
             android:label="@string/register_activity_label" />
 
