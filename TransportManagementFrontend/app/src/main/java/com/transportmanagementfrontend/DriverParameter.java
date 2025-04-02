@@ -7,6 +7,7 @@ public class DriverParameter implements Serializable {
     private String firstName;
     private String lastName;
     private String phone;
+    private String email;
     private String dlNumber; // Driver's License Number
     private String vehicleNumber; // Vehicle Number
     private String username;
@@ -18,12 +19,13 @@ public class DriverParameter implements Serializable {
     }
 
     // Parameterized Constructor
-    public DriverParameter(int id, String firstName, String lastName, String phone, String dlNumber,
+    public DriverParameter(int id, String firstName, String lastName, String phone, String email, String dlNumber,
                            String vehicleNumber, String username, String password, String role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
+        this.email = email; // Added email parameter
         this.dlNumber = dlNumber;
         this.vehicleNumber = vehicleNumber;
         this.username = username;
@@ -62,6 +64,14 @@ public class DriverParameter implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getDlNumber() {

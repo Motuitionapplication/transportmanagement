@@ -4,11 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -20,98 +21,141 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class OwnerRegisterActivity extends AppCompatActivity {
 
-    private EditText firstNameEditText, lastNameEditText, phoneEditText, addressEditText, vehicleTypeEditText, usernameEditText, passwordEditText;
+    // Declare UI elements
+    private TextInputLayout firstNameLayout, lastNameLayout, phoneLayout, addressLayout, emailLayout, vehicleTypeLayout, usernameLayout, passwordLayout;
+    private TextInputEditText firstNameEditText, lastNameEditText, phoneEditText, addressEditText, emailEditText, vehicleTypeEditText, usernameEditText, passwordEditText;
     private Button createAccountButton;
-    private String selectedRole = "Owner"; // Fixed role for owner registration
+    private String selectedRole = "Owner";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner_register);
 
-        // Initialize views
+        // Initialize UI components
+        firstNameLayout = findViewById(R.id.firstNameLayout);
+        lastNameLayout = findViewById(R.id.lastNameLayout);
+        phoneLayout = findViewById(R.id.phoneLayout);
+        addressLayout = findViewById(R.id.addressLayout);
+        emailLayout = findViewById(R.id.emailLayout);
+        vehicleTypeLayout = findViewById(R.id.vehicleTypeLayout);
+        usernameLayout = findViewById(R.id.usernameLayout);
+        passwordLayout = findViewById(R.id.passwordLayout);
+
         firstNameEditText = findViewById(R.id.firstName);
         lastNameEditText = findViewById(R.id.lastName);
         phoneEditText = findViewById(R.id.phone);
         addressEditText = findViewById(R.id.address);
+        emailEditText = findViewById(R.id.email);
         vehicleTypeEditText = findViewById(R.id.vehicleType);
         usernameEditText = findViewById(R.id.username);
         passwordEditText = findViewById(R.id.password);
+
         createAccountButton = findViewById(R.id.createAccountButton);
 
-        // Set click listener for the Create Account button
+        // Set validation on focus change
+        setValidationOnFocus(firstNameEditText, firstNameLayout, "Please enter your first name");
+        setValidationOnFocus(lastNameEditText, lastNameLayout, "Please enter your last name");
+        setValidationOnFocus(emailEditText, emailLayout, "Please enter a valid email");
+        setValidationOnFocus(usernameEditText, usernameLayout, "Please enter your username");
+        setValidationOnFocus(addressEditText, addressLayout, "Please enter your address");
+        setValidationOnFocus(passwordEditText, passwordLayout, "Password must be at least 6 characters");
+        setValidationOnFocus(vehicleTypeEditText, vehicleTypeLayout, "Please enter vehicle type");
+
+        // Phone number validation (must be 10 digits)
+        phoneEditText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                String phone = phoneEditText.getText().toString().trim();
+                if (!phone.matches("\\d{10}")) {
+                    phoneLayout.setError("Enter a valid 10-digit phone number");
+                    phoneEditText.setBackgroundResource(R.drawable.edit_text_error);
+                } else {
+                    phoneLayout.setError(null);
+                    phoneEditText.setBackgroundResource(R.drawable.edit_text_background);
+                }
+            }
+        });
+
+        // Register button click
         createAccountButton.setOnClickListener(v -> {
             String firstName = getSafeText(firstNameEditText);
             String lastName = getSafeText(lastNameEditText);
             String phone = getSafeText(phoneEditText);
             String address = getSafeText(addressEditText);
+            String email = getSafeText(emailEditText);
             String vehicleType = getSafeText(vehicleTypeEditText);
             String username = getSafeText(usernameEditText);
             String password = getSafeText(passwordEditText);
 
-            // Validate fields
+            // Validate required fields
             if (firstName.isEmpty() || lastName.isEmpty() || phone.isEmpty() || address.isEmpty() ||
-                    vehicleType.isEmpty() || username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(OwnerRegisterActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                    email.isEmpty() || vehicleType.isEmpty() || username.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Call the API for registration
-            registerOwner(firstName, lastName, phone, address, vehicleType, username, password, selectedRole);
+            // Validate email format
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(this, "Enter a valid email", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Register API call
+            registerOwner(firstName, lastName, phone, address, email, vehicleType, username, password);
         });
     }
 
-    private String getSafeText(EditText editText) {
+    // Function to set validation on focus change
+    private void setValidationOnFocus(TextInputEditText editText, TextInputLayout layout, String errorMessage) {
+        editText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                if (editText.getText().toString().trim().isEmpty()) {
+                    layout.setError(errorMessage);
+                    editText.setBackgroundResource(R.drawable.edit_text_error);
+                } else {
+                    layout.setError(null);
+                    editText.setBackgroundResource(R.drawable.edit_text_background);
+                }
+            }
+        });
+    }
+
+    // Function to safely get text from input
+    private String getSafeText(TextInputEditText editText) {
         return (editText != null && editText.getText() != null) ? editText.getText().toString().trim() : "";
     }
 
-    private void registerOwner(String firstName, String lastName, String phone, String address, String vehicleType, String username,
-                               String password, String role) {
-        // Enable lenient JSON parsing
-        Gson gson = new GsonBuilder()
-                .setLenient() // Allow minor JSON formatting issues
-                .create();
+    // API Call to register owner
+    private void registerOwner(String firstName, String lastName, String phone, String address, String email,
+                               String vehicleType, String username, String password) {
+        Gson gson = new GsonBuilder().setLenient().create();
 
-        // Create Retrofit instance
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8080/api/") // Replace with your actual API URL
-                .addConverterFactory(retrofit2.converter.scalars.ScalarsConverterFactory.create()) // Scalars converter first
+                .baseUrl("http://gkct1transport.us-east-1.elasticbeanstalk.com/api/")
+                .addConverterFactory(retrofit2.converter.scalars.ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         ApiService apiService = retrofit.create(ApiService.class);
-        OwnerRegisterRequest ownerRegisterRequest = new OwnerRegisterRequest(firstName, lastName, phone, address, vehicleType, username, password, role);
+        OwnerRegisterRequest registerRequest = new OwnerRegisterRequest(firstName, lastName, phone, address, email, vehicleType, username, password, "owner");
 
-        // Make the API call
-        Call<String> call = apiService.registerOwner(ownerRegisterRequest);
+        Call<String> call = apiService.registerOwner(registerRequest);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    String message = response.body();
-                    Toast.makeText(OwnerRegisterActivity.this, "Welcome to Owner Page! " + message, Toast.LENGTH_SHORT).show();
-
-                    // Redirect user to Owner Home Screen
+                    Toast.makeText(OwnerRegisterActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(OwnerRegisterActivity.this, OwnerHomeActivity.class);
-                    intent.putExtra("ROLE", selectedRole);
-                    intent.putExtra("FIRST_NAME", firstName);
                     startActivity(intent);
                     finish();
                 } else {
-                    try {
-                        String errorResponse = response.errorBody().string();
-                        Log.e("API_ERROR", "Raw error response: " + errorResponse);
-                    } catch (Exception e) {
-                        Log.e("API_ERROR", "Error reading error response", e);
-                    }
-                    Toast.makeText(OwnerRegisterActivity.this, "Registration Failed. Try Again.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OwnerRegisterActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 Toast.makeText(OwnerRegisterActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                Log.e("API_FAILURE", "Request failed", t);
             }
         });
     }

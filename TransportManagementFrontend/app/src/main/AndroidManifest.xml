@@ -36,19 +36,22 @@
         <activity
             android:name=".CustomerRegisterActivity"
             android:exported="true"
-            android:label="@string/register_activity_label" />
+            android:label="@string/register_activity_label"
+            android:windowSoftInputMode="adjustResize" />
 
         <!-- DriverRegisterActivity -->
         <activity
             android:name=".DriverRegisterActivity"
             android:exported="true"
-            android:label="@string/register_activity_label" />
+            android:label="@string/register_activity_label"
+            android:windowSoftInputMode="adjustResize" />
 
         <!-- OwnerRegisterActivity -->
         <activity
             android:name=".OwnerRegisterActivity"
             android:exported="true"
-            android:label="@string/register_activity_label" />
+            android:label="@string/register_activity_label"
+            android:windowSoftInputMode="adjustResize" />
 
         <!-- ForgotPasswordActivity -->
         <activity

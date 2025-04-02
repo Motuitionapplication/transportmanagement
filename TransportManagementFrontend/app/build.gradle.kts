@@ -18,11 +18,14 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+           isShrinkResources = true
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -50,6 +53,7 @@ dependencies {
     implementation ("com.google.android.libraries.places:places:3.4.0")
     implementation("com.google.android.gms:play-services-location:21.0.1")
     implementation ("com.google.maps.android:android-maps-utils:2.2.3")
+    implementation ("com.google.android.material:material:1.4.0")
 
 
 }

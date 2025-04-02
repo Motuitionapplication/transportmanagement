@@ -2,7 +2,7 @@
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <!-- Add your backend domain here, e.g., localhost or IP address -->
-        <domain includeSubdomains="true">10.0.2.2</domain>
+        <domain includeSubdomains="true">gkct1transport.us-east-1.elasticbeanstalk.com</domain>
         <!-- Allow cleartext traffic for all subdomains of localhost -->
     </domain-config>
 </network-security-config>

@@ -1,106 +1,129 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="@drawable/other_background"> <!-- Background image -->
+    android:layout_height="match_parent">
 
-    <!-- Logo ImageView -->
-    <ImageView
-        android:id="@+id/logoImageView"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:src="@drawable/logo"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:contentDescription="Logo"
-        android:layout_marginTop="16dp" />
-
-    <!-- Role Display Text -->
-    <TextView
-        android:id="@+id/roleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Logged in as: [Role]"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        android:layout_below="@id/logoImageView"
-        android:layout_marginTop="4dp"
-        android:layout_centerHorizontal="true"
-        android:textStyle="bold" />
-
-    <!-- Email Input -->
-    <EditText
-        android:id="@+id/usernameEditText"
+    <!-- Original login layout content -->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter your username"
-        android:inputType="text"
+        android:layout_height="match_parent"
         android:padding="16dp"
-        android:layout_below="@id/roleTextView"
-        android:layout_marginTop="8dp"
-        android:background="@android:drawable/edit_text"
-        android:textColor="@android:color/black"
-        android:backgroundTint="@android:color/darker_gray" />
+        android:background="@drawable/other_background"> <!-- Background image -->
 
-    <!-- Password Input -->
-    <EditText
-        android:id="@+id/passwordEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter your password"
-        android:inputType="textPassword"
-        android:padding="16dp"
-        android:layout_below="@id/usernameEditText"
-        android:layout_marginTop="8dp"
-        android:background="@android:drawable/edit_text"
-        android:textColor="@android:color/black"
-        android:backgroundTint="@android:color/darker_gray" />
+        <!-- Logo ImageView -->
+        <ImageView
+            android:id="@+id/logoImageView"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:src="@drawable/logo"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="Logo"
+            android:layout_marginTop="16dp" />
 
-    <!-- Login Button -->
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:layout_below="@id/passwordEditText"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@android:color/black"
-        android:textColor="@android:color/white" />
+        <!-- Role Display Text -->
+        <TextView
+            android:id="@+id/roleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logged in as: [Role]"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:layout_below="@id/logoImageView"
+            android:layout_marginTop="4dp"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold" />
 
-    <!-- Forgot Password Text -->
-    <TextView
-        android:id="@+id/forgotPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Forgot Password?"
-        android:textColor="@android:color/black"
-        android:layout_below="@id/loginButton"
-        android:layout_marginTop="10dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true" />
+        <!-- Email Input -->
+        <EditText
+            android:id="@+id/usernameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your username"
+            android:inputType="text"
+            android:padding="16dp"
+            android:layout_below="@id/roleTextView"
+            android:layout_marginTop="8dp"
+            android:background="@android:drawable/edit_text"
+            android:textColor="@android:color/black"
+            android:backgroundTint="@android:color/darker_gray" />
 
-    <!-- New User Text (Plain Text) -->
-    <TextView
-        android:id="@+id/newUserText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New User?"
-        android:textColor="@android:color/black"
-        android:layout_below="@id/forgotPassword"
-        android:layout_marginTop="10dp"
-        android:layout_centerHorizontal="true"
-        android:textStyle="bold" />
+        <!-- Password Input -->
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your password"
+            android:inputType="textPassword"
+            android:padding="16dp"
+            android:layout_below="@id/usernameEditText"
+            android:layout_marginTop="8dp"
+            android:background="@android:drawable/edit_text"
+            android:textColor="@android:color/black"
+            android:backgroundTint="@android:color/darker_gray" />
 
-    <!-- Register Button -->
-    <Button
-        android:id="@+id/registerButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Register"
-        android:layout_below="@id/newUserText"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#FF6200EE"
-        android:textColor="@android:color/white" />
-</RelativeLayout>
+        <!-- Login Button -->
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Login"
+            android:layout_below="@id/passwordEditText"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@android:color/black"
+            android:textColor="@android:color/white" />
+
+        <!-- Forgot Password Text -->
+        <TextView
+            android:id="@+id/forgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password?"
+            android:textColor="@android:color/black"
+            android:layout_below="@id/loginButton"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true" />
+
+        <!-- New User Text (Plain Text) -->
+        <TextView
+            android:id="@+id/newUserText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New User?"
+            android:textColor="@android:color/black"
+            android:layout_below="@id/forgotPassword"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold" />
+
+        <!-- Register Button -->
+        <Button
+            android:id="@+id/registerButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Register"
+            android:layout_below="@id/newUserText"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#FF6200EE"
+            android:textColor="@android:color/white" />
+
+        <!-- Watermark overlay positioned at the lower middle -->
+        <TextView
+            android:id="@+id/watermarkTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Developed By GKCT Info Solutions"
+            android:textSize="14sp"
+            android:textColor="#80FFFFFF"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:paddingBottom="8dp"
+            android:elevation="10dp" />
+
+    </RelativeLayout>
+
+</FrameLayout>
