@@ -1,181 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background_image"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
-    <!-- Main Content -->
-    <LinearLayout
-        android:id="@+id/mainContent"
+    <!-- Original main content -->
+    <RelativeLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:background="@drawable/background_image"
+        android:fitsSystemWindows="true">
 
-        <!-- Logo -->
-        <ImageView
-            android:id="@+id/logoImageView"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:src="@drawable/logo"
-            android:contentDescription="Logo"
-            android:layout_marginBottom="10dp" />
-
-        <!-- App Name -->
-        <TextView
-            android:id="@+id/appNameTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ShipXpress"
-            android:textSize="26sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-            android:layout_marginBottom="5dp" />
-
-        <!-- Tagline -->
-        <TextView
-            android:id="@+id/taglineTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="MOVE WITH EASE"
-            android:textSize="16sp"
-            android:textStyle="italic"
-            android:textColor="@android:color/white"
-            android:layout_marginBottom="10dp" />
-
-        <!-- Buttons Container -->
+        <!-- Main Content -->
         <LinearLayout
-            android:id="@+id/buttonContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/mainContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginTop="20dp"
             android:gravity="center">
 
-            <Button
-                android:id="@+id/btnLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="LOGIN"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
-                android:layout_marginBottom="10dp"
-                android:padding="12dp"
-                android:textSize="18sp"
-                android:backgroundTint="#4CAF50"
-                android:textColor="@android:color/white"
-                android:gravity="center" />
+            <!-- Logo -->
+            <ImageView
+                android:id="@+id/logoImageView"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:src="@drawable/logo"
+                android:contentDescription="Logo"
+                android:layout_marginBottom="10dp" />
 
-            <Button
-                android:id="@+id/btnRegister"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="REGISTER"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
-                android:layout_marginTop="10dp"
-                android:padding="12dp"
-                android:textSize="18sp"
-                android:backgroundTint="#4CAF50"
-                android:textColor="@android:color/white"
-                android:gravity="center" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <!-- Popup Overlay -->
-    <FrameLayout
-        android:id="@+id/popupOverlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#B3000000"
-        android:visibility="gone">
-
-        <!-- Popup Container -->
-        <LinearLayout
-            android:id="@+id/popupContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:orientation="vertical"
-            android:padding="30dp"
-            android:elevation="10dp"
-            android:background="@drawable/rounded_popup_bg"
-            android:layout_gravity="center">
-
-            <!-- Popup Title -->
+            <!-- App Name -->
             <TextView
-                android:id="@+id/popupTitle"
+                android:id="@+id/appNameTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SELECT ROLE"
-                android:textSize="22sp"
+                android:text="JR Transport"
+                android:textSize="26sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
-                android:gravity="center"
-                android:layout_marginBottom="20dp" />
+                android:layout_marginBottom="5dp" />
 
-            <!-- First Row of Buttons -->
-            <LinearLayout
-                android:layout_width="match_parent"
+            <!-- Tagline -->
+            <TextView
+                android:id="@+id/taglineTextView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
+                android:text="MOVE WITH EASE"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="10dp" />
 
-                <Button
-                    android:id="@+id/btnAdmin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    android:text="ADMIN"
-                    android:backgroundTint="@color/midnight_blue"
-                    android:textColor="@android:color/white"
-                    android:padding="14dp" />
-
-                <Button
-                    android:id="@+id/btnCustomer"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="8dp"
-                    android:text="CUSTOMER"
-                    android:backgroundTint="@color/midnight_blue"
-                    android:textColor="@android:color/white"
-                    android:padding="14dp" />
-            </LinearLayout>
-
-            <!-- Second Row of Buttons -->
+            <!-- Buttons Container -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/buttonContainer"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:layout_marginTop="20dp"
+                android:gravity="center">
 
                 <Button
-                    android:id="@+id/btnOwner"
-                    android:layout_width="0dp"
+                    android:id="@+id/btnLogin"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    android:text="OWNER"
-                    android:backgroundTint="@color/midnight_blue"
+                    android:text="LOGIN"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginBottom="10dp"
+                    android:padding="12dp"
+                    android:textSize="18sp"
+                    android:backgroundTint="#4CAF50"
                     android:textColor="@android:color/white"
-                    android:padding="14dp" />
+                    android:gravity="center" />
 
                 <Button
-                    android:id="@+id/btnDriver"
-                    android:layout_width="0dp"
+                    android:id="@+id/btnRegister"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="8dp"
-                    android:text="DRIVER"
-                    android:backgroundTint="@color/midnight_blue"
+                    android:text="REGISTER"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginTop="10dp"
+                    android:padding="12dp"
+                    android:textSize="18sp"
+                    android:backgroundTint="#4CAF50"
                     android:textColor="@android:color/white"
-                    android:padding="14dp" />
+                    android:gravity="center" />
             </LinearLayout>
         </LinearLayout>
-    </FrameLayout>
-</RelativeLayout>
+
+        <!-- Popup Overlay -->
+        <FrameLayout
+            android:id="@+id/popupOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#B3000000"
+            android:visibility="gone">
+
+            <!-- Popup Container -->
+            <LinearLayout
+                android:id="@+id/popupContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                android:orientation="vertical"
+                android:padding="30dp"
+                android:elevation="10dp"
+                android:background="@drawable/rounded_popup_bg"
+                android:layout_gravity="center">
+
+                <!-- Popup Title -->
+                <TextView
+                    android:id="@+id/popupTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SELECT ROLE"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:gravity="center"
+                    android:layout_marginBottom="20dp" />
+
+                <!-- First Row of Buttons -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp">
+
+                    <Button
+                        android:id="@+id/btnAdmin"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:text="ADMIN"
+                        android:backgroundTint="@color/midnight_blue"
+                        android:textColor="@android:color/white"
+                        android:padding="14dp" />
+
+                    <Button
+                        android:id="@+id/btnCustomer"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:text="CUSTOMER"
+                        android:backgroundTint="@color/midnight_blue"
+                        android:textColor="@android:color/white"
+                        android:padding="14dp" />
+                </LinearLayout>
+
+                <!-- Second Row of Buttons -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnOwner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:text="OWNER"
+                        android:backgroundTint="@color/midnight_blue"
+                        android:textColor="@android:color/white"
+                        android:padding="14dp" />
+
+                    <Button
+                        android:id="@+id/btnDriver"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:text="DRIVER"
+                        android:backgroundTint="@color/midnight_blue"
+                        android:textColor="@android:color/white"
+                        android:padding="14dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+    </RelativeLayout>
+
+    <!-- Watermark overlay (Lower Middle) -->
+    <TextView
+        android:id="@+id/watermarkOverlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Developed By GKCT Info Solutions"
+        android:textSize="14sp"
+        android:textColor="#80FFFFFF"
+        android:layout_gravity="bottom|center_horizontal"
+        android:paddingBottom="8dp"
+        android:elevation="10dp" />
+
+</FrameLayout>
