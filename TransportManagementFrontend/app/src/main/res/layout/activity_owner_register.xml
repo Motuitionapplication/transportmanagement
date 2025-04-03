@@ -108,6 +108,23 @@
                     android:padding="12dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Father Name -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fatherNameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxBackgroundColor="@android:color/white"
+                app:boxStrokeColor="#FFA500"
+                app:errorEnabled="true"
+                android:layout_marginTop="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fatherName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter your father's name"
+                    android:padding="12dp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
             <!-- Address -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/addressLayout"
@@ -143,9 +160,9 @@
                     android:inputType="textEmailAddress"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Vehicle Type -->
+            <!-- Vehicle Number -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/vehicleTypeLayout"
+                android:id="@+id/vehicleNumberLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@android:color/white"
@@ -153,10 +170,10 @@
                 app:errorEnabled="true"
                 android:layout_marginTop="8dp">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/vehicleType"
+                    android:id="@+id/vehicleNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter your vehicle type"
+                    android:hint="Enter your vehicle number"
                     android:padding="12dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 

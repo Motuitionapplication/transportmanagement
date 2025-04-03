@@ -7,15 +7,253 @@
     android:layout_height="match_parent"
     tools:context=".OwnerHomeActivity">
 
-    <TextView
-        android:id="@+id/welcomeText"
+    <!-- Header Layout with Logo and Welcome Message -->
+    <LinearLayout
+        android:id="@+id/headerLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome To Owner Page"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:orientation="horizontal"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="50dp"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <!-- Logo Image -->
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/logo"
+            android:contentDescription="Logo" />
+
+        <!-- Welcome Message -->
+        <TextView
+            android:id="@+id/welcomeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Welcome Firstname"
+            android:textSize="24sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <!-- Transparent Box for Buttons -->
+    <LinearLayout
+        android:id="@+id/transparentBox"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout"
+        app:layout_constraintBottom_toTopOf="@id/watermarkTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="50dp"/>
+        android:background="@drawable/transparent_rounded_box"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="16dp">
+
+        <!-- Grid Layout for Buttons (3 Rows, 2 Columns) -->
+        <GridLayout
+            android:id="@+id/buttonGrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:rowCount="3"
+            android:columnCount="2"
+            android:layout_gravity="center"
+            android:useDefaultMargins="true"
+            android:alignmentMode="alignMargins"
+            android:rowSpacing="16dp"
+            android:paddingBottom="20dp">
+
+            <!-- Profile -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageButton
+                    android:id="@+id/btnProfile"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:src="@drawable/profile"
+                    android:background="@null"
+                    android:contentDescription="Profile" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Profile"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- Other Services -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageButton
+                    android:id="@+id/btnOtherServices"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:src="@drawable/services"
+                    android:background="@null"
+                    android:contentDescription="Other Services" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Other Services"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- Vehicle Order & Availability -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageButton
+                    android:id="@+id/btnVehicleOrder"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:src="@drawable/vehicleorder"
+                    android:background="@null"
+                    android:contentDescription="Vehicle Order And Availability" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vehicle Order"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- Driver Details -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageButton
+                    android:id="@+id/btnDriverDetails"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:src="@drawable/driverdetails"
+                    android:background="@null"
+                    android:contentDescription="Driver Details" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Driver Details"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- Vehicle Tracking -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageButton
+                    android:id="@+id/btnVehicleTracking"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:src="@drawable/vehicletracking"
+                    android:background="@null"
+                    android:contentDescription="Vehicle Tracking" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vehicle Tracking"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <!-- Payment History -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_columnWeight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+                <ImageButton
+                    android:id="@+id/btnPaymentHistory"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:src="@drawable/paymenthistory"
+                    android:background="@null"
+                    android:contentDescription="Payment History" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Payment History"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/white"
+                    android:gravity="center"/>
+            </LinearLayout>
+        </GridLayout>
+
+        <!-- Customer Support in the middle under the buttons -->
+        <TextView
+            android:id="@+id/txtCustomerSupport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Customer Support"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:layout_marginTop="30dp"/>
+
+        <!-- WhatsApp and Call Icons below Customer Support -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <ImageButton
+                android:id="@+id/btnWhatsApp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/whatsapp"
+                android:background="@null"
+                android:contentDescription="WhatsApp Support" />
+
+            <ImageButton
+                android:id="@+id/btnCall"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/call"
+                android:background="@null"
+                android:contentDescription="Call Support"
+                android:layout_marginStart="20dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Watermark (fixed at bottom) -->
+    <TextView
+        android:id="@+id/watermarkTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Developed By GKCT Info Solutions"
+        android:textSize="14sp"
+        android:textColor="#80FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="16dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

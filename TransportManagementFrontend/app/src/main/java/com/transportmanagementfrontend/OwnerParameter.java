@@ -7,8 +7,9 @@ public class OwnerParameter implements Serializable {
     private String firstName;
     private String lastName;
     private String phone;
+    private String fatherName;
     private String address;
-    private String vehicleType;
+    private String vehicleNumber;
     private String username;
     private String password;
     private String role;
@@ -18,20 +19,20 @@ public class OwnerParameter implements Serializable {
     }
 
     // Parameterized Constructor
-    public OwnerParameter(int id, String firstName, String lastName, String phone, String address,
-                          String vehicleType, String username, String password, String role) {
+    public OwnerParameter(int id, String firstName, String lastName, String phone, String fatherName, String address,
+                          String vehicleNumber, String username, String password, String role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
+        this.fatherName = fatherName;
         this.address = address;
-        this.vehicleType = vehicleType;
+        this.vehicleNumber = vehicleNumber;
         this.username = username;
         this.password = password;
         this.role = role;
     }
-
-    // Getters & Setters
+    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -64,6 +65,14 @@ public class OwnerParameter implements Serializable {
         this.phone = phone;
     }
 
+    public String getFatherName() {
+        return fatherName;
+    }
+
+    public void setFatherName(String fatherName) {
+        this.fatherName = fatherName;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -72,12 +81,12 @@ public class OwnerParameter implements Serializable {
         this.address = address;
     }
 
-    public String getVehicleType() {
-        return vehicleType;
+    public String getVehicleNumber() {
+        return vehicleNumber;
     }
 
-    public void setVehicleType(String vehicleType) {
-        this.vehicleType = vehicleType;
+    public void setVehicleNumber(String vehicleNumber) {
+        this.vehicleNumber = vehicleNumber;
     }
 
     public String getUsername() {
