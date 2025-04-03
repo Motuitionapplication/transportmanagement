@@ -2,7 +2,6 @@ package com.transportmanagementfrontend;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -22,8 +21,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class OwnerRegisterActivity extends AppCompatActivity {
 
     // Declare UI elements
-    private TextInputLayout firstNameLayout, lastNameLayout, phoneLayout, addressLayout, emailLayout, vehicleTypeLayout, usernameLayout, passwordLayout;
-    private TextInputEditText firstNameEditText, lastNameEditText, phoneEditText, addressEditText, emailEditText, vehicleTypeEditText, usernameEditText, passwordEditText;
+    private TextInputLayout firstNameLayout, lastNameLayout, phoneLayout, fatherNameLayout, addressLayout, emailLayout, vehicleNumberLayout, usernameLayout, passwordLayout;
+    private TextInputEditText firstNameEditText, lastNameEditText, phoneEditText, fatherNameEditText, addressEditText, emailEditText, vehicleNumberEditText, usernameEditText, passwordEditText;
     private Button createAccountButton;
     private String selectedRole = "Owner";
 
@@ -36,18 +35,20 @@ public class OwnerRegisterActivity extends AppCompatActivity {
         firstNameLayout = findViewById(R.id.firstNameLayout);
         lastNameLayout = findViewById(R.id.lastNameLayout);
         phoneLayout = findViewById(R.id.phoneLayout);
+        fatherNameLayout = findViewById(R.id.fatherNameLayout);
         addressLayout = findViewById(R.id.addressLayout);
         emailLayout = findViewById(R.id.emailLayout);
-        vehicleTypeLayout = findViewById(R.id.vehicleTypeLayout);
+        vehicleNumberLayout = findViewById(R.id.vehicleNumberLayout);
         usernameLayout = findViewById(R.id.usernameLayout);
         passwordLayout = findViewById(R.id.passwordLayout);
 
         firstNameEditText = findViewById(R.id.firstName);
         lastNameEditText = findViewById(R.id.lastName);
         phoneEditText = findViewById(R.id.phone);
+        fatherNameEditText = findViewById(R.id.fatherName);
         addressEditText = findViewById(R.id.address);
         emailEditText = findViewById(R.id.email);
-        vehicleTypeEditText = findViewById(R.id.vehicleType);
+        vehicleNumberEditText = findViewById(R.id.vehicleNumber);
         usernameEditText = findViewById(R.id.username);
         passwordEditText = findViewById(R.id.password);
 
@@ -56,11 +57,12 @@ public class OwnerRegisterActivity extends AppCompatActivity {
         // Set validation on focus change
         setValidationOnFocus(firstNameEditText, firstNameLayout, "Please enter your first name");
         setValidationOnFocus(lastNameEditText, lastNameLayout, "Please enter your last name");
+        setValidationOnFocus(fatherNameEditText, fatherNameLayout, "Please enter your father's name");
         setValidationOnFocus(emailEditText, emailLayout, "Please enter a valid email");
         setValidationOnFocus(usernameEditText, usernameLayout, "Please enter your username");
         setValidationOnFocus(addressEditText, addressLayout, "Please enter your address");
         setValidationOnFocus(passwordEditText, passwordLayout, "Password must be at least 6 characters");
-        setValidationOnFocus(vehicleTypeEditText, vehicleTypeLayout, "Please enter vehicle type");
+        setValidationOnFocus(vehicleNumberEditText, vehicleNumberLayout, "Please enter vehicle type");
 
         // Phone number validation (must be 10 digits)
         phoneEditText.setOnFocusChangeListener((v, hasFocus) -> {
@@ -81,15 +83,16 @@ public class OwnerRegisterActivity extends AppCompatActivity {
             String firstName = getSafeText(firstNameEditText);
             String lastName = getSafeText(lastNameEditText);
             String phone = getSafeText(phoneEditText);
+            String fatherName = getSafeText(fatherNameEditText);
             String address = getSafeText(addressEditText);
             String email = getSafeText(emailEditText);
-            String vehicleType = getSafeText(vehicleTypeEditText);
+            String vehicleNumber= getSafeText(vehicleNumberEditText);
             String username = getSafeText(usernameEditText);
             String password = getSafeText(passwordEditText);
 
             // Validate required fields
-            if (firstName.isEmpty() || lastName.isEmpty() || phone.isEmpty() || address.isEmpty() ||
-                    email.isEmpty() || vehicleType.isEmpty() || username.isEmpty() || password.isEmpty()) {
+            if (firstName.isEmpty() || lastName.isEmpty() || phone.isEmpty() || fatherName.isEmpty() || address.isEmpty() ||
+                    email.isEmpty() || vehicleNumber.isEmpty() || username.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -101,7 +104,7 @@ public class OwnerRegisterActivity extends AppCompatActivity {
             }
 
             // Register API call
-            registerOwner(firstName, lastName, phone, address, email, vehicleType, username, password);
+            registerOwner(firstName, lastName, phone, fatherName, address, email, vehicleNumber, username, password);
         });
     }
 
@@ -126,8 +129,8 @@ public class OwnerRegisterActivity extends AppCompatActivity {
     }
 
     // API Call to register owner
-    private void registerOwner(String firstName, String lastName, String phone, String address, String email,
-                               String vehicleType, String username, String password) {
+    private void registerOwner(String firstName, String lastName, String phone, String fatherName, String address, String email,
+                               String vehicleNumber, String username, String password) {
         Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -137,7 +140,7 @@ public class OwnerRegisterActivity extends AppCompatActivity {
                 .build();
 
         ApiService apiService = retrofit.create(ApiService.class);
-        OwnerRegisterRequest registerRequest = new OwnerRegisterRequest(firstName, lastName, phone, address, email, vehicleType, username, password, "owner");
+        OwnerRegisterRequest registerRequest = new OwnerRegisterRequest(firstName, lastName, phone, fatherName, address, email, vehicleNumber, username, password, "owner");
 
         Call<String> call = apiService.registerOwner(registerRequest);
         call.enqueue(new Callback<String>() {
