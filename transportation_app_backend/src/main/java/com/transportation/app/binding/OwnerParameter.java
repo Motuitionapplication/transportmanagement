@@ -7,27 +7,39 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "DRIVER_REG_DETAILS")
-public class DriverParameter {
+@Table(name = "OWNER_REG_DETAILS")
+public class OwnerParameter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
+
     private String firstName;
     private String lastName;
     private String phone;
     private String username;
     private String password;
-    private String dlNumber;
+    private String address;
+    private String fatherName;
     private String vehicleNumber;
     private String selectedRole;
     private String email;
 
-    public DriverParameter() {
+    public OwnerParameter() {
     }
 
- 
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public String getFatherName() {
+        return fatherName;
+    }
+    public void setFatherName(String fatherName) {
+        this.fatherName = fatherName;
+    }
     public String getFirstName() {
         return firstName;
     }
@@ -57,12 +69,6 @@ public class DriverParameter {
     }
     public void setPassword(String password) {
         this.password = password;
-    }
-    public String getDlNumber() {
-        return dlNumber;
-    }
-    public void setDlNumber(String dlNumber) {
-        this.dlNumber = dlNumber;
     }
     public String getVehicleNumber() {
         return vehicleNumber;

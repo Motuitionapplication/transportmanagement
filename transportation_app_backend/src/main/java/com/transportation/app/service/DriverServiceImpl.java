@@ -1,5 +1,6 @@
 package com.transportation.app.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +46,10 @@ public class DriverServiceImpl implements DriverService {
 	        }
 	        response.setStatus("Invalid User Name & Password");
 	        return response;
+	}
+
+	@Override
+	public List<DriverParameter> getDriversByVehicleNumber(String vehicleNumber) {
+		return driverRepo.findByVehicleNumber(vehicleNumber);
 	}
 }

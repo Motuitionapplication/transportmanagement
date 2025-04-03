@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.transportation.app.binding.DriverParameter;
 import com.transportation.app.binding.LoginParamDriver;
 import com.transportation.app.binding.LoginResponseDriver;
@@ -29,7 +28,7 @@ public class DriverController {
     }
     
     @PostMapping("/Driverlogin")
-    public ResponseEntity<LoginResponseDriver> loginUser(@RequestBody LoginParamDriver loginParamDriver) {
+    public ResponseEntity<LoginResponseDriver> loginDriver(@RequestBody LoginParamDriver loginParamDriver) {
         LoginResponseDriver result = driverService.checkLogin(loginParamDriver);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
