@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OwnerHomeActivity">
+    tools:context=".OwnerHomeActivity"
+    android:background="@drawable/other_background">
 
     <!-- Header Layout with Logo and Welcome Message -->
     <LinearLayout
@@ -62,7 +63,6 @@
             android:layout_gravity="center"
             android:useDefaultMargins="true"
             android:alignmentMode="alignMargins"
-            android:rowSpacing="16dp"
             android:paddingBottom="20dp">
 
             <!-- Profile -->

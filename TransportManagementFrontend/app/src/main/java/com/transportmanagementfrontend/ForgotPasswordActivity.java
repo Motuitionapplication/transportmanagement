@@ -62,7 +62,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         progressDialog.show();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://gkct1transport.us-east-1.elasticbeanstalk.com/api/") // Replace with your actual API URL
+                .baseUrl("http://10.0.2.2:8080/api/")
+                //.baseUrl("http://gkct1transport.us-east-1.elasticbeanstalk.com/api/") // Replace with your actual API URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

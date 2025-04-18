@@ -2,6 +2,7 @@ package com.transportmanagementfrontend;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -62,7 +63,7 @@ public class OwnerRegisterActivity extends AppCompatActivity {
         setValidationOnFocus(usernameEditText, usernameLayout, "Please enter your username");
         setValidationOnFocus(addressEditText, addressLayout, "Please enter your address");
         setValidationOnFocus(passwordEditText, passwordLayout, "Password must be at least 6 characters");
-        setValidationOnFocus(vehicleNumberEditText, vehicleNumberLayout, "Please enter vehicle type");
+        setValidationOnFocus(vehicleNumberEditText, vehicleNumberLayout, "Please enter vehicle number");
 
         // Phone number validation (must be 10 digits)
         phoneEditText.setOnFocusChangeListener((v, hasFocus) -> {
@@ -134,7 +135,8 @@ public class OwnerRegisterActivity extends AppCompatActivity {
         Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://gkct1transport.us-east-1.elasticbeanstalk.com/api/")
+                .baseUrl("http://10.0.2.2:8080/api/")
+                //.baseUrl("http://gkct1transport.us-east-1.elasticbeanstalk.com/api/")
                 .addConverterFactory(retrofit2.converter.scalars.ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
@@ -158,8 +160,10 @@ public class OwnerRegisterActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
+                Log.e("API_ERROR", "Registration failed: " + t.getMessage());
                 Toast.makeText(OwnerRegisterActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
+
         });
     }
 }

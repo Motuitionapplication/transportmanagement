@@ -59,7 +59,8 @@ public class VerificationCodeActivity extends AppCompatActivity {
     // Method to call the backend API for code verification
     private void verifyCode(String email, String code) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://gkct1transport.us-east-1.elasticbeanstalk.com/api/") // Replace with your API URL
+                .baseUrl("http://10.0.2.2:8080/api/")
+                //.baseUrl("http://gkct1transport.us-east-1.elasticbeanstalk.com/api/") // Replace with your API URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
