@@ -154,7 +154,8 @@ public class CustomerRegisterActivity extends AppCompatActivity {
         Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://gkct1transport.us-east-1.elasticbeanstalk.com/api/")
+                .baseUrl("http://10.0.2.2:8080/api/")
+                //.baseUrl("http://gkct1transport.us-east-1.elasticbeanstalk.com/api/")
                 .addConverterFactory(retrofit2.converter.scalars.ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
