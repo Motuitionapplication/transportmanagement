@@ -9,6 +9,10 @@ public interface OwnerService {
     String createOwner(OwnerParameter ownerParameter);
     LoginResponseOwner checkLogin(LoginParamOwner loginParamOwner);
     
-    // Method to retrieve owner details by username (if needed elsewhere)
+    // Retrieve owner details by username
     OwnerParameter findByUsername(String username);
+    
+    // Update and delete operations
+    String updateOwner(OwnerParameter ownerParameter);
+    String deleteOwner(int ownerId);
 }

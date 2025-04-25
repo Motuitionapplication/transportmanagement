@@ -10,6 +10,10 @@ public interface DriverService {
     String createDriver(DriverParameter driverParameter);
     LoginResponseDriver checkLogin(LoginParamDriver loginParamDriver);
     
-    // Method to retrieve drivers by vehicleNumber
+    // Retrieve drivers by vehicleNumber
     List<DriverParameter> getDriversByVehicleNumber(String vehicleNumber);
+    
+    // Update and delete operations
+    String updateDriver(DriverParameter driverParameter);
+    String deleteDriver(int driverId);
 }
