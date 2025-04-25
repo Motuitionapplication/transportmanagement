@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:layout_marginStart="16dp"
         android:layout_marginTop="50dp"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,8 +23,8 @@
         <!-- Logo Image -->
         <ImageView
             android:id="@+id/logo"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:src="@drawable/logo"
             android:contentDescription="Logo" />
 
@@ -41,11 +42,10 @@
     <!-- Transparent Box for Buttons -->
     <LinearLayout
         android:id="@+id/transparentBox"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="16dp"
         app:layout_constraintTop_toBottomOf="@id/headerLayout"
-        app:layout_constraintBottom_toTopOf="@id/watermarkTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/transparent_rounded_box"
@@ -53,23 +53,27 @@
         android:gravity="center"
         android:padding="16dp">
 
-        <!-- Grid Layout for Buttons (3 Rows, 2 Columns) -->
+        <!-- Grid Layout for Buttons -->
         <GridLayout
             android:id="@+id/buttonGrid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:rowCount="3"
             android:columnCount="2"
+            android:rowOrderPreserved="false"
             android:layout_gravity="center"
-            android:useDefaultMargins="true"
             android:alignmentMode="alignMargins"
-            android:paddingBottom="20dp">
+            android:paddingBottom="20dp"
+            android:useDefaultMargins="false">
 
             <!-- Profile -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_margin="12dp"
+                android:layout_marginBottom="24dp"
                 android:orientation="vertical"
                 android:gravity="center">
                 <ImageButton
@@ -93,6 +97,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_margin="12dp"
+                android:layout_marginBottom="24dp"
                 android:orientation="vertical"
                 android:gravity="center">
                 <ImageButton
@@ -111,11 +118,14 @@
                     android:gravity="center"/>
             </LinearLayout>
 
-            <!-- Vehicle Order & Availability -->
+            <!-- Vehicle Order -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_margin="12dp"
+                android:layout_marginBottom="24dp"
                 android:orientation="vertical"
                 android:gravity="center">
                 <ImageButton
@@ -139,6 +149,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_margin="12dp"
+                android:layout_marginBottom="24dp"
                 android:orientation="vertical"
                 android:gravity="center">
                 <ImageButton
@@ -162,6 +175,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_margin="12dp"
+                android:layout_marginBottom="24dp"
                 android:orientation="vertical"
                 android:gravity="center">
                 <ImageButton
@@ -185,6 +201,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
+                android:layout_rowWeight="1"
+                android:layout_margin="12dp"
+                android:layout_marginBottom="24dp"
                 android:orientation="vertical"
                 android:gravity="center">
                 <ImageButton
@@ -204,7 +223,7 @@
             </LinearLayout>
         </GridLayout>
 
-        <!-- Customer Support in the middle under the buttons -->
+        <!-- Customer Support -->
         <TextView
             android:id="@+id/txtCustomerSupport"
             android:layout_width="wrap_content"
@@ -214,15 +233,15 @@
             android:textStyle="bold"
             android:textColor="@android:color/white"
             android:gravity="center"
-            android:layout_marginTop="30dp"/>
+            android:layout_marginTop="16dp"/>
 
-        <!-- WhatsApp and Call Icons below Customer Support -->
+        <!-- WhatsApp and Call Icons -->
         <LinearLayout
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="24dp">
 
             <ImageButton
                 android:id="@+id/btnWhatsApp"
@@ -241,7 +260,6 @@
                 android:contentDescription="Call Support"
                 android:layout_marginStart="20dp"/>
         </LinearLayout>
-
     </LinearLayout>
 
     <!-- Watermark (fixed at bottom) -->

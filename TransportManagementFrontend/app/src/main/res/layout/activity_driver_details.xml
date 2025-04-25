@@ -1,46 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp"
-    android:orientation="vertical">
+    android:background="@drawable/other_background"
+    >
 
+    <!-- Header Title -->
     <TextView
-        android:id="@+id/txtDriverName"
+        android:id="@+id/txtHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Driver Name"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:text="Driver Details"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="24dp"/>
 
+    <!-- Transparent Box Container -->
+    <LinearLayout
+        android:id="@+id/transparentBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintTop_toBottomOf="@id/txtHeader"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/transparent_rounded_box"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="16dp">
+
+        <!-- Card container inside transparent box -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardDriverInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardUseCompatPadding="true"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:gravity="center_vertical">
+
+                <!-- Avatar -->
+                <ImageView
+                    android:id="@+id/imgDriverAvatar"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/driverdetails"
+                    android:contentDescription="Driver Avatar"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/circle_background"
+                    android:padding="8dp"/>
+
+                <!-- Text block -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtDriverName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Driver Name: Santadeepa"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"/>
+
+                    <TextView
+                        android:id="@+id/txtPhone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Phone: 9852469302"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@android:color/black"/>
+
+                    <TextView
+                        android:id="@+id/txtEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Phone: sdm@gmail.com"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@android:color/black"/>
+
+                    <TextView
+                        android:id="@+id/txtAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Address: Nayapalli, Bhubaneswar, 751012"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@android:color/black"/>
+
+                    <TextView
+                        android:id="@+id/txtDlNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="DL No: OD-480621248642"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@android:color/black"/>
+
+                    <TextView
+                        android:id="@+id/txtVehicleNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="DL No: OD 25 7896"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@android:color/black"/>
+
+                    <TextView
+                        android:id="@+id/txtStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Current Status: Online"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@android:color/holo_green_dark"/>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+    <!-- Optional: repeat online/offline indicator if you still need it -->
     <TextView
-        android:id="@+id/txtPhone"
+        android:id="@+id/tvOnlineOffline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Phone: " />
+        android:text="Online or Offline"
+        android:textSize="14sp"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/transparentBox"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"/>
 
+    <!-- Watermark (fixed at bottom) -->
     <TextView
-        android:id="@+id/txtEmail"
+        android:id="@+id/watermarkTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Email: " />
-
-    <TextView
-        android:id="@+id/txtDlNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="DL Number: " />
-
-    <TextView
-        android:id="@+id/txtVehicleNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Vehicle No: " />
-
-    <TextView
-        android:id="@+id/txtUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Username: " />
-
-</LinearLayout>
+        android:text="Developed By GKCT Info Solutions"
+        android:textSize="14sp"
+        android:textColor="#80FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="16dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

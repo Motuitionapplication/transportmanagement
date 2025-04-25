@@ -101,6 +101,43 @@
             android:exported="true"
             android:label="Driver Home"/>
 
+        <!-- Profile screen -->
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="true"
+            android:label="Profile" />
+
+        <!-- “Other Services” screen -->
+        <activity
+            android:name=".OtherServicesActivity"
+            android:exported="true"
+            android:label="Other Services" />
+
+        <!-- Vehicle Order screen -->
+        <activity
+            android:name=".VehicleOrderActivity"
+            android:exported="true"
+            android:label="Vehicle Orders" />
+
+        <!-- Vehicle Tracking screen -->
+        <activity
+            android:name=".VehicleTrackingActivity"
+            android:exported="true"
+            android:label="Vehicle Tracking" />
+
+        <!-- Payment History screen -->
+        <activity
+            android:name=".PaymentHistoryActivity"
+            android:exported="true"
+            android:label="Payment History" />
+
+        <!-- Driver Details (fetched via dialog) -->
+        <activity
+            android:name=".DriverDetailsActivity"
+            android:exported="true"
+            android:label="Driver Details" />
+
+
         <!-- Google Maps API Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
