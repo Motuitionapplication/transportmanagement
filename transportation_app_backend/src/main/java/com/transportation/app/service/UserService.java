@@ -12,6 +12,5 @@ public interface UserService {
     
     String generateOTP(String phone);
     
-    // Forgot password now accepts only an email address
     String forgotPassword(String email);
 }

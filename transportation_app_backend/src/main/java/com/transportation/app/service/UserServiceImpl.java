@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
     private SmsService fast2SMSService;
     
     @Autowired
-    private EmailService emailService; // Service to send emails
+    private EmailService emailService;
 
     @Override
     public String createUser(UserParameter userParameter) {
@@ -62,7 +62,6 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public String forgotPassword(String email) {
-        // Find the user by email ignoring case
         UserParameter user = userRepo.findByEmail(email);
         
         if (user != null) {

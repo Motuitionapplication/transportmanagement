@@ -9,6 +9,6 @@ public interface DriverRepository extends JpaRepository<DriverParameter, Seriali
     DriverParameter findByPassword(String password);
     DriverParameter findByUsername(String username);
     
-    // Method to fetch drivers by vehicleNumber
+    // Fetch drivers by vehicleNumber
     List<DriverParameter> findByVehicleNumber(String vehicleNumber);
 }
