@@ -113,4 +113,12 @@ public class DriverParameter implements Serializable {
     public void setRole(String role) {
         this.role = role;
     }
+
+    public String getAdress() {
+        return "";
+    }
+
+    public String getStatus() {
+        return "";
+    }
 }

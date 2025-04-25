@@ -1,4 +1,6 @@
 package com.transportmanagementfrontend;
 
-public class OtherServicesActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class OtherServicesActivity extends AppCompatActivity {
 }

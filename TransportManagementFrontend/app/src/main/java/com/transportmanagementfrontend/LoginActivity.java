@@ -55,48 +55,68 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8080/api/")
-                // .baseUrl("http://gkct1transport.us-east-1.elasticbeanstalk.com/api/")
+                .baseUrl("http://10.0.2.2:8080/api/") // Ensure correct base URL
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         ApiService apiService = retrofit.create(ApiService.class);
 
-        CustomerLoginRequest loginRequest = new CustomerLoginRequest(username, password);
-        Call<CustomerLoginResponse> call = apiService.loginUser(loginRequest);
+        if (selectedRole.equalsIgnoreCase("owner")) {
+            OwnerLoginRequest loginRequest = new OwnerLoginRequest(username, password);
+            Call<OwnerLoginResponse> call = apiService.loginOwner(loginRequest);
 
-        call.enqueue(new Callback<CustomerLoginResponse>() {
-            @Override
-            public void onResponse(Call<CustomerLoginResponse> call, Response<CustomerLoginResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Toast.makeText(LoginActivity.this, response.body().getStatus(), Toast.LENGTH_SHORT).show();
-//                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-//                    intent.putExtra("USERNAME", username);
-//                    intent.putExtra("ROLE", selectedRole);
-//                    intent.putExtra("FIRSTNAME", response.body().getUser().getFirstName());
-//
-//                    startActivity(intent);
-//                    finish();
-
-                    // Redirect user based on role
-                    Intent intent = getHomePageIntent(selectedRole);
-                    if (intent != null) {
+            call.enqueue(new Callback<OwnerLoginResponse>() {
+                @Override
+                public void onResponse(Call<OwnerLoginResponse> call, Response<OwnerLoginResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        Toast.makeText(LoginActivity.this, response.body().getStatus(), Toast.LENGTH_SHORT).show();
+                        // Redirect to Owner Home page
+                        Intent intent = new Intent(LoginActivity.this, OwnerHomeActivity.class);
                         intent.putExtra("USERNAME", username);
                         intent.putExtra("ROLE", selectedRole);
                         intent.putExtra("FIRST_NAME", response.body().getUser().getFirstName());
                         startActivity(intent);
                         finish();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Invalid credentials. Try again.", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(LoginActivity.this, "Invalid credentials. Try again.", Toast.LENGTH_SHORT).show();
                 }
-            }
 
-            @Override
-            public void onFailure(Call<CustomerLoginResponse> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<OwnerLoginResponse> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            // Handle other roles (Customer, Driver, Admin)
+            CustomerLoginRequest loginRequest = new CustomerLoginRequest(username, password);
+            Call<CustomerLoginResponse> call = apiService.loginUser(loginRequest);
+
+            call.enqueue(new Callback<CustomerLoginResponse>() {
+                @Override
+                public void onResponse(Call<CustomerLoginResponse> call, Response<CustomerLoginResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        Toast.makeText(LoginActivity.this, response.body().getStatus(), Toast.LENGTH_SHORT).show();
+                        // Redirect based on role
+                        Intent intent = getHomePageIntent(selectedRole);
+                        if (intent != null) {
+                            intent.putExtra("USERNAME", username);
+                            intent.putExtra("ROLE", selectedRole);
+                            intent.putExtra("FIRST_NAME", response.body().getUser().getFirstName());
+                            startActivity(intent);
+                            finish();
+                        }
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Invalid credentials. Try again.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CustomerLoginResponse> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     private Intent getHomePageIntent(String role) {
@@ -128,7 +148,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void handleRegister() {
-        // Redirect to MainActivity instead of RegisterActivity
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();

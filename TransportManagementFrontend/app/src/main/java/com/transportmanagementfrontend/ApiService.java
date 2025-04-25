@@ -13,6 +13,9 @@ public interface ApiService {
     @POST("login") // Adjust endpoint if needed
     Call<CustomerLoginResponse> loginUser(@Body CustomerLoginRequest loginRequest);
 
+    @POST("loginOwner") // Adjust endpoint if needed
+    Call<OwnerLoginResponse> loginOwner(@Body OwnerLoginRequest loginRequest);
+
     @POST("addUser") // Backend API for customer registration
     Call<String> registerUser(@Body CustomerRegisterRequest registerRequest);
 
