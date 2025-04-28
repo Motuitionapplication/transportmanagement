@@ -22,7 +22,7 @@ public interface ApiService {
     @POST("addDriver") // Driver registration
     Call<String> registerDriver(@Body DriverRegisterRequest registerRequest);
 
-    @POST("addOwner") // Owner registration
+    @POST("AddOwner")
     Call<String> registerOwner(@Body OwnerRegisterRequest registerRequest);
 
     // Endpoint to send a verification code to the user's email
