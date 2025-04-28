@@ -3,6 +3,7 @@ package com.transportmanagementfrontend;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -16,6 +17,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,13 +34,14 @@ public class OwnerRegisterActivity extends AppCompatActivity {
     private int currentPage = 1;
 
     // PERSONAL fields
-    private TextInputEditText etFirstName, etLastName, etPhone, etUsername, etPassword, etFatherName, etEmail;
+    private TextInputEditText etFirstName, etLastName, etPhone, etUsername, etPassword, etFatherName, etEmail,  etAddressProofType, etAddressProofNumber,
+            etIdentityProofType, etIdentityProofNumber;;
     private TextInputLayout loFirstName, loLastName, loPhone, loUsername, loPassword, loFatherName, loEmail;
 
     // ADDRESS fields
-    private TextInputEditText etPresProofType, etPresProofNumber, etPresAt, etPresPo,
+    private TextInputEditText etPresAt, etPresPo,
             etPresTown, etPresPs, etPresDist, etPresState, etPresPin, etPresMob, etPresType;
-    private TextInputEditText etPermProofType, etPermProofNumber, etPermAt, etPermPo,
+    private TextInputEditText etPermAt, etPermPo,
             etPermTown, etPermPs, etPermDist, etPermState, etPermPin, etPermMob, etPermType;
     private CheckBox cbSameAsPresent;
 
@@ -51,7 +55,7 @@ public class OwnerRegisterActivity extends AppCompatActivity {
     private TextInputLayout loVehicleNumber, loVehicleType, loChassisNumber,
             loInsurancePaper, loFitnessCert, loPermit, loPollutionCert, loRc, loCapacity;
 
-    private final String BASE_URL = "http://10.0.2.2:8080/api/";
+    private final String BASE_URL = "http://10.0.2.2:8080/api/owners/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,92 +93,92 @@ public class OwnerRegisterActivity extends AppCompatActivity {
 
     private void bindViews() {
         pagePersonal = findViewById(R.id.page_personal);
-        pageAddress  = findViewById(R.id.page_address);
-        pageAccount  = findViewById(R.id.page_account);
-        pageVehicle  = findViewById(R.id.page_vehicle);
-        btnPrev      = findViewById(R.id.btnPrev);
-        btnNext      = findViewById(R.id.btnNext);
-        btnSkip      = findViewById(R.id.btnSkip);
-        btnSave      = findViewById(R.id.btnSave);
+        pageAddress = findViewById(R.id.page_address);
+        pageAccount = findViewById(R.id.page_account);
+        pageVehicle = findViewById(R.id.page_vehicle);
+        btnPrev = findViewById(R.id.btnPrev);
+        btnNext = findViewById(R.id.btnNext);
+        btnSkip = findViewById(R.id.btnSkip);
+        btnSave = findViewById(R.id.btnSave);
 
-        loFirstName  = findViewById(R.id.firstNameLayout);
-        loLastName   = findViewById(R.id.lastNameLayout);
-        loPhone      = findViewById(R.id.phoneLayout);
-        loUsername   = findViewById(R.id.usernameLayout);
-        loPassword   = findViewById(R.id.passwordLayout);
+        loFirstName = findViewById(R.id.firstNameLayout);
+        loLastName = findViewById(R.id.lastNameLayout);
+        loPhone = findViewById(R.id.phoneLayout);
+        loUsername = findViewById(R.id.usernameLayout);
+        loPassword = findViewById(R.id.passwordLayout);
         loFatherName = findViewById(R.id.fatherNameLayout);
-        loEmail      = findViewById(R.id.emailLayout);
-        etFirstName  = findViewById(R.id.firstName);
-        etLastName   = findViewById(R.id.lastName);
-        etPhone      = findViewById(R.id.phone);
-        etUsername   = findViewById(R.id.username);
-        etPassword   = findViewById(R.id.password);
+        loEmail = findViewById(R.id.emailLayout);
+        etFirstName = findViewById(R.id.firstName);
+        etLastName = findViewById(R.id.lastName);
+        etPhone = findViewById(R.id.phone);
+        etUsername = findViewById(R.id.username);
+        etPassword = findViewById(R.id.password);
         etFatherName = findViewById(R.id.fatherName);
-        etEmail      = findViewById(R.id.email);
+        etEmail = findViewById(R.id.email);
+        etAddressProofType = findViewById(R.id.addressProofType);
+        etAddressProofNumber = findViewById(R.id.addressProofNumber);
+        etIdentityProofType = findViewById(R.id.identityProofType);
+        etIdentityProofNumber = findViewById(R.id.identityProofNumber);
 
-        cbSameAsPresent   = findViewById(R.id.cbSameAsPresent);
-        etPresProofType   = findViewById(R.id.presProofType);
-        etPresProofNumber = findViewById(R.id.presProofNumber);
-        etPresAt          = findViewById(R.id.presAt);
-        etPresPo          = findViewById(R.id.presPo);
-        etPresTown        = findViewById(R.id.presTown);
-        etPresPs          = findViewById(R.id.presPs);
-        etPresDist        = findViewById(R.id.presDist);
-        etPresState       = findViewById(R.id.presState);
-        etPresPin         = findViewById(R.id.presPin);
-        etPresMob         = findViewById(R.id.presMob);
-        etPresType        = findViewById(R.id.presType);
-        etPermProofType   = findViewById(R.id.permProofType);
-        etPermProofNumber = findViewById(R.id.permProofNumber);
-        etPermAt          = findViewById(R.id.permAt);
-        etPermPo          = findViewById(R.id.permPo);
-        etPermTown        = findViewById(R.id.permTown);
-        etPermPs          = findViewById(R.id.permPs);
-        etPermDist        = findViewById(R.id.permDist);
-        etPermState       = findViewById(R.id.permState);
-        etPermPin         = findViewById(R.id.permPin);
-        etPermMob         = findViewById(R.id.permMob);
-        etPermType        = findViewById(R.id.permType);
+        cbSameAsPresent = findViewById(R.id.cbSameAsPresent);
+        etPresAt = findViewById(R.id.presAt);
+        etPresPo = findViewById(R.id.presPo);
+        etPresTown = findViewById(R.id.presTown);
+        etPresPs = findViewById(R.id.presPs);
+        etPresDist = findViewById(R.id.presDist);
+        etPresState = findViewById(R.id.presState);
+        etPresPin = findViewById(R.id.presPin);
+        etPresMob = findViewById(R.id.presMob);
+        etPresType = findViewById(R.id.presType);
+        etPermAt = findViewById(R.id.permAt);
+        etPermPo = findViewById(R.id.permPo);
+        etPermTown = findViewById(R.id.permTown);
+        etPermPs = findViewById(R.id.permPs);
+        etPermDist = findViewById(R.id.permDist);
+        etPermState = findViewById(R.id.permState);
+        etPermPin = findViewById(R.id.permPin);
+        etPermMob = findViewById(R.id.permMob);
+        etPermType = findViewById(R.id.permType);
 
-        loAccountNumber   = findViewById(R.id.accountNumberLayout);
-        loBranchName      = findViewById(R.id.branchNameLayout);
-        loIfscCode        = findViewById(R.id.ifscLayout);
-        loBranchAddress   = findViewById(R.id.branchAddressLayout);
-        loUpiNumber       = findViewById(R.id.upiLayout);
-        loGst             = findViewById(R.id.gstLayout);
-        etAccountNumber   = findViewById(R.id.accountNumber);
-        etBranchName      = findViewById(R.id.branchName);
-        etIfscCode        = findViewById(R.id.ifscCode);
-        etBranchAddress   = findViewById(R.id.branchAddress);
-        etUpiNumber       = findViewById(R.id.upiNumber);
-        etGst             = findViewById(R.id.gst);
+        loAccountNumber = findViewById(R.id.accountNumberLayout);
+        loBranchName = findViewById(R.id.branchNameLayout);
+        loIfscCode = findViewById(R.id.ifscLayout);
+        loBranchAddress = findViewById(R.id.branchAddressLayout);
+        loUpiNumber = findViewById(R.id.upiLayout);
+        loGst = findViewById(R.id.gstLayout);
+        etAccountNumber = findViewById(R.id.accountNumber);
+        etBranchName = findViewById(R.id.branchName);
+        etIfscCode = findViewById(R.id.ifscCode);
+        etBranchAddress = findViewById(R.id.branchAddress);
+        etUpiNumber = findViewById(R.id.upiNumber);
+        etGst = findViewById(R.id.gst);
 
-        loVehicleNumber   = findViewById(R.id.vehicleNumberLayout2);
-        loVehicleType     = findViewById(R.id.vehicleTypeLayout);
-        loChassisNumber   = findViewById(R.id.chassisNumberLayout);
-        loInsurancePaper  = findViewById(R.id.insurancePaperLayout);
-        loFitnessCert     = findViewById(R.id.fitnessCertLayout);
-        loPermit          = findViewById(R.id.permitLayout);
-        loPollutionCert   = findViewById(R.id.pollutionCertLayout);
-        loRc              = findViewById(R.id.rcLayout);
-        loCapacity        = findViewById(R.id.capacityLayout);
-        etVehicleNumber   = findViewById(R.id.vehicleNumber2);
-        etVehicleType     = findViewById(R.id.vehicleType);
-        etChassisNumber   = findViewById(R.id.chassisNumber);
-        etInsurancePaper  = findViewById(R.id.insurancePaper);
-        etFitnessCert     = findViewById(R.id.fitnessCert);
-        etPermit          = findViewById(R.id.permit);
-        etPollutionCert   = findViewById(R.id.pollutionCert);
-        etRc              = findViewById(R.id.rc);
-        etCapacity        = findViewById(R.id.capacity);
+        loVehicleNumber = findViewById(R.id.vehicleNumberLayout2);
+        loVehicleType = findViewById(R.id.vehicleTypeLayout);
+        loChassisNumber = findViewById(R.id.chassisNumberLayout);
+        loInsurancePaper = findViewById(R.id.insurancePaperLayout);
+        loFitnessCert = findViewById(R.id.fitnessCertLayout);
+        loPermit = findViewById(R.id.permitLayout);
+        loPollutionCert = findViewById(R.id.pollutionCertLayout);
+        loRc = findViewById(R.id.rcLayout);
+        loCapacity = findViewById(R.id.capacityLayout);
+        etVehicleNumber = findViewById(R.id.vehicleNumber2);
+        etVehicleType = findViewById(R.id.vehicleType);
+        etChassisNumber = findViewById(R.id.chassisNumber);
+        etInsurancePaper = findViewById(R.id.insurancePaper);
+        etFitnessCert = findViewById(R.id.fitnessCert);
+        etPermit = findViewById(R.id.permit);
+        etPollutionCert = findViewById(R.id.pollutionCert);
+        etRc = findViewById(R.id.rc);
+        etCapacity = findViewById(R.id.capacity);
     }
 
     private void showPage(int page) {
         currentPage = page;
         pagePersonal.setVisibility(page == 1 ? View.VISIBLE : View.GONE);
-        pageAddress .setVisibility(page == 2 ? View.VISIBLE : View.GONE);
-        pageAccount .setVisibility(page == 3 ? View.VISIBLE : View.GONE);
-        pageVehicle .setVisibility(page == 4 ? View.VISIBLE : View.GONE);
+        pageAddress.setVisibility(page == 2 ? View.VISIBLE : View.GONE);
+        pageAccount.setVisibility(page == 3 ? View.VISIBLE : View.GONE);
+        pageVehicle.setVisibility(page == 4 ? View.VISIBLE : View.GONE);
 
         btnPrev.setVisibility(page > 1 ? View.VISIBLE : View.GONE);
         btnNext.setVisibility(page < 4 ? View.VISIBLE : View.GONE);
@@ -183,26 +187,26 @@ public class OwnerRegisterActivity extends AppCompatActivity {
     }
 
     private boolean validatePage(int page) {
-        switch(page) {
+        switch (page) {
             case 1:
                 return validateText(etFirstName, loFirstName, "Required")
-                        & validateText(etLastName,  loLastName,  "Required")
+                        & validateText(etLastName, loLastName, "Required")
                         & validatePhone()
-                        & validateText(etUsername,  loUsername,  "Required")
-                        & validateText(etPassword,  loPassword,  "Min 6 chars", 6)
-                        & validateText(etFatherName,loFatherName,"Required")
+                        & validateText(etUsername, loUsername, "Required")
+                        & validateText(etPassword, loPassword, "Min 6 chars", 6)
+                        & validateText(etFatherName, loFatherName, "Required")
                         & validateEmail();
             case 2:
                 boolean ok = true;
                 for (TextInputEditText e : new TextInputEditText[]{
-                        etPresProofType, etPresProofNumber, etPresAt, etPresPo,
+                        etPresAt, etPresPo,
                         etPresTown, etPresPs, etPresDist, etPresState,
                         etPresPin, etPresMob, etPresType}) {
                     ok &= validateText(e, null, "Required");
                 }
                 if (!cbSameAsPresent.isChecked()) {
                     for (TextInputEditText e : new TextInputEditText[]{
-                            etPermProofType, etPermProofNumber, etPermAt, etPermPo,
+                            etPermAt, etPermPo,
                             etPermTown, etPermPs, etPermDist, etPermState,
                             etPermPin, etPermMob, etPermType}) {
                         ok &= validateText(e, null, "Required");
@@ -232,6 +236,7 @@ public class OwnerRegisterActivity extends AppCompatActivity {
         if (layout != null) layout.setError(null);
         return true;
     }
+
     private boolean validateText(EditText et, TextInputLayout layout, String errMsg, int minLen) {
         if (et.getText().length() < minLen) {
             if (layout != null) layout.setError(errMsg);
@@ -240,6 +245,7 @@ public class OwnerRegisterActivity extends AppCompatActivity {
         if (layout != null) layout.setError(null);
         return true;
     }
+
     private boolean validatePhone() {
         String p = etPhone.getText().toString().trim();
         if (!p.matches("\\d{10}")) {
@@ -249,6 +255,7 @@ public class OwnerRegisterActivity extends AppCompatActivity {
         loPhone.setError(null);
         return true;
     }
+
     private boolean validateEmail() {
         String email = etEmail.getText().toString().trim();
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -260,23 +267,19 @@ public class OwnerRegisterActivity extends AppCompatActivity {
     }
 
     private void copyPresentToPermanent() {
-        etPermProofType  .setText(etPresProofType.getText());
-        etPermProofNumber.setText(etPresProofNumber.getText());
-        etPermAt         .setText(etPresAt.getText());
-        etPermPo         .setText(etPresPo.getText());
-        etPermTown       .setText(etPresTown.getText());
-        etPermPs         .setText(etPresPs.getText());
-        etPermDist       .setText(etPresDist.getText());
-        etPermState      .setText(etPresState.getText());
-        etPermPin        .setText(etPresPin.getText());
-        etPermMob        .setText(etPresMob.getText());
-        etPermType       .setText(etPresType.getText());
+        etPermAt.setText(etPresAt.getText());
+        etPermPo.setText(etPresPo.getText());
+        etPermTown.setText(etPresTown.getText());
+        etPermPs.setText(etPresPs.getText());
+        etPermDist.setText(etPresDist.getText());
+        etPermState.setText(etPresState.getText());
+        etPermPin.setText(etPresPin.getText());
+        etPermMob.setText(etPresMob.getText());
+        etPermType.setText(etPresType.getText());
     }
 
     private void setPermanentFieldsVisibility(boolean visible) {
         int v = visible ? View.VISIBLE : View.GONE;
-        findViewById(R.id.permProofTypeLayout).setVisibility(v);
-        findViewById(R.id.permProofNumberLayout).setVisibility(v);
         findViewById(R.id.permAtLayout).setVisibility(v);
         findViewById(R.id.permPoLayout).setVisibility(v);
         findViewById(R.id.permTownLayout).setVisibility(v);
@@ -298,58 +301,60 @@ public class OwnerRegisterActivity extends AppCompatActivity {
         String un = etUsername.getText().toString().trim();
         String pw = etPassword.getText().toString().trim();
         String role = "owner";
+        String addressProofType = etAddressProofType.getText().toString().trim();
+        String addressProofNumber = etAddressProofNumber.getText().toString().trim();
+        String identityProofType = etIdentityProofType.getText().toString().trim();
+        String identityProofNumber = etIdentityProofNumber.getText().toString().trim();
+
 
         // Present Address
-        String presProofType   = etPresProofType.getText().toString().trim();
-        String presProofNumber = etPresProofNumber.getText().toString().trim();
-        String presAt          = etPresAt.getText().toString().trim();
-        String presPo          = etPresPo.getText().toString().trim();
-        String presTown        = etPresTown.getText().toString().trim();
-        String presPs          = etPresPs.getText().toString().trim();
-        String presDist        = etPresDist.getText().toString().trim();
-        String presState       = etPresState.getText().toString().trim();
-        String presPin         = etPresPin.getText().toString().trim();
-        String presMob         = etPresMob.getText().toString().trim();
-        String presType        = etPresType.getText().toString().trim();
+        String presAt = etPresAt.getText().toString().trim();
+        String presPo = etPresPo.getText().toString().trim();
+        String presTown = etPresTown.getText().toString().trim();
+        String presPs = etPresPs.getText().toString().trim();
+        String presDist = etPresDist.getText().toString().trim();
+        String presState = etPresState.getText().toString().trim();
+        String presPin = etPresPin.getText().toString().trim();
+        String presMob = etPresMob.getText().toString().trim();
+        String presType = etPresType.getText().toString().trim();
 
         // Permanent Address
-        String permProofType   = etPermProofType.getText().toString().trim();
-        String permProofNumber = etPermProofNumber.getText().toString().trim();
-        String permAt          = etPermAt.getText().toString().trim();
-        String permPo          = etPermPo.getText().toString().trim();
-        String permTown        = etPermTown.getText().toString().trim();
-        String permPs          = etPermPs.getText().toString().trim();
-        String permDist        = etPermDist.getText().toString().trim();
-        String permState       = etPermState.getText().toString().trim();
-        String permPin         = etPermPin.getText().toString().trim();
-        String permMob         = etPermMob.getText().toString().trim();
-        String permType        = etPermType.getText().toString().trim();
+        String permAt = etPermAt.getText().toString().trim();
+        String permPo = etPermPo.getText().toString().trim();
+        String permTown = etPermTown.getText().toString().trim();
+        String permPs = etPermPs.getText().toString().trim();
+        String permDist = etPermDist.getText().toString().trim();
+        String permState = etPermState.getText().toString().trim();
+        String permPin = etPermPin.getText().toString().trim();
+        String permMob = etPermMob.getText().toString().trim();
+        String permType = etPermType.getText().toString().trim();
 
         // Account (optional)
-        String accountNumber   = etAccountNumber.getText().toString().trim();
-        String branchName      = etBranchName.getText().toString().trim();
-        String ifscCode        = etIfscCode.getText().toString().trim();
-        String branchAddress   = etBranchAddress.getText().toString().trim();
-        String upiNumber       = etUpiNumber.getText().toString().trim();
-        String gst             = etGst.getText().toString().trim();
+        String accountNumber = etAccountNumber.getText().toString().trim();
+        String branchName = etBranchName.getText().toString().trim();
+        String ifscCode = etIfscCode.getText().toString().trim();
+        String branchAddress = etBranchAddress.getText().toString().trim();
+        String upiNumber = etUpiNumber.getText().toString().trim();
+        String gst = etGst.getText().toString().trim();
 
         // Vehicle
-        String vehicleNumber   = etVehicleNumber.getText().toString().trim();
-        String vehicleType     = etVehicleType.getText().toString().trim();
-        String chassisNumber   = etChassisNumber.getText().toString().trim();
-        String insurancePaper  = etInsurancePaper.getText().toString().trim();
-        String fitnessCert     = etFitnessCert.getText().toString().trim();
-        String permit          = etPermit.getText().toString().trim();
-        String pollutionCert   = etPollutionCert.getText().toString().trim();
-        String rc              = etRc.getText().toString().trim();
-        String capacity        = etCapacity.getText().toString().trim();
+        String vehicleNumber = etVehicleNumber.getText().toString().trim();
+        String vehicleType = etVehicleType.getText().toString().trim();
+        String chassisNumber = etChassisNumber.getText().toString().trim();
+        String insurancePaper = etInsurancePaper.getText().toString().trim();
+        String fitnessCert = etFitnessCert.getText().toString().trim();
+        String permit = etPermit.getText().toString().trim();
+        String pollutionCert = etPollutionCert.getText().toString().trim();
+        String rc = etRc.getText().toString().trim();
+        String capacity = etCapacity.getText().toString().trim();
 
         OwnerRegisterRequest req = new OwnerRegisterRequest(
                 fn, ln, ph, fa, em, un, pw, role,
-                presProofType, presProofNumber, presAt, presPo,
+                addressProofType, addressProofNumber, identityProofType, identityProofNumber,
+                presAt, presPo,
                 presTown, presPs, presDist, presState,
                 presPin, presMob, presType,
-                permProofType, permProofNumber, permAt, permPo,
+                 permAt, permPo,
                 permTown, permPs, permDist, permState,
                 permPin, permMob, permType,
                 accountNumber, branchName, ifscCode,
@@ -376,13 +381,31 @@ public class OwnerRegisterActivity extends AppCompatActivity {
                             .putExtra("FIRST_NAME", fn));
                     finish();
                 } else {
-                    Toast.makeText(OwnerRegisterActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                    // Log the HTTP code and error body
+                    int code = res.code();
+                    String errorBody = "‹empty›";
+                    try {
+                        if (res.errorBody() != null) {
+                            errorBody = res.errorBody().string();
+                        }
+                    } catch (IOException e) {
+                        Log.e("OwnerReg", "Error reading errorBody", e);
+                    }
+                    Log.e("OwnerReg", "Registration failed, HTTP " + code + ": " + errorBody);
+                    Toast.makeText(OwnerRegisterActivity.this,
+                            "Registration failed: HTTP " + code,
+                            Toast.LENGTH_LONG).show();
                 }
             }
+
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(OwnerRegisterActivity.this, "Error: "+t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e("OwnerReg", "Network error", t);
+                Toast.makeText(OwnerRegisterActivity.this,
+                        "Network error: " + t.getMessage(),
+                        Toast.LENGTH_LONG).show();
             }
         });
     }
 }
+

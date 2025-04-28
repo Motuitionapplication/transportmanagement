@@ -164,14 +164,85 @@
                     app:boxBackgroundColor="@android:color/white"
                     app:boxStrokeColor="#FFA500"
                     android:padding="12dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginTop="8dp">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Email"
                         android:inputType="textEmailAddress"/>
+                </com.google.android.material.textfield.TextInputLayout>
+                <!-- Address Proof Type -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/addressProofTypeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxBackgroundColor="@android:color/white"
+                    app:boxStrokeColor="#FFA500"
+                    android:padding="12dp"
+                    android:layout_marginTop="8dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/addressProofType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Address Proof Type"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Address Proof Number -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/addressProofNumberLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxBackgroundColor="@android:color/white"
+                    app:boxStrokeColor="#FFA500"
+                    android:padding="12dp"
+                    android:layout_marginTop="8dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/addressProofNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Address Proof Number"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Identity Proof Type -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/identityProofTypeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxBackgroundColor="@android:color/white"
+                    app:boxStrokeColor="#FFA500"
+                    android:padding="12dp"
+                    android:layout_marginTop="8dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/identityProofType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Identity Proof Type"
+                        android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Identity Proof Number -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/identityProofNumberLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxBackgroundColor="@android:color/white"
+                    app:boxStrokeColor="#FFA500"
+                    android:padding="12dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/identityProofNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Identity Proof Number"
+                        android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
@@ -207,38 +278,6 @@
                     android:text="Present Address"
                     android:textStyle="bold"
                     android:layout_marginTop="8dp"/>
-
-                <!-- Proof Type -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/presProofTypeLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/presProofType"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Proof Type"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Proof Number -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/presProofNumberLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/presProofNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Proof Number"/>
-                </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- At -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -402,38 +441,6 @@
                     android:text="Permanent Address"
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp"/>
-
-                <!-- Repeat same fields for Permanent, with IDs 'perm...': -->
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/permProofTypeLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/permProofType"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Proof Type"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/permProofNumberLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/permProofNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Proof Number"/>
-                </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/permAtLayout"

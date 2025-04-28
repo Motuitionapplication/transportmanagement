@@ -10,10 +10,12 @@ public class OwnerRegisterRequest {
     private String username;
     private String password;
     private String role;
+    private String addressProofType;
+    private String addressProofNumber;
+    private String identityProofType;
+    private String identityProofNumber;
 
     // Present Address
-    private String presProofType;
-    private String presProofNumber;
     private String presAt;
     private String presPo;
     private String presTown;
@@ -25,8 +27,6 @@ public class OwnerRegisterRequest {
     private String presType;
 
     // Permanent Address
-    private String permProofType;
-    private String permProofNumber;
     private String permAt;
     private String permPo;
     private String permTown;
@@ -59,13 +59,16 @@ public class OwnerRegisterRequest {
     public OwnerRegisterRequest(
             // personal
             String firstName, String lastName, String phone, String fatherName,
-            String email, String username, String password, String role,
+            String email, String username, String password, String role,  String addressProofType,
+            String addressProofNumber,
+            String identityProofType,
+            String identityProofNumber,
             // present address
-            String presProofType, String presProofNumber, String presAt, String presPo,
+             String presAt, String presPo,
             String presTown, String presPs, String presDist, String presState,
             String presPin, String presMob, String presType,
             // permanent address
-            String permProofType, String permProofNumber, String permAt, String permPo,
+            String permAt, String permPo,
             String permTown, String permPs, String permDist, String permState,
             String permPin, String permMob, String permType,
             // account
@@ -84,9 +87,12 @@ public class OwnerRegisterRequest {
         this.username        = username;
         this.password        = password;
         this.role            = role;
+        this.addressProofType = addressProofType;
+        this.addressProofNumber = addressProofNumber;
+        this.identityProofType = identityProofType;
+        this.identityProofNumber = identityProofNumber;
 
-        this.presProofType   = presProofType;
-        this.presProofNumber = presProofNumber;
+
         this.presAt          = presAt;
         this.presPo          = presPo;
         this.presTown        = presTown;
@@ -97,8 +103,7 @@ public class OwnerRegisterRequest {
         this.presMob         = presMob;
         this.presType        = presType;
 
-        this.permProofType   = permProofType;
-        this.permProofNumber = permProofNumber;
+
         this.permAt          = permAt;
         this.permPo          = permPo;
         this.permTown        = permTown;
