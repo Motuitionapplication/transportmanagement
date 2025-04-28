@@ -74,7 +74,7 @@ public class OwnerServiceImpl implements OwnerService {
         existingOwner.setPassword(ownerParameter.getPassword());
         existingOwner.setFatherName(ownerParameter.getFatherName());
         existingOwner.setVehicleNumber(ownerParameter.getVehicleNumber());
-        existingOwner.setSelectedRole(ownerParameter.getSelectedRole());
+        existingOwner.setRole(ownerParameter.getRole());
         existingOwner.setEmail(ownerParameter.getEmail());
         existingOwner.setAddressProofType(ownerParameter.getAddressProofType());
         existingOwner.setAddressProofNumber(ownerParameter.getAddressProofNumber());
