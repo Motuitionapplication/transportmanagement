@@ -22,7 +22,7 @@ public class AccountDetails {
     private String passbookPhoto;
 
     @Schema(description = "UPI or PhonePe number linked to account", example = "9876543210@ybl")
-    private String upiOrPhonePayNumber;
+    private String upiNumber;
 
     @Schema(description = "GST number if available", example = "10ABCDE1234F1Z5")
     private String gst;
@@ -68,15 +68,16 @@ public class AccountDetails {
         this.passbookPhoto = passbookPhoto;
     }
 
-    public String getUpiOrPhonePayNumber() {
-        return upiOrPhonePayNumber;
-    }
+  
+    public String getUpiNumber() {
+		return upiNumber;
+	}
 
-    public void setUpiOrPhonePayNumber(String upiOrPhonePayNumber) {
-        this.upiOrPhonePayNumber = upiOrPhonePayNumber;
-    }
+	public void setUpiNumber(String upiNumber) {
+		this.upiNumber = upiNumber;
+	}
 
-    public String getGst() {
+	public String getGst() {
         return gst;
     }
 
@@ -91,7 +92,7 @@ public class AccountDetails {
         if (newDetails.getIfscCode() != null) this.ifscCode = newDetails.getIfscCode();
         if (newDetails.getBranchAddress() != null) this.branchAddress = newDetails.getBranchAddress();
         if (newDetails.getPassbookPhoto() != null) this.passbookPhoto = newDetails.getPassbookPhoto();
-        if (newDetails.getUpiOrPhonePayNumber() != null) this.upiOrPhonePayNumber = newDetails.getUpiOrPhonePayNumber();
+        if (newDetails.getUpiNumber() != null) this.upiNumber = newDetails.getUpiNumber();
         if (newDetails.getGst() != null) this.gst = newDetails.getGst();
     }
 }

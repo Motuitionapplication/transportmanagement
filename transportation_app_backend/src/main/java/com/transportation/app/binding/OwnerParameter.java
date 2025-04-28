@@ -11,10 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
-import lombok.Data;
 
 @Entity
-@Data
 @Table(name = "OWNER_REG_DETAILS")
 public class OwnerParameter {
 
@@ -45,7 +43,7 @@ public class OwnerParameter {
 	private String vehicleNumber;
 
 	@Schema(description = "Selected role", example = "OWNER")
-	private String selectedRole;
+	private String role;
 
 	@Schema(description = "Email address", example = "vibek@example.com")
 	private String email;
@@ -72,9 +70,11 @@ public class OwnerParameter {
 	@Schema(description = "Flag indicating if identity proof is verified", example = "false")
 	private boolean identityProofVerified;
 
+	@Embedded
 	@Schema(description = "Vehicle details object")
 	private VehicleDetails vehicleDetails;
 
+	@Embedded
 	@Schema(description = "Account details object")
 	private AccountDetails accountDetails;
 
@@ -172,12 +172,14 @@ public class OwnerParameter {
 		this.vehicleNumber = vehicleNumber;
 	}
 
-	public String getSelectedRole() {
-		return selectedRole;
+
+
+	public String getRole() {
+		return role;
 	}
 
-	public void setSelectedRole(String selectedRole) {
-		this.selectedRole = selectedRole;
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	public String getEmail() {
