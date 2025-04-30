@@ -18,6 +18,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+
 import java.io.IOException;
 
 import retrofit2.Call;
@@ -34,9 +35,10 @@ public class OwnerRegisterActivity extends AppCompatActivity {
     private int currentPage = 1;
 
     // PERSONAL fields
-    private TextInputEditText etFirstName, etLastName, etPhone, etUsername, etPassword, etFatherName, etEmail,  etAddressProofType, etAddressProofNumber,
-            etIdentityProofType, etIdentityProofNumber;;
-    private TextInputLayout loFirstName, loLastName, loPhone, loUsername, loPassword, loFatherName, loEmail;
+    private TextInputEditText etFirstName, etLastName, etPhone, etUsername, etPassword, etFatherName, etEmail, etAddressProofType, etAddressProofNumber,
+            etIdentityProofType, etIdentityProofNumber, etVehicleNumber;
+    ;
+    private TextInputLayout loFirstName, loLastName, loPhone, loUsername, loPassword, loFatherName, loEmail, loVehicleNumber;
 
     // ADDRESS fields
     private TextInputEditText etPresAt, etPresPo,
@@ -50,10 +52,15 @@ public class OwnerRegisterActivity extends AppCompatActivity {
     private TextInputLayout loAccountNumber, loBranchName, loIfscCode, loBranchAddress, loUpiNumber, loGst;
 
     // VEHICLE fields
-    private TextInputEditText etVehicleNumber, etVehicleType, etChassisNumber,
+    private TextInputEditText  etVehicleType, etChassisNumber,
             etInsurancePaper, etFitnessCert, etPermit, etPollutionCert, etRc, etCapacity;
-    private TextInputLayout loVehicleNumber, loVehicleType, loChassisNumber,
+    private TextInputLayout  loVehicleType, loChassisNumber,
             loInsurancePaper, loFitnessCert, loPermit, loPollutionCert, loRc, loCapacity;
+
+    // Nested-detail classes (no UI view needed here—these are for your request payload)
+    private AccountDetails accountDetails;
+    private VehicleDetails vehicleDetails;
+    private Address address;
 
     private final String BASE_URL = "http://10.0.2.2:8080/api/owners/";
 
@@ -108,6 +115,7 @@ public class OwnerRegisterActivity extends AppCompatActivity {
         loPassword = findViewById(R.id.passwordLayout);
         loFatherName = findViewById(R.id.fatherNameLayout);
         loEmail = findViewById(R.id.emailLayout);
+        loVehicleNumber = findViewById(R.id.vehicleNumberLayout);
         etFirstName = findViewById(R.id.firstName);
         etLastName = findViewById(R.id.lastName);
         etPhone = findViewById(R.id.phone);
@@ -119,6 +127,8 @@ public class OwnerRegisterActivity extends AppCompatActivity {
         etAddressProofNumber = findViewById(R.id.addressProofNumber);
         etIdentityProofType = findViewById(R.id.identityProofType);
         etIdentityProofNumber = findViewById(R.id.identityProofNumber);
+        etVehicleNumber = findViewById(R.id.vehicleNumber);
+
 
         cbSameAsPresent = findViewById(R.id.cbSameAsPresent);
         etPresAt = findViewById(R.id.presAt);
@@ -153,7 +163,6 @@ public class OwnerRegisterActivity extends AppCompatActivity {
         etUpiNumber = findViewById(R.id.upiNumber);
         etGst = findViewById(R.id.gst);
 
-        loVehicleNumber = findViewById(R.id.vehicleNumberLayout2);
         loVehicleType = findViewById(R.id.vehicleTypeLayout);
         loChassisNumber = findViewById(R.id.chassisNumberLayout);
         loInsurancePaper = findViewById(R.id.insurancePaperLayout);
@@ -162,7 +171,6 @@ public class OwnerRegisterActivity extends AppCompatActivity {
         loPollutionCert = findViewById(R.id.pollutionCertLayout);
         loRc = findViewById(R.id.rcLayout);
         loCapacity = findViewById(R.id.capacityLayout);
-        etVehicleNumber = findViewById(R.id.vehicleNumber2);
         etVehicleType = findViewById(R.id.vehicleType);
         etChassisNumber = findViewById(R.id.chassisNumber);
         etInsurancePaper = findViewById(R.id.insurancePaper);
@@ -218,7 +226,7 @@ public class OwnerRegisterActivity extends AppCompatActivity {
             case 4:
                 boolean ok2 = true;
                 for (TextInputEditText e : new TextInputEditText[]{
-                        etVehicleNumber, etVehicleType, etChassisNumber,
+                         etVehicleType, etChassisNumber,
                         etInsurancePaper, etFitnessCert, etPermit,
                         etPollutionCert, etRc, etCapacity}) {
                     ok2 &= validateText(e, null, "Required");
@@ -305,63 +313,64 @@ public class OwnerRegisterActivity extends AppCompatActivity {
         String addressProofNumber = etAddressProofNumber.getText().toString().trim();
         String identityProofType = etIdentityProofType.getText().toString().trim();
         String identityProofNumber = etIdentityProofNumber.getText().toString().trim();
-
+        String vehicleNumber = etVehicleNumber.getText().toString().trim();
 
         // Present Address
-        String presAt = etPresAt.getText().toString().trim();
-        String presPo = etPresPo.getText().toString().trim();
-        String presTown = etPresTown.getText().toString().trim();
-        String presPs = etPresPs.getText().toString().trim();
-        String presDist = etPresDist.getText().toString().trim();
-        String presState = etPresState.getText().toString().trim();
-        String presPin = etPresPin.getText().toString().trim();
-        String presMob = etPresMob.getText().toString().trim();
-        String presType = etPresType.getText().toString().trim();
+        Address presentAddress = new Address(
+                etPresAt.getText().toString().trim(),
+                etPresPo.getText().toString().trim(),
+                etPresTown.getText().toString().trim(),
+                etPresPs.getText().toString().trim(),
+                etPresDist.getText().toString().trim(),
+                etPresState.getText().toString().trim(),
+                etPresPin.getText().toString().trim(),
+                etPresMob.getText().toString().trim(),
+                etPresType.getText().toString().trim()
+        );
 
-        // Permanent Address
-        String permAt = etPermAt.getText().toString().trim();
-        String permPo = etPermPo.getText().toString().trim();
-        String permTown = etPermTown.getText().toString().trim();
-        String permPs = etPermPs.getText().toString().trim();
-        String permDist = etPermDist.getText().toString().trim();
-        String permState = etPermState.getText().toString().trim();
-        String permPin = etPermPin.getText().toString().trim();
-        String permMob = etPermMob.getText().toString().trim();
-        String permType = etPermType.getText().toString().trim();
+        // Permanent Address (only if "Same as Present" is unchecked)
+        Address permanentAddress = cbSameAsPresent.isChecked() ?
+                presentAddress : new Address(
+                etPermAt.getText().toString().trim(),
+                etPermPo.getText().toString().trim(),
+                etPermTown.getText().toString().trim(),
+                etPermPs.getText().toString().trim(),
+                etPermDist.getText().toString().trim(),
+                etPermState.getText().toString().trim(),
+                etPermPin.getText().toString().trim(),
+                etPermMob.getText().toString().trim(),
+                etPermType.getText().toString().trim()
+        );
 
         // Account (optional)
-        String accountNumber = etAccountNumber.getText().toString().trim();
-        String branchName = etBranchName.getText().toString().trim();
-        String ifscCode = etIfscCode.getText().toString().trim();
-        String branchAddress = etBranchAddress.getText().toString().trim();
-        String upiNumber = etUpiNumber.getText().toString().trim();
-        String gst = etGst.getText().toString().trim();
+        AccountDetails accountDetails = new AccountDetails(
+                etAccountNumber.getText().toString().trim(),
+                etBranchName.getText().toString().trim(),
+                etIfscCode.getText().toString().trim(),
+                etBranchAddress.getText().toString().trim(),
+                etUpiNumber.getText().toString().trim(),
+                etGst.getText().toString().trim()
+        );
 
         // Vehicle
-        String vehicleNumber = etVehicleNumber.getText().toString().trim();
-        String vehicleType = etVehicleType.getText().toString().trim();
-        String chassisNumber = etChassisNumber.getText().toString().trim();
-        String insurancePaper = etInsurancePaper.getText().toString().trim();
-        String fitnessCert = etFitnessCert.getText().toString().trim();
-        String permit = etPermit.getText().toString().trim();
-        String pollutionCert = etPollutionCert.getText().toString().trim();
-        String rc = etRc.getText().toString().trim();
-        String capacity = etCapacity.getText().toString().trim();
+        VehicleDetails vehicleDetails = new VehicleDetails(
+                etVehicleType.getText().toString().trim(),
+                etChassisNumber.getText().toString().trim(),
+                etInsurancePaper.getText().toString().trim(),
+                etFitnessCert.getText().toString().trim(),
+                etPermit.getText().toString().trim(),
+                etPollutionCert.getText().toString().trim(),
+                etRc.getText().toString().trim(),
+                etCapacity.getText().toString().trim()
+        );
 
+        // Create the request object
         OwnerRegisterRequest req = new OwnerRegisterRequest(
                 fn, ln, ph, fa, em, un, pw, role,
-                addressProofType, addressProofNumber, identityProofType, identityProofNumber,
-                presAt, presPo,
-                presTown, presPs, presDist, presState,
-                presPin, presMob, presType,
-                 permAt, permPo,
-                permTown, permPs, permDist, permState,
-                permPin, permMob, permType,
-                accountNumber, branchName, ifscCode,
-                branchAddress, upiNumber, gst,
-                vehicleNumber, vehicleType, chassisNumber,
-                insurancePaper, fitnessCert, permit,
-                pollutionCert, rc, capacity
+                addressProofType, addressProofNumber,
+                identityProofType, identityProofNumber, vehicleNumber,
+                presentAddress, permanentAddress,
+                accountDetails, vehicleDetails
         );
 
         Gson gson = new GsonBuilder().setLenient().create();
@@ -401,11 +410,9 @@ public class OwnerRegisterActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 Log.e("OwnerReg", "Network error", t);
-                Toast.makeText(OwnerRegisterActivity.this,
-                        "Network error: " + t.getMessage(),
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(OwnerRegisterActivity.this, "Network error, please try again", Toast.LENGTH_LONG).show();
             }
         });
     }
-}
 
+}
