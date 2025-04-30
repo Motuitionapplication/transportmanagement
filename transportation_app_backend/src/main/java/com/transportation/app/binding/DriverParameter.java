@@ -65,6 +65,7 @@ public class DriverParameter {
     @Schema(description = "Role of the user", example = "Driver")
     private String selectedRole;
 
+    
     public DriverParameter() {
     }
 
