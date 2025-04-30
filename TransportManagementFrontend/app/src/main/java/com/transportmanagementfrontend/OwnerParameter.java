@@ -16,6 +16,7 @@ public class OwnerParameter implements Serializable {
     private String addressProofNumber;
     private String identityProofType;
     private String identityProofNumber;
+    private String vehicleNumber;
 
 
     // Present Address
@@ -49,7 +50,6 @@ public class OwnerParameter implements Serializable {
     private String gst;
 
     // Vehicle
-    private String vehicleNumber;
     private String vehicleType;
     private String chassisNumber;
     private String insurancePaper;
@@ -68,14 +68,14 @@ public class OwnerParameter implements Serializable {
     public OwnerParameter(int id, String firstName, String lastName, String phone, String fatherName, String email,
                           String username, String password, String role,
                           String addressProofType, String addressProofNumber,  String identityProofType,
-                          String identityProofNumber, String presAt, String presPo,
+                          String identityProofNumber, String vehicleNumber, String presAt, String presPo,
                           String presTown, String presPs, String presDist, String presState, String presPin,
                           String presMob, String presType,
                           String permAt, String permPo,
                           String permTown, String permPs, String permDist, String permState, String permPin,
                           String permMob, String permType,
                           String accountNumber, String branchName, String ifscCode, String branchAddress,
-                          String upiNumber, String gst, String vehicleNumber, String vehicleType,
+                          String upiNumber, String gst,  String vehicleType,
                           String chassisNumber, String insurancePaper, String fitnessCert, String permit,
                           String pollutionCert, String rc, String capacity) {
         this.id = id;
@@ -91,6 +91,8 @@ public class OwnerParameter implements Serializable {
         this.addressProofNumber = addressProofNumber;
         this.identityProofType = identityProofType;
         this.identityProofNumber = identityProofNumber;
+        this.vehicleNumber = vehicleNumber;
+
 
         this.presAt = presAt;
         this.presPo = presPo;
@@ -120,7 +122,6 @@ public class OwnerParameter implements Serializable {
         this.upiNumber = upiNumber;
         this.gst = gst;
 
-        this.vehicleNumber = vehicleNumber;
         this.vehicleType = vehicleType;
         this.chassisNumber = chassisNumber;
         this.insurancePaper = insurancePaper;
@@ -222,6 +223,13 @@ public class OwnerParameter implements Serializable {
     public void setIdentityProofNumber(String identityProofNumber) {
         this.identityProofNumber = identityProofNumber;
     }
+    public String getVehicleNumber() {
+        return vehicleNumber;
+    }
+    public void setVehicleNumber(String vehicleNumber) {
+        this.vehicleNumber = vehicleNumber;
+    }
+
 
     public String getPresAt() {
         return presAt;
@@ -393,12 +401,6 @@ public class OwnerParameter implements Serializable {
         this.gst = gst;
     }
 
-    public String getVehicleNumber() {
-        return vehicleNumber;
-    }
-    public void setVehicleNumber(String vehicleNumber) {
-        this.vehicleNumber = vehicleNumber;
-    }
 
     public String getVehicleType() {
         return vehicleType;

@@ -234,8 +234,7 @@
                     app:boxBackgroundColor="@android:color/white"
                     app:boxStrokeColor="#FFA500"
                     android:padding="12dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginTop="8dp" >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/identityProofNumber"
@@ -243,6 +242,23 @@
                         android:layout_height="wrap_content"
                         android:hint="Identity Proof Number"
                         android:inputType="text" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Vehicle Number -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/vehicleNumberLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxBackgroundColor="@android:color/white"
+                    app:boxStrokeColor="#FFA500"
+                    android:padding="12dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/vehicleNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Vehicle Number"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
@@ -729,22 +745,6 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <!-- Vehicle Number -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/vehicleNumberLayout2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="16dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/vehicleNumber2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Vehicle Number"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
                 <!-- Vehicle Type -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/vehicleTypeLayout"
@@ -753,7 +753,7 @@
                     app:boxBackgroundColor="@android:color/white"
                     app:boxStrokeColor="#FFA500"
                     android:padding="12dp"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="16dp">
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/vehicleType"
                         android:layout_width="match_parent"
