@@ -1,39 +1,55 @@
 package com.transportation.app.binding;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
 
 @Embeddable
 public class VehicleDetails {
 
+   
+
     @Schema(description = "Chassis number of the vehicle", example = "MH12AB1234XYZ")
+    @Column(name = "chassis_number")
     private String chassisNumber;
 
     @Schema(description = "Whether the vehicle is auto-verified", example = "true")
+    @Column(name = "is_auto_verified")
     private boolean isAutoVerified;
 
     @Schema(description = "Base64-encoded insurance paper document", example = "base64encodedstring==")
+    @Column(name = "insurance_paper")
     private String insurancePaper;
 
     @Schema(description = "Base64-encoded fitness certificate", example = "base64encodedstring==")
+    @Column(name = "fitness_certificate")
     private String fitnessCertificate;
 
     @Schema(description = "Base64-encoded vehicle permit", example = "base64encodedstring==")
+    @Column(name = "permit")
     private String permit;
 
     @Schema(description = "Base64-encoded pollution certificate", example = "base64encodedstring==")
+    @Column(name = "pollution_certificate")
     private String pollutionCertificate;
 
     @Schema(description = "Base64-encoded RC (Registration Certificate)", example = "base64encodedstring==")
+    @Column(name = "rc")
     private String rc;
 
     @Schema(description = "Seating or load capacity of the vehicle", example = "20")
+    @Column(name = "capacity")
     private int capacity;
 
     @Schema(description = "Type of vehicle (e.g., Truck, Bus, Auto)", example = "Truck")
+    @Column(name = "vehicle_type")
     private String vehicleType;
 
     // Getters and Setters
+
+  
     public String getChassisNumber() {
         return chassisNumber;
     }
