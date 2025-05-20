@@ -1,10 +1,9 @@
+
 package com.transportmanagementfrontend;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -19,6 +18,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class OwnerHomeActivity extends AppCompatActivity {
+
 
     private ApiService apiService;
 
@@ -51,7 +51,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
         apiService = retrofit.create(ApiService.class);
 
         // Click Listeners for Buttons
-        btnProfile.setOnClickListener(view -> startActivity(new Intent(OwnerHomeActivity.this, ProfileActivity.class)));
+        btnProfile.setOnClickListener(view -> startActivity(new Intent(OwnerHomeActivity.this, OwnerProfileActivity.class)));
         btnOtherServices.setOnClickListener(view -> startActivity(new Intent(OwnerHomeActivity.this, OtherServicesActivity.class)));
         btnVehicleOrder.setOnClickListener(view -> startActivity(new Intent(OwnerHomeActivity.this, VehicleOrderActivity.class)));
         btnVehicleTracking.setOnClickListener(view -> startActivity(new Intent(OwnerHomeActivity.this, VehicleTrackingActivity.class)));
@@ -113,4 +113,5 @@ public class OwnerHomeActivity extends AppCompatActivity {
             }
         });
     }
+
 }
