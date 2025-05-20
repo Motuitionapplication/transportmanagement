@@ -6,13 +6,22 @@ import com.transportation.app.binding.OwnerParameter;
 
 public interface OwnerService {
 
-    String createOwner(OwnerParameter ownerParameter);
-    LoginResponseOwner checkLogin(LoginParamOwner loginParamOwner);
-    
-    // Retrieve owner details by username
-    OwnerParameter findByUsername(String username);
-    
-    // Update and delete operations
-    String updateOwner(OwnerParameter ownerParameter);
-    String deleteOwner(int ownerId);
+	// Creates a new owner
+	public String createOrUpdateOwner(OwnerParameter ownerParameter);
+
+	// Checks login credentials
+	public LoginResponseOwner checkLogin(LoginParamOwner loginParamOwner);
+
+	// Retrieves owner details by username
+	public OwnerParameter findByUsername(String username);
+
+	/**
+	 * Updates an existing owner. If the owner with the given ID doesn't exist, the
+	 * implementation should return "Owner not found". The controller will then call
+	 * createOwner() for upsert behavior.
+	 */
+	public String updateOwner(OwnerParameter ownerParameter);
+
+	// Deletes an owner by ID
+	public String deleteOwner(int ownerId);
 }

@@ -29,36 +29,18 @@ public class OwnerController {
         this.driverService = driverService;
     }
 
-    /**
-     * Registers a new owner.
-     *
-     * @param ownerParameter the owner details
-     * @return ResponseEntity with the result message
-     */
-    @PostMapping("/AddOwner")
+    @PostMapping("/AddUpdateOwner")
     public ResponseEntity<String> registerOwner(@RequestBody OwnerParameter ownerParameter) {
-        String result = ownerService.createOwner(ownerParameter);
+        String result = ownerService.createOrUpdateOwner(ownerParameter);
         return ResponseEntity.status(201).body(result);
     }
 
-    /**
-     * Authenticates an owner.
-     *
-     * @param loginParamOwner the login parameters
-     * @return ResponseEntity with the login response
-     */
     @PostMapping("/loginOwner")
     public ResponseEntity<LoginResponseOwner> loginOwner(@RequestBody LoginParamOwner loginParamOwner) {
         LoginResponseOwner result = ownerService.checkLogin(loginParamOwner);
         return ResponseEntity.ok(result);
     }
 
-    /**
-     * Retrieves driver details associated with a specific vehicle number.
-     *
-     * @param vehicleNumber the vehicle number
-     * @return ResponseEntity with the list of drivers or an error message
-     */
     @GetMapping("/drivers/{vehicleNumber}")
     public ResponseEntity<?> getDriverDetailsByVehicleNumber(@PathVariable String vehicleNumber) {
         if (vehicleNumber == null || vehicleNumber.isEmpty()) {
@@ -69,25 +51,26 @@ public class OwnerController {
     }
 
     /**
-     * Updates an existing owner's details.
+     * Updates an existing owner's details or creates a new owner if the ID does not exist.
      *
-     * @param ownerId        the ID of the owner to update
-     * @param ownerParameter the updated owner details
+     * @param ownerId        the ID of the owner to update or create
+     * @param ownerParameter the updated or new owner details
      * @return ResponseEntity with the result message
      */
     @PutMapping("/update/{ownerId}")
-    public ResponseEntity<String> updateOwner(@PathVariable int ownerId, @RequestBody OwnerParameter ownerParameter) {
+    public ResponseEntity<String> upsertOwner(@PathVariable int ownerId, @RequestBody OwnerParameter ownerParameter) {
         ownerParameter.setId(ownerId);
         String result = ownerService.updateOwner(ownerParameter);
+
+        if ("Owner not found".equalsIgnoreCase(result) || "Owner with ID not found".equalsIgnoreCase(result)) {
+            // If update failed because the owner wasn't found, create new owner with given ID
+            String createResult = ownerService.createOrUpdateOwner(ownerParameter);
+            return ResponseEntity.status(201).body("Owner not found, so a new owner was created. " + createResult);
+        }
+
         return ResponseEntity.ok(result);
     }
 
-    /**
-     * Deletes an owner by ID.
-     *
-     * @param ownerId the ID of the owner to delete
-     * @return ResponseEntity with the result message
-     */
     @DeleteMapping("/delete/{ownerId}")
     public ResponseEntity<String> deleteOwner(@PathVariable int ownerId) {
         String result = ownerService.deleteOwner(ownerId);
