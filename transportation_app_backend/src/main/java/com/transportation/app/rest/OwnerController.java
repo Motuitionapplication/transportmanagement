@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * REST controller for managing Owner-related operations.
+ * REST controller for managing Owner-related operations.vb
  */
 @CrossOrigin(origins = "http://localhost:4200", allowCredentials = "true")
 @RestController
@@ -28,7 +28,7 @@ public class OwnerController {
         this.ownerService = ownerService;
         this.driverService = driverService;
     }
-
+// For update and add same time
     @PostMapping("/AddUpdateOwner")
     public ResponseEntity<String> registerOwner(@RequestBody OwnerParameter ownerParameter) {
         String result = ownerService.createOrUpdateOwner(ownerParameter);
