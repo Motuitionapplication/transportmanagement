@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/other_background"
-    tools:context=".OwnerRegisterActivity">
+    tools:context=".OwnerRegisterActivity"
+    android:background="@drawable/other_background">
 
-    <!-- HEADER -->
+    <!-- Fixed Header: Logo and Title -->
     <LinearLayout
         android:id="@+id/headerLayout"
         android:layout_width="0dp"
@@ -19,6 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- Logo -->
         <ImageView
             android:id="@+id/logo"
             android:layout_width="120dp"
@@ -26,6 +28,7 @@
             android:contentDescription="App Logo"
             android:src="@drawable/logo"/>
 
+        <!-- Title -->
         <TextView
             android:id="@+id/registrationTitle"
             android:layout_width="wrap_content"
@@ -37,889 +40,231 @@
             android:textStyle="bold"/>
     </LinearLayout>
 
-    <!-- PAGE 1: PERSONAL INFO -->
-    <FrameLayout
-        android:id="@+id/page_personal"
+    <!-- Scrollable Input Fields -->
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/headerLayout"
         app:layout_constraintBottom_toTopOf="@id/footerLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:weightSum="1.0">  <!-- Added weightSum to distribute space -->
 
-            <LinearLayout
+            <!-- First Name -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/firstNameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <!-- First Name -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/firstNameLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="16dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/firstName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="First Name"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Last Name -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/lastNameLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/lastName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Last Name"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Phone -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/phoneLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/phone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Phone"
-                        android:inputType="phone"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- User Name -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/usernameLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/username"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="User Name"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Password -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/passwordLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Password"
-                        android:inputType="textPassword"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Father Name -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/fatherNameLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/fatherName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Father Name"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Email -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/emailLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Email"
-                        android:inputType="textEmailAddress"/>
-                </com.google.android.material.textfield.TextInputLayout>
-                <!-- Address Proof Type -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/addressProofTypeLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/addressProofType"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Address Proof Type"
-                        android:inputType="text" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Address Proof Number -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/addressProofNumberLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/addressProofNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Address Proof Number"
-                        android:inputType="text" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Identity Proof Type -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/identityProofTypeLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/identityProofType"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Identity Proof Type"
-                        android:inputType="text" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Identity Proof Number -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/identityProofNumberLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp" >
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/identityProofNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Identity Proof Number"
-                        android:inputType="text" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Vehicle Number -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/vehicleNumberLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="16dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/vehicleNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Vehicle Number"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-        </ScrollView>
-    </FrameLayout>
-
-    <!-- PAGE 2: ADDRESS INFO -->
-    <FrameLayout
-        android:id="@+id/page_address"
-        android:visibility="gone"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/headerLayout"
-        app:layout_constraintBottom_toTopOf="@id/footerLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
-
-            <LinearLayout
+                android:layout_weight="0.15"
+            app:boxBackgroundColor="@android:color/white"
+            app:boxStrokeColor="#FFA500"
+            app:errorEnabled="true"
+            android:layout_marginTop="16dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/firstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:hint="Enter your first name"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Present Address Header -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Present Address"
-                    android:textStyle="bold"
-                    android:layout_marginTop="8dp"/>
-
-                <!-- At -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/presAtLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/presAt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="At"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- PO -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/presPoLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/presPo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="PO"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Town -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/presTownLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/presTown"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Town"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- PS -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/presPsLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/presPs"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="PS"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Dist -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/presDistLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/presDist"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Dist"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- State -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/presStateLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/presState"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="State"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Pin -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/presPinLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/presPin"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Pin"
-                        android:inputType="number"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Mob -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/presMobLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/presMob"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Mobile"
-                        android:inputType="phone"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Type -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/presTypeLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="16dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/presType"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Type"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Checkbox -->
-                <CheckBox
-                    android:id="@+id/cbSameAsPresent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Permanent same as Present"
-                    android:layout_marginBottom="16dp"/>
-
-                <!-- Permanent Address Header -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Permanent Address"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/permAtLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/permAt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="At"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/permPoLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/permPo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="PO"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/permTownLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/permTown"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Town"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/permPsLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/permPs"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="PS"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/permDistLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/permDist"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Dist"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/permStateLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/permState"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="State"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/permPinLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/permPin"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Pin"
-                        android:inputType="number"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/permMobLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/permMob"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Mobile"
-                        android:inputType="phone"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/permTypeLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="16dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/permType"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Type"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-        </ScrollView>
-    </FrameLayout>
-
-    <!-- PAGE 3: ACCOUNT INFO -->
-    <FrameLayout
-        android:id="@+id/page_account"
-        android:visibility="gone"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/headerLayout"
-        app:layout_constraintBottom_toTopOf="@id/footerLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <ScrollView
+        <!-- Last Name -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/lastNameLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
-            <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_weight="0.15"
+            app:boxBackgroundColor="@android:color/white"
+            app:boxStrokeColor="#FFA500"
+            app:errorEnabled="true"
+            android:layout_marginTop="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/lastName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:hint="Enter your last name"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Account Number -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/accountNumberLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="16dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/accountNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Account Number"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Branch Name -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/branchNameLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/branchName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Branch Name"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- IFSC Code -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/ifscLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/ifscCode"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="IFSC Code"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Branch Address -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/branchAddressLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/branchAddress"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Branch Address"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- UPI Number -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/upiLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/upiNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="UPI Number"
-                        android:inputType="text"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- GST -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/gstLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="16dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/gst"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="GST"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-        </ScrollView>
-    </FrameLayout>
-
-    <!-- PAGE 4: VEHICLE INFO -->
-    <FrameLayout
-        android:id="@+id/page_vehicle"
-        android:visibility="gone"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/headerLayout"
-        app:layout_constraintBottom_toTopOf="@id/footerLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <ScrollView
+        <!-- Phone Number -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/phoneLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
-
-            <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_weight="0.15"
+            app:boxBackgroundColor="@android:color/white"
+            app:boxStrokeColor="#FFA500"
+            android:layout_marginTop="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:hint="Enter your phone number"
+                android:inputType="phone"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Vehicle Type -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/vehicleTypeLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="16dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/vehicleType"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Vehicle Type"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Chassis Number -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/chassisNumberLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/chassisNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Chassis Number"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Insurance Paper -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/insurancePaperLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/insurancePaper"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Insurance Paper"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Fitness Certificate -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/fitnessCertLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/fitnessCert"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Fitness Certificate"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Permit -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/permitLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/permit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Permit"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Pollution Certificate -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/pollutionCertLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/pollutionCert"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Pollution Certificate"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- RC -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/rcLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/rc"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="RC"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!-- Capacity -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/capacityLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundColor="@android:color/white"
-                    app:boxStrokeColor="#FFA500"
-                    android:padding="12dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="16dp">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/capacity"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Capacity"/>
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </LinearLayout>
-        </ScrollView>
-    </FrameLayout>
-
-    <!-- FOOTER: NAVIGATION BUTTONS -->
-    <LinearLayout
-        android:id="@+id/footerLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <Button
-            android:id="@+id/btnPrev"
-            android:layout_width="wrap_content"
+        <!-- Father Name -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fatherNameLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Previous"
-            android:visibility="gone"/>
+            android:layout_weight="0.15"
+            app:boxBackgroundColor="@android:color/white"
+            app:boxStrokeColor="#FFA500"
+            app:errorEnabled="true"
+            android:layout_marginTop="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fatherName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your father's name"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/btnSkip"
-            android:layout_width="wrap_content"
+        <!-- Address -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/addressLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Skip"
-            android:layout_marginStart="8dp"
-            android:visibility="gone"/>
+            android:layout_weight="0.2"
+            app:boxBackgroundColor="@android:color/white"
+            app:boxStrokeColor="#FFA500"
+            app:errorEnabled="true"
+            android:layout_marginTop="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your address"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/btnNext"
-            android:layout_width="wrap_content"
+        <!-- Email -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Next"
-            android:layout_marginStart="8dp"/>
+            android:layout_weight="0.2"
+            app:boxBackgroundColor="@android:color/white"
+            app:boxStrokeColor="#FFA500"
+            app:errorEnabled="true"
+            android:layout_marginTop="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your email"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:inputType="textEmailAddress"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/btnSave"
-            android:layout_width="wrap_content"
+        <!-- Vehicle Number -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/vehicleNumberLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save"
-            android:layout_marginStart="8dp"
-            android:visibility="gone"/>
+            android:layout_weight="0.2"
+            app:boxBackgroundColor="@android:color/white"
+            app:boxStrokeColor="#FFA500"
+            app:errorEnabled="true"
+            android:layout_marginTop="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/vehicleNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your vehicle number"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Username -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/usernameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            app:boxBackgroundColor="@android:color/white"
+            app:boxStrokeColor="#FFA500"
+            app:errorEnabled="true"
+            android:layout_marginTop="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your username"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Password -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passwordLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            app:boxBackgroundColor="@android:color/white"
+            app:boxStrokeColor="#FFA500"
+            app:errorEnabled="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your password"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:inputType="textPassword"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
+</ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Fixed Footer -->
+<LinearLayout
+android:id="@+id/footerLayout"
+android:layout_width="0dp"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:padding="16dp"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent">
+
+<Button
+    android:id="@+id/createAccountButton"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Create Account"
+    android:backgroundTint="#FF6200EE"
+    android:textColor="@android:color/white"
+    android:textStyle="bold"/>
+
+<!-- Watermark (fixed at bottom) -->
+<TextView
+    android:id="@+id/watermarkTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Developed By GKCT Info Solutions"
+    android:textSize="14sp"
+    android:textColor="#80FFFFFF"
+    android:layout_gravity="center_horizontal"
+    android:paddingTop="8dp"/>
+</LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

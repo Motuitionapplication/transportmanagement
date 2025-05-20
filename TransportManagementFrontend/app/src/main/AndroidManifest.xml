@@ -103,7 +103,7 @@
 
         <!-- Profile screen -->
         <activity
-            android:name=".ProfileActivity"
+            android:name=".OwnerProfileActivity"
             android:exported="true"
             android:label="Profile" />
 

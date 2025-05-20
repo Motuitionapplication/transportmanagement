@@ -1,11 +1,14 @@
 package com.transportmanagementfrontend;
 
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
@@ -24,6 +27,17 @@ public interface ApiService {
 
     @POST("AddOwner")
     Call<String> registerOwner(@Body OwnerRegisterRequest registerRequest);
+
+    @PUT("update/{ownerId}")
+    Call<String> updateOwner(@Path("ownerId") int ownerId, @Body OwnerRegisterRequest request);
+
+    @POST("createOwner") // Your backend endpoint for full owner creation
+    Call<String> createOwner(@Body Owner owner);
+
+
+    @GET("owners/{ownerId}")
+    Call<Owner> getOwnerById(@Path("ownerId") int ownerId);
+
 
     // Endpoint to send a verification code to the user's email
     @POST("user/forgot-password")

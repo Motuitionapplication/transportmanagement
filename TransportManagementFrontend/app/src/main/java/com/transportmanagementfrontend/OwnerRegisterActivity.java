@@ -2,13 +2,8 @@ package com.transportmanagementfrontend;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,9 +13,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-
-import java.io.IOException;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,390 +21,202 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class OwnerRegisterActivity extends AppCompatActivity {
 
-    // Page containers & navigation
-    private FrameLayout pagePersonal, pageAddress, pageAccount, pageVehicle;
-    private Button btnPrev, btnNext, btnSkip, btnSave;
-    private int currentPage = 1;
-
-    // PERSONAL fields
-    private TextInputEditText etFirstName, etLastName, etPhone, etUsername, etPassword, etFatherName, etEmail, etAddressProofType, etAddressProofNumber,
-            etIdentityProofType, etIdentityProofNumber, etVehicleNumber;
-    ;
-    private TextInputLayout loFirstName, loLastName, loPhone, loUsername, loPassword, loFatherName, loEmail, loVehicleNumber;
-
-    // ADDRESS fields
-    private TextInputEditText etPresAt, etPresPo,
-            etPresTown, etPresPs, etPresDist, etPresState, etPresPin, etPresMob, etPresType;
-    private TextInputEditText etPermAt, etPermPo,
-            etPermTown, etPermPs, etPermDist, etPermState, etPermPin, etPermMob, etPermType;
-    private CheckBox cbSameAsPresent;
-
-    // ACCOUNT fields (optional)
-    private TextInputEditText etAccountNumber, etBranchName, etIfscCode, etBranchAddress, etUpiNumber, etGst;
-    private TextInputLayout loAccountNumber, loBranchName, loIfscCode, loBranchAddress, loUpiNumber, loGst;
-
-    // VEHICLE fields
-    private TextInputEditText  etVehicleType, etChassisNumber,
-            etInsurancePaper, etFitnessCert, etPermit, etPollutionCert, etRc, etCapacity;
-    private TextInputLayout  loVehicleType, loChassisNumber,
-            loInsurancePaper, loFitnessCert, loPermit, loPollutionCert, loRc, loCapacity;
-
-    // Nested-detail classes (no UI view needed here—these are for your request payload)
-    private AccountDetails accountDetails;
-    private VehicleDetails vehicleDetails;
-    private Address address;
-
-    private final String BASE_URL = "http://10.0.2.2:8080/api/owners/";
+    // Declare UI elements
+    private TextInputLayout firstNameLayout, lastNameLayout, phoneLayout, fatherNameLayout, addressLayout, emailLayout, vehicleNumberLayout, usernameLayout, passwordLayout;
+    private TextInputEditText firstNameEditText, lastNameEditText, phoneEditText, fatherNameEditText, addressEditText, emailEditText, vehicleNumberEditText, usernameEditText, passwordEditText;
+    private Button createAccountButton;
+    private String selectedRole = "Owner";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner_register);
 
-        bindViews();
-        showPage(1);
+        // Initialize UI components
+        firstNameLayout = findViewById(R.id.firstNameLayout);
+        lastNameLayout = findViewById(R.id.lastNameLayout);
+        phoneLayout = findViewById(R.id.phoneLayout);
+        fatherNameLayout = findViewById(R.id.fatherNameLayout);
+        addressLayout = findViewById(R.id.addressLayout);
+        emailLayout = findViewById(R.id.emailLayout);
+        vehicleNumberLayout = findViewById(R.id.vehicleNumberLayout);
+        usernameLayout = findViewById(R.id.usernameLayout);
+        passwordLayout = findViewById(R.id.passwordLayout);
 
-        btnNext.setOnClickListener(v -> {
-            if (validatePage(currentPage)) {
-                showPage(++currentPage);
+        firstNameEditText = findViewById(R.id.firstName);
+        lastNameEditText = findViewById(R.id.lastName);
+        phoneEditText = findViewById(R.id.phone);
+        fatherNameEditText = findViewById(R.id.fatherName);
+        addressEditText = findViewById(R.id.address);
+        emailEditText = findViewById(R.id.email);
+        vehicleNumberEditText = findViewById(R.id.vehicleNumber);
+        usernameEditText = findViewById(R.id.username);
+        passwordEditText = findViewById(R.id.password);
+
+        createAccountButton = findViewById(R.id.createAccountButton);
+
+        // Set validation on focus change
+        setValidationOnFocus(firstNameEditText, firstNameLayout, "Please enter your first name");
+        setValidationOnFocus(lastNameEditText, lastNameLayout, "Please enter your last name");
+        setValidationOnFocus(fatherNameEditText, fatherNameLayout, "Please enter your father's name");
+        setValidationOnFocus(emailEditText, emailLayout, "Please enter a valid email");
+        setValidationOnFocus(usernameEditText, usernameLayout, "Please enter your username");
+        setValidationOnFocus(addressEditText, addressLayout, "Please enter your address");
+        setValidationOnFocus(passwordEditText, passwordLayout, "Password must be at least 6 characters");
+        setValidationOnFocus(vehicleNumberEditText, vehicleNumberLayout, "Please enter vehicle number");
+
+        // Phone number validation (must be 10 digits)
+        phoneEditText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                String phone = phoneEditText.getText().toString().trim();
+                if (!phone.matches("\\d{10}")) {
+                    phoneLayout.setError("Enter a valid 10-digit phone number");
+                    phoneEditText.setBackgroundResource(R.drawable.edit_text_error);
+                } else {
+                    phoneLayout.setError(null);
+                    phoneEditText.setBackgroundResource(R.drawable.edit_text_background);
+                }
             }
         });
-        btnPrev.setOnClickListener(v -> showPage(--currentPage));
-        btnSkip.setOnClickListener(v -> {
-            currentPage = 4;
-            showPage(currentPage);
-        });
-        btnSave.setOnClickListener(v -> {
-            if (validatePage(currentPage)) {
-                collectAndSubmit();
+
+        // Email validation on focus change (check if it's empty or invalid)
+        emailEditText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                String email = emailEditText.getText().toString().trim();
+                if (email.isEmpty()) {
+                    emailLayout.setError("Please enter a valid email");
+                    emailEditText.setBackgroundResource(R.drawable.edit_text_error);
+                } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    emailLayout.setError("Enter a valid email");
+                    emailEditText.setBackgroundResource(R.drawable.edit_text_error);
+                } else {
+                    emailLayout.setError(null);
+                    emailEditText.setBackgroundResource(R.drawable.edit_text_background);
+                }
             }
         });
 
-        cbSameAsPresent.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                copyPresentToPermanent();
-                setPermanentFieldsVisibility(false);
+        // Register button click
+        createAccountButton.setOnClickListener(v -> {
+            String firstName = getSafeText(firstNameEditText);
+            String lastName = getSafeText(lastNameEditText);
+            String phone = getSafeText(phoneEditText);
+            String fatherName = getSafeText(fatherNameEditText);
+            String address = getSafeText(addressEditText);
+            String email = getSafeText(emailEditText);
+            String vehicleNumber= getSafeText(vehicleNumberEditText);
+            String username = getSafeText(usernameEditText);
+            String password = getSafeText(passwordEditText);
+
+            // Validate required fields
+            if (firstName.isEmpty() || lastName.isEmpty() || phone.isEmpty() || fatherName.isEmpty() || address.isEmpty() ||
+                    email.isEmpty() || vehicleNumber.isEmpty() || username.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Validate email format
+            if (email.isEmpty()) {
+                emailLayout.setError("Please enter a valid email");
+                emailEditText.setBackgroundResource(R.drawable.edit_text_error);
+                return;
+            } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                emailLayout.setError("Enter a valid email");
+                emailEditText.setBackgroundResource(R.drawable.edit_text_error);
+                return;
             } else {
-                setPermanentFieldsVisibility(true);
+                emailLayout.setError(null);
+                emailEditText.setBackgroundResource(R.drawable.edit_text_background);
+            }
+
+            // Validate password (at least 6 characters)
+            if (password.length() < 6) {
+                passwordLayout.setError("Password must be at least 6 characters");
+                passwordEditText.setBackgroundResource(R.drawable.edit_text_error);
+                return;
+            } else {
+                passwordLayout.setError(null);
+                passwordEditText.setBackgroundResource(R.drawable.edit_text_background);
+            }
+
+            // Register API call
+            registerOwner(firstName, lastName, phone, fatherName, address, email, vehicleNumber, username, password);
+        });
+    }
+
+    // Function to set validation on focus change
+    private void setValidationOnFocus(TextInputEditText editText, TextInputLayout layout, String errorMessage) {
+        editText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                if (editText.getText().toString().trim().isEmpty()) {
+                    layout.setError(errorMessage);
+                    editText.setBackgroundResource(R.drawable.edit_text_error);
+                } else {
+                    layout.setError(null);
+                    editText.setBackgroundResource(R.drawable.edit_text_background);
+                }
             }
         });
     }
 
-    private void bindViews() {
-        pagePersonal = findViewById(R.id.page_personal);
-        pageAddress = findViewById(R.id.page_address);
-        pageAccount = findViewById(R.id.page_account);
-        pageVehicle = findViewById(R.id.page_vehicle);
-        btnPrev = findViewById(R.id.btnPrev);
-        btnNext = findViewById(R.id.btnNext);
-        btnSkip = findViewById(R.id.btnSkip);
-        btnSave = findViewById(R.id.btnSave);
-
-        loFirstName = findViewById(R.id.firstNameLayout);
-        loLastName = findViewById(R.id.lastNameLayout);
-        loPhone = findViewById(R.id.phoneLayout);
-        loUsername = findViewById(R.id.usernameLayout);
-        loPassword = findViewById(R.id.passwordLayout);
-        loFatherName = findViewById(R.id.fatherNameLayout);
-        loEmail = findViewById(R.id.emailLayout);
-        loVehicleNumber = findViewById(R.id.vehicleNumberLayout);
-        etFirstName = findViewById(R.id.firstName);
-        etLastName = findViewById(R.id.lastName);
-        etPhone = findViewById(R.id.phone);
-        etUsername = findViewById(R.id.username);
-        etPassword = findViewById(R.id.password);
-        etFatherName = findViewById(R.id.fatherName);
-        etEmail = findViewById(R.id.email);
-        etAddressProofType = findViewById(R.id.addressProofType);
-        etAddressProofNumber = findViewById(R.id.addressProofNumber);
-        etIdentityProofType = findViewById(R.id.identityProofType);
-        etIdentityProofNumber = findViewById(R.id.identityProofNumber);
-        etVehicleNumber = findViewById(R.id.vehicleNumber);
-
-
-        cbSameAsPresent = findViewById(R.id.cbSameAsPresent);
-        etPresAt = findViewById(R.id.presAt);
-        etPresPo = findViewById(R.id.presPo);
-        etPresTown = findViewById(R.id.presTown);
-        etPresPs = findViewById(R.id.presPs);
-        etPresDist = findViewById(R.id.presDist);
-        etPresState = findViewById(R.id.presState);
-        etPresPin = findViewById(R.id.presPin);
-        etPresMob = findViewById(R.id.presMob);
-        etPresType = findViewById(R.id.presType);
-        etPermAt = findViewById(R.id.permAt);
-        etPermPo = findViewById(R.id.permPo);
-        etPermTown = findViewById(R.id.permTown);
-        etPermPs = findViewById(R.id.permPs);
-        etPermDist = findViewById(R.id.permDist);
-        etPermState = findViewById(R.id.permState);
-        etPermPin = findViewById(R.id.permPin);
-        etPermMob = findViewById(R.id.permMob);
-        etPermType = findViewById(R.id.permType);
-
-        loAccountNumber = findViewById(R.id.accountNumberLayout);
-        loBranchName = findViewById(R.id.branchNameLayout);
-        loIfscCode = findViewById(R.id.ifscLayout);
-        loBranchAddress = findViewById(R.id.branchAddressLayout);
-        loUpiNumber = findViewById(R.id.upiLayout);
-        loGst = findViewById(R.id.gstLayout);
-        etAccountNumber = findViewById(R.id.accountNumber);
-        etBranchName = findViewById(R.id.branchName);
-        etIfscCode = findViewById(R.id.ifscCode);
-        etBranchAddress = findViewById(R.id.branchAddress);
-        etUpiNumber = findViewById(R.id.upiNumber);
-        etGst = findViewById(R.id.gst);
-
-        loVehicleType = findViewById(R.id.vehicleTypeLayout);
-        loChassisNumber = findViewById(R.id.chassisNumberLayout);
-        loInsurancePaper = findViewById(R.id.insurancePaperLayout);
-        loFitnessCert = findViewById(R.id.fitnessCertLayout);
-        loPermit = findViewById(R.id.permitLayout);
-        loPollutionCert = findViewById(R.id.pollutionCertLayout);
-        loRc = findViewById(R.id.rcLayout);
-        loCapacity = findViewById(R.id.capacityLayout);
-        etVehicleType = findViewById(R.id.vehicleType);
-        etChassisNumber = findViewById(R.id.chassisNumber);
-        etInsurancePaper = findViewById(R.id.insurancePaper);
-        etFitnessCert = findViewById(R.id.fitnessCert);
-        etPermit = findViewById(R.id.permit);
-        etPollutionCert = findViewById(R.id.pollutionCert);
-        etRc = findViewById(R.id.rc);
-        etCapacity = findViewById(R.id.capacity);
+    // Function to safely get text from input
+    private String getSafeText(TextInputEditText editText) {
+        return (editText != null && editText.getText() != null) ? editText.getText().toString().trim() : "";
     }
 
-    private void showPage(int page) {
-        currentPage = page;
-        pagePersonal.setVisibility(page == 1 ? View.VISIBLE : View.GONE);
-        pageAddress.setVisibility(page == 2 ? View.VISIBLE : View.GONE);
-        pageAccount.setVisibility(page == 3 ? View.VISIBLE : View.GONE);
-        pageVehicle.setVisibility(page == 4 ? View.VISIBLE : View.GONE);
-
-        btnPrev.setVisibility(page > 1 ? View.VISIBLE : View.GONE);
-        btnNext.setVisibility(page < 4 ? View.VISIBLE : View.GONE);
-        btnSkip.setVisibility(page == 3 ? View.VISIBLE : View.GONE);
-        btnSave.setVisibility(page == 4 ? View.VISIBLE : View.GONE);
-    }
-
-    private boolean validatePage(int page) {
-        switch (page) {
-            case 1:
-                return validateText(etFirstName, loFirstName, "Required")
-                        & validateText(etLastName, loLastName, "Required")
-                        & validatePhone()
-                        & validateText(etUsername, loUsername, "Required")
-                        & validateText(etPassword, loPassword, "Min 6 chars", 6)
-                        & validateText(etFatherName, loFatherName, "Required")
-                        & validateEmail();
-            case 2:
-                boolean ok = true;
-                for (TextInputEditText e : new TextInputEditText[]{
-                        etPresAt, etPresPo,
-                        etPresTown, etPresPs, etPresDist, etPresState,
-                        etPresPin, etPresMob, etPresType}) {
-                    ok &= validateText(e, null, "Required");
-                }
-                if (!cbSameAsPresent.isChecked()) {
-                    for (TextInputEditText e : new TextInputEditText[]{
-                            etPermAt, etPermPo,
-                            etPermTown, etPermPs, etPermDist, etPermState,
-                            etPermPin, etPermMob, etPermType}) {
-                        ok &= validateText(e, null, "Required");
-                    }
-                }
-                return ok;
-            case 3:
-                return true; // optional
-            case 4:
-                boolean ok2 = true;
-                for (TextInputEditText e : new TextInputEditText[]{
-                         etVehicleType, etChassisNumber,
-                        etInsurancePaper, etFitnessCert, etPermit,
-                        etPollutionCert, etRc, etCapacity}) {
-                    ok2 &= validateText(e, null, "Required");
-                }
-                return ok2;
-        }
-        return true;
-    }
-
-    private boolean validateText(EditText et, TextInputLayout layout, String errMsg) {
-        if (TextUtils.isEmpty(et.getText())) {
-            if (layout != null) layout.setError(errMsg);
-            return false;
-        }
-        if (layout != null) layout.setError(null);
-        return true;
-    }
-
-    private boolean validateText(EditText et, TextInputLayout layout, String errMsg, int minLen) {
-        if (et.getText().length() < minLen) {
-            if (layout != null) layout.setError(errMsg);
-            return false;
-        }
-        if (layout != null) layout.setError(null);
-        return true;
-    }
-
-    private boolean validatePhone() {
-        String p = etPhone.getText().toString().trim();
-        if (!p.matches("\\d{10}")) {
-            loPhone.setError("10 digits");
-            return false;
-        }
-        loPhone.setError(null);
-        return true;
-    }
-
-    private boolean validateEmail() {
-        String email = etEmail.getText().toString().trim();
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            loEmail.setError("Invalid email");
-            return false;
-        }
-        loEmail.setError(null);
-        return true;
-    }
-
-    private void copyPresentToPermanent() {
-        etPermAt.setText(etPresAt.getText());
-        etPermPo.setText(etPresPo.getText());
-        etPermTown.setText(etPresTown.getText());
-        etPermPs.setText(etPresPs.getText());
-        etPermDist.setText(etPresDist.getText());
-        etPermState.setText(etPresState.getText());
-        etPermPin.setText(etPresPin.getText());
-        etPermMob.setText(etPresMob.getText());
-        etPermType.setText(etPresType.getText());
-    }
-
-    private void setPermanentFieldsVisibility(boolean visible) {
-        int v = visible ? View.VISIBLE : View.GONE;
-        findViewById(R.id.permAtLayout).setVisibility(v);
-        findViewById(R.id.permPoLayout).setVisibility(v);
-        findViewById(R.id.permTownLayout).setVisibility(v);
-        findViewById(R.id.permPsLayout).setVisibility(v);
-        findViewById(R.id.permDistLayout).setVisibility(v);
-        findViewById(R.id.permStateLayout).setVisibility(v);
-        findViewById(R.id.permPinLayout).setVisibility(v);
-        findViewById(R.id.permMobLayout).setVisibility(v);
-        findViewById(R.id.permTypeLayout).setVisibility(v);
-    }
-
-    private void collectAndSubmit() {
-        // Personal
-        String fn = etFirstName.getText().toString().trim();
-        String ln = etLastName.getText().toString().trim();
-        String ph = etPhone.getText().toString().trim();
-        String fa = etFatherName.getText().toString().trim();
-        String em = etEmail.getText().toString().trim();
-        String un = etUsername.getText().toString().trim();
-        String pw = etPassword.getText().toString().trim();
-        String role = "owner";
-        String addressProofType = etAddressProofType.getText().toString().trim();
-        String addressProofNumber = etAddressProofNumber.getText().toString().trim();
-        String identityProofType = etIdentityProofType.getText().toString().trim();
-        String identityProofNumber = etIdentityProofNumber.getText().toString().trim();
-        String vehicleNumber = etVehicleNumber.getText().toString().trim();
-
-        // Present Address
-        Address presentAddress = new Address(
-                etPresAt.getText().toString().trim(),
-                etPresPo.getText().toString().trim(),
-                etPresTown.getText().toString().trim(),
-                etPresPs.getText().toString().trim(),
-                etPresDist.getText().toString().trim(),
-                etPresState.getText().toString().trim(),
-                etPresPin.getText().toString().trim(),
-                etPresMob.getText().toString().trim(),
-                etPresType.getText().toString().trim()
-        );
-
-        // Permanent Address (only if "Same as Present" is unchecked)
-        Address permanentAddress = cbSameAsPresent.isChecked() ?
-                presentAddress : new Address(
-                etPermAt.getText().toString().trim(),
-                etPermPo.getText().toString().trim(),
-                etPermTown.getText().toString().trim(),
-                etPermPs.getText().toString().trim(),
-                etPermDist.getText().toString().trim(),
-                etPermState.getText().toString().trim(),
-                etPermPin.getText().toString().trim(),
-                etPermMob.getText().toString().trim(),
-                etPermType.getText().toString().trim()
-        );
-
-        // Account (optional)
-        AccountDetails accountDetails = new AccountDetails(
-                etAccountNumber.getText().toString().trim(),
-                etBranchName.getText().toString().trim(),
-                etIfscCode.getText().toString().trim(),
-                etBranchAddress.getText().toString().trim(),
-                etUpiNumber.getText().toString().trim(),
-                etGst.getText().toString().trim()
-        );
-
-        // Vehicle
-        VehicleDetails vehicleDetails = new VehicleDetails(
-                etVehicleType.getText().toString().trim(),
-                etChassisNumber.getText().toString().trim(),
-                etInsurancePaper.getText().toString().trim(),
-                etFitnessCert.getText().toString().trim(),
-                etPermit.getText().toString().trim(),
-                etPollutionCert.getText().toString().trim(),
-                etRc.getText().toString().trim(),
-                etCapacity.getText().toString().trim()
-        );
-
-        // Create the request object
-        OwnerRegisterRequest req = new OwnerRegisterRequest(
-                fn, ln, ph, fa, em, un, pw, role,
-                addressProofType, addressProofNumber,
-                identityProofType, identityProofNumber, vehicleNumber,
-                presentAddress, permanentAddress,
-                accountDetails, vehicleDetails
-        );
-
+    // API Call to register owner
+    private void registerOwner(String firstName, String lastName, String phone, String fatherName, String address, String email,
+                               String vehicleNumber, String username, String password) {
         Gson gson = new GsonBuilder().setLenient().create();
+
+        String baseUrl = selectedRole.equalsIgnoreCase("owner")
+                ? "http://10.0.2.2:8080/api/owners/"
+                : "http://10.0.2.2:8080/api/";
+
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(baseUrl)
+                //.baseUrl("http://10.0.2.2:8080/api/")
+                //.baseUrl("http://gkct1transport.us-east-1.elasticbeanstalk.com/api/") // Use production URL here
                 .addConverterFactory(retrofit2.converter.scalars.ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
-        ApiService api = retrofit.create(ApiService.class);
 
-        api.registerOwner(req).enqueue(new Callback<String>() {
+        ApiService apiService = retrofit.create(ApiService.class);
+        OwnerRegisterRequest registerRequest = new OwnerRegisterRequest(
+                firstName,
+                lastName,
+                phone,
+                fatherName,
+                address,
+                email,
+                vehicleNumber,
+                username,
+                password,
+                "owner"
+        );
+       // OwnerRegisterRequest registerRequest = new OwnerRegisterRequest(firstName, lastName, phone, fatherName, address, email, vehicleNumber, username, password, "owner");
+        Call<String> call = apiService.registerOwner(registerRequest);
+        call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> res) {
-                if (res.isSuccessful()) {
-                    Toast.makeText(OwnerRegisterActivity.this, "Registered!", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(OwnerRegisterActivity.this, OwnerHomeActivity.class)
-                            .putExtra("FIRST_NAME", fn));
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(OwnerRegisterActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(OwnerRegisterActivity.this, LoginActivity.class);
+                    intent.putExtra("ROLE", "Owner");
+                    startActivity(intent);
                     finish();
                 } else {
-                    // Log the HTTP code and error body
-                    int code = res.code();
-                    String errorBody = "‹empty›";
-                    try {
-                        if (res.errorBody() != null) {
-                            errorBody = res.errorBody().string();
-                        }
-                    } catch (IOException e) {
-                        Log.e("OwnerReg", "Error reading errorBody", e);
-                    }
-                    Log.e("OwnerReg", "Registration failed, HTTP " + code + ": " + errorBody);
-                    Toast.makeText(OwnerRegisterActivity.this,
-                            "Registration failed: HTTP " + code,
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(OwnerRegisterActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Log.e("OwnerReg", "Network error", t);
-                Toast.makeText(OwnerRegisterActivity.this, "Network error, please try again", Toast.LENGTH_LONG).show();
+                Log.e("API_ERROR", "Registration failed: " + t.getMessage());
+                Toast.makeText(OwnerRegisterActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
+
 
 }
