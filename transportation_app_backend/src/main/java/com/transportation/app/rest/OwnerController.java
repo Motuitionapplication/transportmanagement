@@ -35,6 +35,16 @@ public class OwnerController {
         return ResponseEntity.status(201).body(result);
     }
 
+    @GetMapping("FindOwner/{id}")
+    public ResponseEntity<OwnerParameter> getOwnerById(@PathVariable int id) {
+        OwnerParameter owner = ownerService.getOwnerById(id);
+        if (owner == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(owner);
+    }
+
+
     @PostMapping("/loginOwner")
     public ResponseEntity<LoginResponseOwner> loginOwner(@RequestBody LoginParamOwner loginParamOwner) {
         LoginResponseOwner result = ownerService.checkLogin(loginParamOwner);

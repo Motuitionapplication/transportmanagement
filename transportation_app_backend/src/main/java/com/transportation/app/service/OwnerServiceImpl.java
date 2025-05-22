@@ -178,11 +178,18 @@ public class OwnerServiceImpl implements OwnerService {
        DELETE
        -------------------------------------------------- */
     @Override
-    public String deleteOwner(int ownerId) {
-        if (ownerRepo.existsById(ownerId)) {
-            ownerRepo.deleteById(ownerId);
+    public String deleteOwner(int id) {
+        if (ownerRepo.existsById(id)) {
+            ownerRepo.deleteById(id);
             return "Owner deleted successfully";
         }
         return "Owner not found";
     }
+
+	
+	@Override
+	public OwnerParameter getOwnerById(int id) {
+	    return ownerRepo.findById(id).orElse(null);
+	}
+
 }

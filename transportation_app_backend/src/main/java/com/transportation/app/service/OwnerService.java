@@ -23,5 +23,8 @@ public interface OwnerService {
 	public String updateOwner(OwnerParameter ownerParameter);
 
 	// Deletes an owner by ID
-	public String deleteOwner(int ownerId);
+	public String deleteOwner(int id);
+	
+	public OwnerParameter getOwnerById(int id);
+
 }
