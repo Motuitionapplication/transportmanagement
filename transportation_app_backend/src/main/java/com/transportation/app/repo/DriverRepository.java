@@ -1,11 +1,12 @@
 package com.transportation.app.repo;
 
-import java.io.Serializable;
 import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import com.transportation.app.binding.DriverParameter;
 
-public interface DriverRepository extends JpaRepository<DriverParameter, Serializable> {
+public interface DriverRepository extends JpaRepository<DriverParameter, Integer> {
     DriverParameter findByPassword(String password);
     DriverParameter findByUsername(String username);
     
