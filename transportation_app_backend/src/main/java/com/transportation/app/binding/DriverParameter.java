@@ -12,68 +12,67 @@ import jakarta.persistence.Table;
 @Table(name = "DRIVER_REG_DETAILS")
 public class DriverParameter {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    @Schema(description = "Driver's first name", example = "Rajesh")
-    private String firstName;
+	@Schema(description = "Driver's first name", example = "Rajesh")
+	private String firstName;
 
-    @Schema(description = "Driver's last name", example = "Kumar")
-    private String lastName;
+	@Schema(description = "Driver's last name", example = "Kumar")
+	private String lastName;
 
-    @Schema(description = "Mobile number", example = "9876543210")
-    private String phone;
+	@Schema(description = "Mobile number", example = "9876543210")
+	private String phone;
 
-    @Schema(description = "Username or User ID", example = "rajesh.kumar")
-    private String username;
+	@Schema(description = "Username or User ID", example = "rajesh.kumar")
+	private String username;
 
-    @Schema(description = "Password", example = "Pass@123")
-    private String password;
+	@Schema(description = "Password", example = "Pass@123")
+	private String password;
 
-    @Schema(description = "Driving license number", example = "DL0420190012345")
-    private String dlNumber;
+	@Schema(description = "Driving license number", example = "DL0420190012345")
+	private String dlNumber;
 
-    @Schema(description = "Type of driving license", example = "LMV")
-    private String dlType;
+	@Schema(description = "Type of driving license", example = "LMV")
+	private String dlType;
 
-    @Schema(description = "Email ID", example = "rajesh.kumar@example.com")
-    private String email;
+	@Schema(description = "Email ID", example = "rajesh.kumar@example.com")
+	private String email;
 
-    @Schema(description = "Father or husband name", example = "Ramesh Kumar")
-    private String fatherOrHusbandName;
+	@Schema(description = "Father or husband name", example = "Ramesh Kumar")
+	private String fatherOrHusbandName;
 
-    @Lob
-    @Schema(description = "Passport size photo (compressed)", example = "Base64 encoded image bytes")
-    private byte[] passportPhoto;
+	@Lob
+	@Schema(description = "Passport size photo (compressed)", example = "Base64 encoded image bytes")
+	private String passportPhoto;
 
-    @Schema(description = "Type of identity proof", example = "Aadhar")
-    private String identityProofType;
+	@Schema(description = "Type of identity proof", example = "Aadhar")
+	private String identityProofType;
 
-    @Schema(description = "Path to uploaded identity proof file", example = "/uploads/docs/aadhar_101.pdf")
-    private String identityProofFilePath;
+	@Schema(description = "Path to uploaded identity proof file", example = "/uploads/docs/aadhar_101.pdf")
+	private String identityProofFilePath;
 
-    @Schema(description = "Blood group", example = "B+")
-    private String bloodGroup;
+	@Schema(description = "Blood group", example = "B+")
+	private String bloodGroup;
 
-    @Schema(description = "Path to uploaded insurance paper", example = "/uploads/docs/insurance_101.pdf")
-    private String insurancePaperFilePath;
+	@Schema(description = "Path to uploaded insurance paper", example = "/uploads/docs/insurance_101.pdf")
+	private String insurancePaperFilePath;
 
-    @Schema(description = "Vehicle number assigned", example = "MH12AB1234")
-    private String vehicleNumber;
+	@Schema(description = "Vehicle number assigned", example = "MH12AB1234")
+	private String vehicleNumber;
 
-    @Schema(description = "Role of the user", example = "Driver")
-    private String selectedRole;
+	@Schema(description = "Role of the user", example = "Driver")
+	private String selectedRole;
 
-    
-    public DriverParameter() {
-    }
+	public DriverParameter() {
+	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -149,11 +148,11 @@ public class DriverParameter {
 		this.fatherOrHusbandName = fatherOrHusbandName;
 	}
 
-	public byte[] getPassportPhoto() {
+	public String getPassportPhoto() {
 		return passportPhoto;
 	}
 
-	public void setPassportPhoto(byte[] passportPhoto) {
+	public void setPassportPhoto(String passportPhoto) {
 		this.passportPhoto = passportPhoto;
 	}
 
@@ -204,10 +203,9 @@ public class DriverParameter {
 	public void setSelectedRole(String selectedRole) {
 		this.selectedRole = selectedRole;
 	}
-    
 
-    // Getters and Setters (same as before)
+	// Getters and Setters (same as before)
 
-    // ... [getters and setters omitted for brevity] ...
-    
+	// ... [getters and setters omitted for brevity] ...
+
 }

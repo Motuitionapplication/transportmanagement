@@ -4,16 +4,26 @@ import java.util.List;
 import com.transportation.app.binding.DriverParameter;
 import com.transportation.app.binding.LoginParamDriver;
 import com.transportation.app.binding.LoginResponseDriver;
+import com.transportation.app.binding.OwnerParameter;
 
 public interface DriverService {
 
-    String createDriver(DriverParameter driverParameter);
-    LoginResponseDriver checkLogin(LoginParamDriver loginParamDriver);
+	
+    public String createOrUpdateDriver(DriverParameter driverParameter);
+    
+    public LoginResponseDriver checkLogin(LoginParamDriver loginParamDriver);
+    
+	public DriverParameter findByUsername(String username);
     
     // Retrieve drivers by vehicleNumber
-    List<DriverParameter> getDriversByVehicleNumber(String vehicleNumber);
+   public  List<DriverParameter> getDriversByVehicleNumber(String vehicleNumber);
     
     // Update and delete operations
-    String updateDriver(DriverParameter driverParameter);
-    String deleteDriver(int driverId);
+   public String updateDriver(DriverParameter driverParameter);
+   
+   
+   public  String deleteDriver(int id);
+   
+   
+   public DriverParameter getDriverById(int id);
 }
