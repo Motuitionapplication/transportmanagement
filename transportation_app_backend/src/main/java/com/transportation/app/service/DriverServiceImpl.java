@@ -3,100 +3,67 @@ package com.transportation.app.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.transportation.app.binding.DriverParameter;
 import com.transportation.app.binding.LoginParamDriver;
 import com.transportation.app.binding.LoginResponseDriver;
+import com.transportation.app.binding.OwnerParameter;
 import com.transportation.app.repo.DriverRepository;
+import com.transportation.app.repo.OwnerRepository;
 
-/**
- * Service implementation for {@link DriverParameter} entity operations.
- * <p>
- * Note: This class mirrors the behaviour of {@code OwnerServiceImpl} so that
- * driver–related CRUD operations behave consistently with owner–related ones.
- * Extensive inline comments have been added for learning / walkthrough
- * purposes. Remove or trim comments once you are comfortable with the flow.
- */
 @Service
 public class DriverServiceImpl implements DriverService {
 
-    /* --------------------------------------------------
-     * Dependencies
-     * -------------------------------------------------- */
-    @Autowired
-    private DriverRepository driverRepo;              // Spring Data repository for DriverParameter
+    private final DriverRepository driverRepo;
+    private final OwnerRepository  ownerRepo;
 
-    /**
-     * Constructor‑based injection preferred for testability. The field is still
-     * annotated with {@code @Autowired} so legacy code continues working even
-     * if Spring falls back to field injection.
-     */
-    public DriverServiceImpl(DriverRepository driverRepo) {
+    public DriverServiceImpl(DriverRepository driverRepo,
+                             OwnerRepository ownerRepo) {
         this.driverRepo = driverRepo;
+        this.ownerRepo  = ownerRepo;
     }
 
     /* --------------------------------------------------
      * CREATE or UPDATE
      * -------------------------------------------------- */
-    /**
-     * If {@code driverParameter.id} is present and found in the DB, update that
-     * record; otherwise create a new one. Mirrors the logic in
-     * {@code OwnerServiceImpl#createOrUpdateOwner} so your REST behaviour stays
-     * predictable across entities.
-     */
     @Override
     @Transactional
     public String createOrUpdateDriver(DriverParameter driverParameter) {
 
-        // ------------------------------------------------------------
-        // UPDATE path – ID present *and* driver already exists
-        // ------------------------------------------------------------
-        if (driverParameter.getId() != null) {
-            Optional<DriverParameter> optionalDriver = driverRepo.findById(driverParameter.getId());
-
-            if (optionalDriver.isPresent()) {
-                DriverParameter existingDriver = optionalDriver.get();
-
-                /* ---------- BASIC FIELDS ---------- */
-                existingDriver.setFirstName(driverParameter.getFirstName());
-                existingDriver.setLastName(driverParameter.getLastName());
-                existingDriver.setPhone(driverParameter.getPhone());
-                existingDriver.setUsername(driverParameter.getUsername());
-                existingDriver.setPassword(driverParameter.getPassword());
-
-                /* ---------- DRIVING‑LICENCE DETAILS ---------- */
-                existingDriver.setDlNumber(driverParameter.getDlNumber());
-                existingDriver.setDlType(driverParameter.getDlType());
-
-                /* ---------- CONTACT / PROFILE ---------- */
-                existingDriver.setEmail(driverParameter.getEmail());
-                existingDriver.setFatherOrHusbandName(driverParameter.getFatherOrHusbandName());
-
-                /* ---------- DOCUMENTS & MEDIA ---------- */
-                existingDriver.setPassportPhoto(driverParameter.getPassportPhoto());
-                existingDriver.setIdentityProofType(driverParameter.getIdentityProofType());
-                existingDriver.setIdentityProofFilePath(driverParameter.getIdentityProofFilePath());
-                existingDriver.setInsurancePaperFilePath(driverParameter.getInsurancePaperFilePath());
-
-                /* ---------- HEALTH & VEHICLE ---------- */
-                existingDriver.setBloodGroup(driverParameter.getBloodGroup());
-                existingDriver.setVehicleNumber(driverParameter.getVehicleNumber());
-
-                /* ---------- ROLE ---------- */
-                existingDriver.setSelectedRole(driverParameter.getSelectedRole());
-
-                // Persist the updates in a single transaction
-                driverRepo.save(existingDriver);
-                return "Driver updated successfully";
-            }
+        /* 1️⃣  Resolve the owner by username (FK) */
+        if (driverParameter.getOwner() == null ||
+            driverParameter.getOwner().getUsername() == null) {
+            return "Owner username must be provided";
         }
 
-        // ------------------------------------------------------------
-        // CREATE path – new entity (no ID, or ID not found)
-        // ------------------------------------------------------------
+        OwnerParameter owner = ownerRepo
+                .findByUsername(driverParameter.getOwner().getUsername())
+                .orElseThrow(() ->
+                     new IllegalArgumentException(
+                         "Owner not found with username: "
+                         + driverParameter.getOwner().getUsername()));
+
+        driverParameter.setOwner(owner);           // link FK
+
+        /* 2️⃣  UPDATE path */
+        if (driverParameter.getId() != null &&
+            driverRepo.existsById(driverParameter.getId())) {
+
+            DriverParameter existing = driverRepo
+                    .findById(driverParameter.getId())
+                    .orElseThrow();                // should exist
+
+            copyFields(driverParameter, existing);
+            driverRepo.save(existing);
+            return "Driver updated successfully";
+        }
+
+        /* 3️⃣  CREATE path */
+        if (driverParameter.getRole() == null) {
+            driverParameter.setRole("DRIVER");     // sensible default
+        }
         driverRepo.save(driverParameter);
         return "Driver created successfully";
     }
@@ -104,32 +71,25 @@ public class DriverServiceImpl implements DriverService {
     /* --------------------------------------------------
      * AUTHENTICATION
      * -------------------------------------------------- */
-    /**
-     * Validates driver credentials and returns a response DTO used by the
-     * frontend / mobile client.
-     */
     @Override
     public LoginResponseDriver checkLogin(LoginParamDriver loginParamDriver) {
-        LoginResponseDriver response = new LoginResponseDriver();
-        try {
-            // Query by username (unique)
-            DriverParameter driver = driverRepo.findByUsername(loginParamDriver.getUsername());
+        LoginResponseDriver resp = new LoginResponseDriver();
 
-            // Validate credentials
-            if (driver != null && driver.getPassword().equals(loginParamDriver.getPassword())) {
-                response.setSuccess(true);
-                response.setStatus("Success");
-                response.setDriver(Optional.of(driver));
-                return response;
-            }
-        } catch (Exception e) {
-            e.printStackTrace(); // consider SLF4J logger in production
+        DriverParameter driver =
+                driverRepo.findByUsername(loginParamDriver.getUsername());
+
+        if (driver != null &&
+            driver.getPassword().equals(loginParamDriver.getPassword())) {
+
+            resp.setSuccess(true);
+            resp.setStatus("Success");
+            resp.setDriver(Optional.of(driver));
+            return resp;
         }
 
-        // Fallback – invalid credentials
-        response.setStatus("Invalid Username or Password");
-        response.setSuccess(false);
-        return response;
+        resp.setSuccess(false);
+        resp.setStatus("Invalid Username or Password");
+        return resp;
     }
 
     /* --------------------------------------------------
@@ -151,35 +111,45 @@ public class DriverServiceImpl implements DriverService {
     }
 
     /* --------------------------------------------------
-     * UPDATE / DELETE via controller‑initiated calls
+     * UPDATE (via controller) – PUT /driver/update/{id}
      * -------------------------------------------------- */
     @Override
+    @Transactional
     public String updateDriver(DriverParameter driverParameter) {
-        if (driverParameter.getId() == null || driverParameter.getId() == 0) {
+
+        if (driverParameter.getId() == null) {
             return "Driver ID is required for update";
         }
 
-        Optional<DriverParameter> optionalDriver = driverRepo.findById(driverParameter.getId());
-        if (optionalDriver.isEmpty()) {
+        DriverParameter existing = driverRepo
+                .findById(driverParameter.getId())
+                .orElse(null);
+
+        if (existing == null) {
             return "Driver not found";
         }
 
-        DriverParameter existingDriver = optionalDriver.get();
-        // Re‑use the field‑copy logic to keep code DRY
-        existingDriver.setFirstName(driverParameter.getFirstName());
-        existingDriver.setLastName(driverParameter.getLastName());
-        existingDriver.setPhone(driverParameter.getPhone());
-        existingDriver.setUsername(driverParameter.getUsername());
-        existingDriver.setPassword(driverParameter.getPassword());
-        existingDriver.setDlNumber(driverParameter.getDlNumber());
-        existingDriver.setVehicleNumber(driverParameter.getVehicleNumber());
-        existingDriver.setSelectedRole(driverParameter.getSelectedRole());
-        existingDriver.setEmail(driverParameter.getEmail());
+        /* FK update (optional) */
+        if (driverParameter.getOwner() != null &&
+            driverParameter.getOwner().getUsername() != null) {
 
-        driverRepo.save(existingDriver);
+            OwnerParameter owner = ownerRepo
+                    .findByUsername(driverParameter.getOwner().getUsername())
+                    .orElseThrow(() ->
+                         new IllegalArgumentException(
+                             "Owner not found with username: "
+                             + driverParameter.getOwner().getUsername()));
+            existing.setOwner(owner);
+        }
+
+        copyFields(driverParameter, existing);
+        driverRepo.save(existing);
         return "Driver updated successfully";
     }
 
+    /* --------------------------------------------------
+     * DELETE
+     * -------------------------------------------------- */
     @Override
     public String deleteDriver(int id) {
         if (driverRepo.existsById(id)) {
@@ -187,5 +157,27 @@ public class DriverServiceImpl implements DriverService {
             return "Driver deleted successfully";
         }
         return "Driver not found";
+    }
+
+    /* --------------------------------------------------
+     * INTERNAL HELPER
+     * -------------------------------------------------- */
+    private static void copyFields(DriverParameter src, DriverParameter dest) {
+        dest.setFirstName(src.getFirstName());
+        dest.setLastName(src.getLastName());
+        dest.setPhone(src.getPhone());
+        dest.setUsername(src.getUsername());
+        dest.setPassword(src.getPassword());
+        dest.setDlNumber(src.getDlNumber());
+        dest.setDlType(src.getDlType());
+        dest.setEmail(src.getEmail());
+        dest.setFatherOrHusbandName(src.getFatherOrHusbandName());
+        dest.setPassportPhoto(src.getPassportPhoto());
+        dest.setIdentityProofType(src.getIdentityProofType());
+        dest.setIdentityProofFilePath(src.getIdentityProofFilePath());
+        dest.setInsurancePaperFilePath(src.getInsurancePaperFilePath());
+        dest.setBloodGroup(src.getBloodGroup());
+        dest.setVehicleNumber(src.getVehicleNumber());
+        dest.setRole(src.getRole());
     }
 }

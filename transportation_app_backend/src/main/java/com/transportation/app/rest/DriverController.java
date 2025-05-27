@@ -22,16 +22,21 @@ public class DriverController {
     private DriverService driverService;
 
     /**
-     * Creates or updates a Driver.
+     * Creates a new Driver and links it with an Owner via username.
      *
-     * @param driverParameter the driver details
-     * @return a response message indicating creation or update status
+     * @param driverParameter the driver details including owner.username
+     * @return a response message indicating success or failure
      */
     @PostMapping("/driver/AddUpdateDriver")
     public ResponseEntity<String> registerDriver(@RequestBody DriverParameter driverParameter) {
+        if (driverParameter.getOwner() == null || driverParameter.getOwner().getUsername() == null) {
+            return ResponseEntity.badRequest().body("Owner username must be provided.");
+        }
+
         String result = driverService.createOrUpdateDriver(driverParameter);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
+
 
     /**
      * Retrieves a Driver by ID.

@@ -1,11 +1,15 @@
 package com.transportation.app.binding;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,6 +20,13 @@ public class DriverParameter {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	
+	
+	@ManyToOne
+	@JsonBackReference
+	@JoinColumn(name = "owner_id")  // This should match the FK column in your DB table
+	private OwnerParameter owner;
+	
 	@Schema(description = "Driver's first name", example = "Rajesh")
 	private String firstName;
 
@@ -63,7 +74,7 @@ public class DriverParameter {
 	private String vehicleNumber;
 
 	@Schema(description = "Role of the user", example = "Driver")
-	private String selectedRole;
+	private String role;
 
 	public DriverParameter() {
 	}
@@ -196,13 +207,23 @@ public class DriverParameter {
 		this.vehicleNumber = vehicleNumber;
 	}
 
-	public String getSelectedRole() {
-		return selectedRole;
+	public String getRole() {
+		return role;
 	}
 
-	public void setSelectedRole(String selectedRole) {
-		this.selectedRole = selectedRole;
+	public void setRole(String role) {
+		this.role = role;
 	}
+
+	public OwnerParameter getOwner() {
+		return owner;
+	}
+
+	public void setOwner(OwnerParameter owner) {
+		this.owner = owner;
+	}
+
+
 
 	// Getters and Setters (same as before)
 

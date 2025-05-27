@@ -101,18 +101,18 @@ public class OwnerController {
      * @param ownerParameter owner data
      * @return status message
      */
-    @PutMapping("/update/{id}")
-    public ResponseEntity<String> upsertOwner(@PathVariable int ownerId, @RequestBody OwnerParameter ownerParameter) {
-        ownerParameter.setId(ownerId);
-        String result = ownerService.updateOwner(ownerParameter);
-
-        if ("Owner not found".equalsIgnoreCase(result) || "Owner with ID not found".equalsIgnoreCase(result)) {
-            String createResult = ownerService.createOrUpdateOwner(ownerParameter);
-            return ResponseEntity.status(201).body("Owner not found, so a new owner was created. " + createResult);
-        }
-
-        return ResponseEntity.ok(result);
-    }
+//    @PutMapping("/update/{id}")
+//    public ResponseEntity<String> upsertOwner(@PathVariable int ownerId, @RequestBody OwnerParameter ownerParameter) {
+//        ownerParameter.setId(ownerId);
+//        String result = ownerService.updateOwner(ownerParameter);
+//
+//        if ("Owner not found".equalsIgnoreCase(result) || "Owner with ID not found".equalsIgnoreCase(result)) {
+//            String createResult = ownerService.createOrUpdateOwner(ownerParameter);
+//            return ResponseEntity.status(201).body("Owner not found, so a new owner was created. " + createResult);
+//        }
+//
+//        return ResponseEntity.ok(result);
+//    }
 
     /**
      * Deletes an owner by ID.

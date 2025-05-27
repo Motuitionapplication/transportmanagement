@@ -1,14 +1,20 @@
 package com.transportation.app.binding;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
@@ -16,14 +22,9 @@ import jakarta.persistence.Version;
 @Table(name = "OWNER_REG_DETAILS")
 public class OwnerParameter {
 
-	/* ❗️MANUAL ID – removed @GeneratedValue so we can insert with any ID we want */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
-	/* ---------------------------------------------------------------------- */
-	/* BASIC FIELDS */
-	/* ---------------------------------------------------------------------- */
 
 	@Schema(description = "First name of the owner", example = "Vibek")
 	private String firstName;
@@ -55,10 +56,6 @@ public class OwnerParameter {
 	@Version
 	private Integer version;
 
-	/* ---------------------------------------------------------------------- */
-	/* PROOF / VERIFICATION FIELDS */
-	/* ---------------------------------------------------------------------- */
-
 	private String addressProofType;
 	private String addressProofNumber;
 	private boolean addressProofVerified;
@@ -67,10 +64,6 @@ public class OwnerParameter {
 	private String identityProofNumber;
 	private boolean identityProofVerified;
 
-	/* ---------------------------------------------------------------------- */
-	/* EMBEDDED VALUE OBJECTS */
-	/* ---------------------------------------------------------------------- */
-
 	@Embedded
 	private VehicleDetails vehicleDetails;
 
@@ -78,32 +71,39 @@ public class OwnerParameter {
 	private AccountDetails accountDetails;
 
 	@Embedded
-	@AttributeOverrides({ @AttributeOverride(name = "at", column = @Column(name = "present_at")),
-			@AttributeOverride(name = "po", column = @Column(name = "present_po")),
-			@AttributeOverride(name = "town", column = @Column(name = "present_town")),
-			@AttributeOverride(name = "ps", column = @Column(name = "present_ps")),
-			@AttributeOverride(name = "dist", column = @Column(name = "present_dist")),
-			@AttributeOverride(name = "state", column = @Column(name = "present_state")),
-			@AttributeOverride(name = "pin", column = @Column(name = "present_pin")),
-			@AttributeOverride(name = "mob", column = @Column(name = "present_mob")),
-			@AttributeOverride(name = "type", column = @Column(name = "present_type")) })
+	@AttributeOverrides({
+		@AttributeOverride(name = "at", column = @Column(name = "present_at")),
+		@AttributeOverride(name = "po", column = @Column(name = "present_po")),
+		@AttributeOverride(name = "town", column = @Column(name = "present_town")),
+		@AttributeOverride(name = "ps", column = @Column(name = "present_ps")),
+		@AttributeOverride(name = "dist", column = @Column(name = "present_dist")),
+		@AttributeOverride(name = "state", column = @Column(name = "present_state")),
+		@AttributeOverride(name = "pin", column = @Column(name = "present_pin")),
+		@AttributeOverride(name = "mob", column = @Column(name = "present_mob")),
+		@AttributeOverride(name = "type", column = @Column(name = "present_type"))
+	})
 	private Address presentAddress;
 
 	@Embedded
-	@AttributeOverrides({ @AttributeOverride(name = "at", column = @Column(name = "permanent_at")),
-			@AttributeOverride(name = "po", column = @Column(name = "permanent_po")),
-			@AttributeOverride(name = "town", column = @Column(name = "permanent_town")),
-			@AttributeOverride(name = "ps", column = @Column(name = "permanent_ps")),
-			@AttributeOverride(name = "dist", column = @Column(name = "permanent_dist")),
-			@AttributeOverride(name = "state", column = @Column(name = "permanent_state")),
-			@AttributeOverride(name = "pin", column = @Column(name = "permanent_pin")),
-			@AttributeOverride(name = "mob", column = @Column(name = "permanent_mob")),
-			@AttributeOverride(name = "type", column = @Column(name = "permanent_type")) })
+	@AttributeOverrides({
+		@AttributeOverride(name = "at", column = @Column(name = "permanent_at")),
+		@AttributeOverride(name = "po", column = @Column(name = "permanent_po")),
+		@AttributeOverride(name = "town", column = @Column(name = "permanent_town")),
+		@AttributeOverride(name = "ps", column = @Column(name = "permanent_ps")),
+		@AttributeOverride(name = "dist", column = @Column(name = "permanent_dist")),
+		@AttributeOverride(name = "state", column = @Column(name = "permanent_state")),
+		@AttributeOverride(name = "pin", column = @Column(name = "permanent_pin")),
+		@AttributeOverride(name = "mob", column = @Column(name = "permanent_mob")),
+		@AttributeOverride(name = "type", column = @Column(name = "permanent_type"))
+	})
 	private Address permanentAddress;
 
-	/* ---------------------------------------------------------------------- */
-	/* GETTERS & SETTERS */
-	/* ---------------------------------------------------------------------- */
+	// ✅ RELATIONSHIP: One Owner to Many Drivers
+	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonManagedReference
+	private List<DriverParameter> drivers;
+
+	// ---------------- Getters & Setters ----------------
 
 	public Integer getId() {
 		return id;
@@ -185,13 +185,7 @@ public class OwnerParameter {
 		this.email = email;
 	}
 
-	public Integer getVersion() {
-		return version;
-	}
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
 
 	public String getAddressProofType() {
 		return addressProofType;
@@ -271,5 +265,13 @@ public class OwnerParameter {
 
 	public void setPermanentAddress(Address permanentAddress) {
 		this.permanentAddress = permanentAddress;
+	}
+
+	public List<DriverParameter> getDrivers() {
+		return drivers;
+	}
+
+	public void setDrivers(List<DriverParameter> drivers) {
+		this.drivers = drivers;
 	}
 }
