@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/other_background"
+    android:padding="16dp">
+
+
+    <!-- Title -->
+<TextView
+android:id="@+id/title"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Complaint Section"
+android:textColor="#FFFFFF"
+android:textSize="20sp"
+android:textStyle="bold"
+android:layout_centerHorizontal="true"/>
+
+    <!-- Complaint Card -->
+<LinearLayout
+android:layout_below="@id/title"
+android:layout_marginTop="40dp"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:padding="20dp"
+android:layout_centerInParent="true"
+android:background="@drawable/transparent_rounded_box"
+android:layout_margin="20dp">
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Raise Complaint"
+    android:textColor="#FFFFFF"
+    android:textStyle="bold"
+    android:textSize="18sp"
+    android:paddingBottom="10dp" />
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="NOTE: Add Message with photo"
+    android:textColor="#000000"
+    android:textStyle="bold"
+    android:layout_marginBottom="20dp" />
+
+<Button
+    android:id="@+id/whatsapp_button"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Via WhatsApp"
+    android:textAllCaps="false"
+    android:textStyle="bold"
+   android:drawableLeft="@drawable/whatsapp"
+    android:drawablePadding="10dp"
+    android:backgroundTint="#25D366"
+    android:textColor="#FFFFFF" />
+</LinearLayout>
+
+    </RelativeLayout>

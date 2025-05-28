@@ -1,7 +1,9 @@
 package com.transportmanagementfrontend;
 
 public class OwnerRegisterRequest {
+    private Integer id;
     private String firstName;
+
     private String lastName;
     private String phone;
     private String fatherName;
@@ -12,15 +14,23 @@ public class OwnerRegisterRequest {
     private String password;
     private String role;  // e.g., "owner"
 
-    private Owner owner;
+    private OwnerParameter owner;
 
-    public Owner getOwner() {
+    public OwnerParameter getOwner() {
         return owner;
     }
 
-    public void setOwner(Owner owner) {
+    public void setOwner(OwnerParameter owner) {
         this.owner = owner;
     }
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
 
     // No-arg constructor
     public OwnerRegisterRequest() {

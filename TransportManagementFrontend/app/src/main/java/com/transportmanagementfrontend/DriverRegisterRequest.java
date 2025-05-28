@@ -11,7 +11,9 @@ public class DriverRegisterRequest {
     private String password;
     private String role;
 
-    public DriverRegisterRequest(String firstName, String lastName, String phone, String  email, String dlNumber, String vehicleNumber, String username, String password, String role) {
+    public DriverRegisterRequest() {}
+
+    public DriverRegisterRequest(String firstName, String lastName, String phone, String email, String dlNumber, String vehicleNumber, String username, String password, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -23,4 +25,25 @@ public class DriverRegisterRequest {
         this.role = role;
     }
 
+    // Getters
+    public String getFirstName() { return firstName; }
+    public String getLastName() { return lastName; }
+    public String getPhone() { return phone; }
+    public String getEmail() { return email; }
+    public String getDlNumber() { return dlNumber; }
+    public String getVehicleNumber() { return vehicleNumber; }
+    public String getUsername() { return username; }
+    public String getPassword() { return password; }
+    public String getRole() { return role; }
+
+    // Setters
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+    public void setPhone(String phone) { this.phone = phone; }
+    public void setEmail(String email) { this.email = email; }
+    public void setDlNumber(String dlNumber) { this.dlNumber = dlNumber; }
+    public void setVehicleNumber(String vehicleNumber) { this.vehicleNumber = vehicleNumber; }
+    public void setUsername(String username) { this.username = username; }
+    public void setPassword(String password) { this.password = password; }
+    public void setRole(String role) { this.role = role; }
 }

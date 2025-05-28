@@ -48,16 +48,14 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter both username and password", Toast.LENGTH_SHORT).show();
             return;
         }
-
         String baseUrl = selectedRole.equalsIgnoreCase("owner")
-                ? "http://10.0.2.2:8080/api/owners/"
-                : "http://10.0.2.2:8080/api/";
+                ? "http://10.0.2.2:5000/api/owners/"
+                : "http://10.0.2.2:5000/api/";
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
         ApiService apiService = retrofit.create(ApiService.class);
 
         if (selectedRole.equalsIgnoreCase("owner")) {
@@ -68,10 +66,13 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<OwnerLoginResponse> call, Response<OwnerLoginResponse> response) {
                     if (response.isSuccessful() && response.body() != null) {
+                        OwnerLoginResponse loginResponse = response.body();
+
                         Intent intent = new Intent(LoginActivity.this, OwnerHomeActivity.class);
                         intent.putExtra("USERNAME", username);
                         intent.putExtra("ROLE", selectedRole);
-                        intent.putExtra("FIRST_NAME", response.body().getOwner().getFirstName());
+                        intent.putExtra("FIRST_NAME", loginResponse.getOwner().getFirstName());
+                        intent.putExtra("ownerId", String.valueOf(loginResponse.getOwner().getId()));
                         startActivity(intent);
                         finish();
                     } else {
@@ -81,10 +82,39 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<OwnerLoginResponse> call, Throwable t) {
-                    Toast.makeText(LoginActivity.this, "Login error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "Login failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+
+        } else if (selectedRole.equalsIgnoreCase("driver")) {
+            DriverLoginRequest loginRequest = new DriverLoginRequest(username, password);
+            Call<DriverLoginResponse> call = apiService.loginDriver(loginRequest);
+
+            call.enqueue(new Callback<DriverLoginResponse>() {
+                @Override
+                public void onResponse(Call<DriverLoginResponse> call, Response<DriverLoginResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        DriverLoginResponse loginResponse = response.body();
+
+                        Intent intent = new Intent(LoginActivity.this, DriverHomeActivity.class);
+                        intent.putExtra("USERNAME", username);
+                        intent.putExtra("ROLE", selectedRole);
+                        intent.putExtra("FIRST_NAME", loginResponse.getDriver().getFirstName());
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Driver login failed. Check credentials.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DriverLoginResponse> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this, "Login failed: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
         } else {
+            // Assume Customer
             CustomerLoginRequest loginRequest = new CustomerLoginRequest(username, password);
             Call<CustomerLoginResponse> call = apiService.loginUser(loginRequest);
 

@@ -14,6 +14,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONObject;
 
@@ -23,6 +25,9 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class OwnerProfileActivity extends AppCompatActivity {
 
@@ -62,7 +67,17 @@ public class OwnerProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner_profile);
 
-        apiService = RetrofitClient.getClient().create(ApiService.class);
+        Gson gson = new GsonBuilder().setLenient().create();
+
+        String baseUrlOwner = "http://10.0.2.2:5000/api/owners/";
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrlOwner)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+         apiService = retrofit.create(ApiService.class);
 
         // Initialize all UI references
         initializeFields();
@@ -71,14 +86,17 @@ public class OwnerProfileActivity extends AppCompatActivity {
         progressDialog.setMessage("Please wait...");
         progressDialog.setCancelable(false);
 
-        // Get ownerId if passed (edit mode)
+        // Get ownerId from intent for edit mode (if present)
         String ownerIdStr = getIntent().getStringExtra("ownerId");
         if (!TextUtils.isEmpty(ownerIdStr)) {
             try {
                 ownerId = Integer.parseInt(ownerIdStr);
-            } catch (NumberFormatException ignored) {
+            } catch (NumberFormatException e) {
+                e.printStackTrace(); // Optional: log the error
+                ownerId = null; // fallback if parsing fails
             }
         }
+
 
         // Checkbox listener to copy present to permanent
         cbCopyPresentToPermanent.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
@@ -355,68 +373,68 @@ public class OwnerProfileActivity extends AppCompatActivity {
 
 
     private OwnerRegisterRequest collectInputData() {
-        Owner owner = new Owner();
+        OwnerParameter ownerParameter = new OwnerParameter();
 
         // Personal Info
-        owner.setFirstName(getText(firstName));
-        owner.setLastName(getText(lastName));
-        owner.setPhone(getText(phone));
-        owner.setUsername(getText(username));
-        owner.setFatherName(getText(fatherName));
-        owner.setEmail(getText(email));
+        ownerParameter.setFirstName(getText(firstName));
+        ownerParameter.setLastName(getText(lastName));
+        ownerParameter.setPhone(getText(phone));
+        ownerParameter.setUsername(getText(username));
+        ownerParameter.setFatherName(getText(fatherName));
+        ownerParameter.setEmail(getText(email));
 
         // Present Address
-        owner.setPresProofType(getText(presProofType));
-        owner.setPresProofNumber(getText(presProofNumber));
-        owner.setPresAt(getText(presAt));
-        owner.setPresPo(getText(presPo));
-        owner.setPresTown(getText(presTown));
-        owner.setPresPs(getText(presPs));
-        owner.setPresDist(getText(presDist));
-        owner.setPresState(getText(presState));
-        owner.setPresPin(getText(presPin));
-        owner.setPresMob(getText(presMob));
-        owner.setPresType(getText(presType));
+        ownerParameter.setPresProofType(getText(presProofType));
+        ownerParameter.setPresProofNumber(getText(presProofNumber));
+        ownerParameter.setPresAt(getText(presAt));
+        ownerParameter.setPresPo(getText(presPo));
+        ownerParameter.setPresTown(getText(presTown));
+        ownerParameter.setPresPs(getText(presPs));
+        ownerParameter.setPresDist(getText(presDist));
+        ownerParameter.setPresState(getText(presState));
+        ownerParameter.setPresPin(getText(presPin));
+        ownerParameter.setPresMob(getText(presMob));
+        ownerParameter.setPresType(getText(presType));
 
         // Permanent Address
-        owner.setPermProofType(getText(permProofType));
-        owner.setPermProofNumber(getText(permProofNumber));
-        owner.setPermAt(getText(permAt));
-        owner.setPermPo(getText(permPo));
-        owner.setPermTown(getText(permTown));
-        owner.setPermPs(getText(permPs));
-        owner.setPermDist(getText(permDist));
-        owner.setPermState(getText(permState));
-        owner.setPermPin(getText(permPin));
-        owner.setPermMob(getText(permMob));
-        owner.setPermType(getText(permType));
+        ownerParameter.setPermProofType(getText(permProofType));
+        ownerParameter.setPermProofNumber(getText(permProofNumber));
+        ownerParameter.setPermAt(getText(permAt));
+        ownerParameter.setPermPo(getText(permPo));
+        ownerParameter.setPermTown(getText(permTown));
+        ownerParameter.setPermPs(getText(permPs));
+        ownerParameter.setPermDist(getText(permDist));
+        ownerParameter.setPermState(getText(permState));
+        ownerParameter.setPermPin(getText(permPin));
+        ownerParameter.setPermMob(getText(permMob));
+        ownerParameter.setPermType(getText(permType));
 
         // Account Info
-        owner.setAccountNumber(getText(accountNumber));
-        owner.setBranchName(getText(branchName));
-        owner.setIfscCode(getText(ifscCode));
-        owner.setBranchAddress(getText(branchAddress));
-        owner.setUpiNumber(getText(upiNumber));
-        owner.setGst(getText(gst));
+        ownerParameter.setAccountNumber(getText(accountNumber));
+        ownerParameter.setBranchName(getText(branchName));
+        ownerParameter.setIfscCode(getText(ifscCode));
+        ownerParameter.setBranchAddress(getText(branchAddress));
+        ownerParameter.setUpiNumber(getText(upiNumber));
+        ownerParameter.setGst(getText(gst));
 
         // Vehicle Info
-        owner.setVehicleNumber(getText(vehicleNumber));
-        owner.setVehicleType(getText(vehicleType));
-        owner.setChassisNumber(getText(chassisNumber));
-        owner.setInsurancePaper(getText(insurancePaper));
-        owner.setFitnessCert(getText(fitnessCert));
-        owner.setPermit(getText(permit));
-        owner.setPollutionCert(getText(pollutionCert));
-        owner.setRc(getText(rc));
+        ownerParameter.setVehicleNumber(getText(vehicleNumber));
+        ownerParameter.setVehicleType(getText(vehicleType));
+        ownerParameter.setChassisNumber(getText(chassisNumber));
+        ownerParameter.setInsurancePaper(getText(insurancePaper));
+        ownerParameter.setFitnessCert(getText(fitnessCert));
+        ownerParameter.setPermit(getText(permit));
+        ownerParameter.setPollutionCert(getText(pollutionCert));
+        ownerParameter.setRc(getText(rc));
 
         // Convert capacity to int if not empty
         String capText = getText(capacity);
         if (!capText.isEmpty()) {
-            owner.setCapacity(String.valueOf(Integer.parseInt(capText)));
+            ownerParameter.setCapacity(String.valueOf(Integer.parseInt(capText)));
         }
 
         OwnerRegisterRequest request = new OwnerRegisterRequest();
-        request.setOwner(owner);
+        request.setOwner(ownerParameter);
         return request;
     }
 
@@ -428,68 +446,68 @@ public class OwnerProfileActivity extends AppCompatActivity {
 
     private void populateFields(int ownerId) {
         progressDialog.show();
-        apiService.getOwnerById(ownerId).enqueue(new Callback<Owner>() {
+        apiService.getOwnerById(ownerId).enqueue(new Callback<OwnerParameter>() {
             @Override
-            public void onResponse(Call<Owner> call, Response<Owner> response) {
+            public void onResponse(Call<OwnerParameter> call, Response<OwnerParameter> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful() && response.body() != null) {
-                    Owner owner = response.body();
+                    OwnerParameter ownerParameter = response.body();
 
                     // Personal Info
-                    setTextSafe(firstName, owner.getFirstName());
-                    setTextSafe(lastName, owner.getLastName());
-                    setTextSafe(phone, owner.getPhone());
-                    setTextSafe(username, owner.getUsername());
-                    setTextSafe(fatherName, owner.getFatherName());
-                    setTextSafe(email, owner.getEmail());
+                    setTextSafe(firstName, ownerParameter.getFirstName());
+                    setTextSafe(lastName, ownerParameter.getLastName());
+                    setTextSafe(phone, ownerParameter.getPhone());
+                    setTextSafe(username, ownerParameter.getUsername());
+                    setTextSafe(fatherName, ownerParameter.getFatherName());
+                    setTextSafe(email, ownerParameter.getEmail());
 
                     // Present Address
-                    setTextSafe(presProofType, owner.getPresProofType());
-                    setTextSafe(presProofNumber, owner.getPresProofNumber());
-                    setTextSafe(presAt, owner.getPresAt());
-                    setTextSafe(presPo, owner.getPresPo());
-                    setTextSafe(presTown, owner.getPresTown());
-                    setTextSafe(presPs, owner.getPresPs());
-                    setTextSafe(presDist, owner.getPresDist());
-                    setTextSafe(presState, owner.getPresState());
-                    setTextSafe(presPin, owner.getPresPin());
-                    setTextSafe(presMob, owner.getPresMob());
-                    setTextSafe(presType, owner.getPresType());
+                    setTextSafe(presProofType, ownerParameter.getPresProofType());
+                    setTextSafe(presProofNumber, ownerParameter.getPresProofNumber());
+                    setTextSafe(presAt, ownerParameter.getPresAt());
+                    setTextSafe(presPo, ownerParameter.getPresPo());
+                    setTextSafe(presTown, ownerParameter.getPresTown());
+                    setTextSafe(presPs, ownerParameter.getPresPs());
+                    setTextSafe(presDist, ownerParameter.getPresDist());
+                    setTextSafe(presState, ownerParameter.getPresState());
+                    setTextSafe(presPin, ownerParameter.getPresPin());
+                    setTextSafe(presMob, ownerParameter.getPresMob());
+                    setTextSafe(presType, ownerParameter.getPresType());
 
                     // Permanent Address
-                    setTextSafe(permProofType, owner.getPermProofType());
-                    setTextSafe(permProofNumber, owner.getPermProofNumber());
-                    setTextSafe(permAt, owner.getPermAt());
-                    setTextSafe(permPo, owner.getPermPo());
-                    setTextSafe(permTown, owner.getPermTown());
-                    setTextSafe(permPs, owner.getPermPs());
-                    setTextSafe(permDist, owner.getPermDist());
-                    setTextSafe(permState, owner.getPermState());
-                    setTextSafe(permPin, owner.getPermPin());
-                    setTextSafe(permMob, owner.getPermMob());
-                    setTextSafe(permType, owner.getPermType());
+                    setTextSafe(permProofType, ownerParameter.getPermProofType());
+                    setTextSafe(permProofNumber, ownerParameter.getPermProofNumber());
+                    setTextSafe(permAt, ownerParameter.getPermAt());
+                    setTextSafe(permPo, ownerParameter.getPermPo());
+                    setTextSafe(permTown, ownerParameter.getPermTown());
+                    setTextSafe(permPs, ownerParameter.getPermPs());
+                    setTextSafe(permDist, ownerParameter.getPermDist());
+                    setTextSafe(permState, ownerParameter.getPermState());
+                    setTextSafe(permPin, ownerParameter.getPermPin());
+                    setTextSafe(permMob, ownerParameter.getPermMob());
+                    setTextSafe(permType, ownerParameter.getPermType());
 
                     // Account Info
-                    setTextSafe(accountNumber, owner.getAccountNumber());
-                    setTextSafe(branchName, owner.getBranchName());
-                    setTextSafe(ifscCode, owner.getIfscCode());
-                    setTextSafe(branchAddress, owner.getBranchAddress());
-                    setTextSafe(upiNumber, owner.getUpiNumber());
-                    setTextSafe(gst, owner.getGst());
+                    setTextSafe(accountNumber, ownerParameter.getAccountNumber());
+                    setTextSafe(branchName, ownerParameter.getBranchName());
+                    setTextSafe(ifscCode, ownerParameter.getIfscCode());
+                    setTextSafe(branchAddress, ownerParameter.getBranchAddress());
+                    setTextSafe(upiNumber, ownerParameter.getUpiNumber());
+                    setTextSafe(gst, ownerParameter.getGst());
 
                     // Vehicle Info
-                    setTextSafe(vehicleNumber, owner.getVehicleNumber());
-                    setTextSafe(vehicleType, owner.getVehicleType());
-                    setTextSafe(chassisNumber, owner.getChassisNumber());
-                    setTextSafe(insurancePaper, owner.getInsurancePaper());
-                    setTextSafe(fitnessCert, owner.getFitnessCert());
-                    setTextSafe(permit, owner.getPermit());
-                    setTextSafe(pollutionCert, owner.getPollutionCert());
-                    setTextSafe(rc, owner.getRc());
+                    setTextSafe(vehicleNumber, ownerParameter.getVehicleNumber());
+                    setTextSafe(vehicleType, ownerParameter.getVehicleType());
+                    setTextSafe(chassisNumber, ownerParameter.getChassisNumber());
+                    setTextSafe(insurancePaper, ownerParameter.getInsurancePaper());
+                    setTextSafe(fitnessCert, ownerParameter.getFitnessCert());
+                    setTextSafe(permit, ownerParameter.getPermit());
+                    setTextSafe(pollutionCert, ownerParameter.getPollutionCert());
+                    setTextSafe(rc, ownerParameter.getRc());
 
                     // Capacity (convert int to string if needed)
-                    if (owner.getCapacity() != null) {
-                        capacity.setText(String.valueOf(owner.getCapacity()));
+                    if (ownerParameter.getCapacity() != null) {
+                        capacity.setText(String.valueOf(ownerParameter.getCapacity()));
                     } else {
                         capacity.setText("");
                     }
@@ -500,7 +518,7 @@ public class OwnerProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Owner> call, Throwable t) {
+            public void onFailure(Call<OwnerParameter> call, Throwable t) {
                 progressDialog.dismiss();
                 Toast.makeText(OwnerProfileActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }

@@ -170,8 +170,8 @@ public class OwnerRegisterActivity extends AppCompatActivity {
         Gson gson = new GsonBuilder().setLenient().create();
 
         String baseUrl = selectedRole.equalsIgnoreCase("owner")
-                ? "http://10.0.2.2:8080/api/owners/"
-                : "http://10.0.2.2:8080/api/";
+                ? "http://10.0.2.2:5000/api/owners/"
+                : "http://10.0.2.2:5000/api/";
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)

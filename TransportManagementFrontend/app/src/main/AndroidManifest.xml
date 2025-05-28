@@ -45,6 +45,36 @@
             android:exported="true"
             android:label="@string/register_activity_label"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".TransitCustomerInfoActivity"
+            android:exported="true"
+            android:label="Transit Customer Info" />
+
+        <activity
+            android:name=".ServiceCenterActivity"
+            android:exported="true"
+            android:label="Service Center" />
+
+        <activity
+            android:name=".ComplaintSectionActivity"
+            android:exported="true"
+            android:label="Complaint Section" />
+
+        <activity
+            android:name=".NotificationsActivity"
+            android:exported="true"
+            android:label="Notifications" />
+
+        <activity
+            android:name=".VendorTrackingActivity"
+            android:exported="true"
+            android:label="Vendor Tracking" />
+
+        <activity
+            android:name=".DeliveryConfirmationActivity"
+            android:exported="true"
+            android:label="Delivery Confirmation" />
+
 
         <!-- OwnerRegisterActivity -->
         <activity

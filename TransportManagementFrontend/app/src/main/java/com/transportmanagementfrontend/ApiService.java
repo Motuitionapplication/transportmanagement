@@ -25,19 +25,20 @@ public interface ApiService {
     @POST("addDriver") // Driver registration
     Call<String> registerDriver(@Body DriverRegisterRequest registerRequest);
 
-    @POST("AddOwner")
+    @POST("Driverlogin")
+    Call<DriverLoginResponse> loginDriver(@Body DriverLoginRequest request);
+
+    @POST("AddUpdateOwner")
     Call<String> registerOwner(@Body OwnerRegisterRequest registerRequest);
 
     @PUT("update/{ownerId}")
     Call<String> updateOwner(@Path("ownerId") int ownerId, @Body OwnerRegisterRequest request);
 
     @POST("createOwner") // Your backend endpoint for full owner creation
-    Call<String> createOwner(@Body Owner owner);
+    Call<String> createOwner(@Body OwnerParameter owner);
 
-
-    @GET("owners/{ownerId}")
-    Call<Owner> getOwnerById(@Path("ownerId") int ownerId);
-
+    @GET("FindOwner/{id}")
+    Call<OwnerParameter> getOwnerById(@Path("id") int id);
 
     // Endpoint to send a verification code to the user's email
     @POST("user/forgot-password")
