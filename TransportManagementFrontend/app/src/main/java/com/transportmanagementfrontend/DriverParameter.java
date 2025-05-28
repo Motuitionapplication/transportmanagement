@@ -13,6 +13,8 @@ public class DriverParameter implements Serializable {
     private String username;
     private String password;
     private String role;
+    private String address;
+    private String status;
 
     // Default Constructor
     public DriverParameter() {
@@ -114,11 +116,20 @@ public class DriverParameter implements Serializable {
         this.role = role;
     }
 
-    public String getAdress() {
-        return "";
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getStatus() {
-        return "";
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

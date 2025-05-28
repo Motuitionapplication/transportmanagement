@@ -34,7 +34,7 @@ public class DriverDetailsActivity extends AppCompatActivity {
             txtDriverName.setText(driver.getFirstName() + " " + driver.getLastName());
             txtPhone.setText("Phone: " + driver.getPhone());
             txtEmail.setText("Email: " + driver.getEmail());
-            txtAddress.setText("Address: " + driver.getAdress());
+            txtAddress.setText("Address: " + driver.getAddress());
             txtDlNumber.setText("DL Number: " + driver.getDlNumber());
             txtVehicleNumber.setText("Vehicle No: " + driver.getVehicleNumber());
             txtStatus.setText("Status: " + driver.getStatus());

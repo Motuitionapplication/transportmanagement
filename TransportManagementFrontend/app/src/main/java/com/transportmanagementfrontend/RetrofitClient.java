@@ -8,7 +8,7 @@ public class RetrofitClient {
     public static Retrofit getClient() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://10.0.2.2:8080/api/")
+                    .baseUrl("http://10.0.2.2:5000/api/")
                     //.baseUrl("http://gkct1transport.us-east-1.elasticbeanstalk.com/api/")
                     .addConverterFactory(GsonConverterFactory.create()) // Correct initialization here
                     .build();

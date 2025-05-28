@@ -131,7 +131,7 @@ public class DriverRegisterActivity extends AppCompatActivity {
         Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8080/api/")
+                .baseUrl("http://10.0.2.2:5000/api/")
                 //.baseUrl("http://gkct1transport.us-east-1.elasticbeanstalk.com/api/")
                 .addConverterFactory(retrofit2.converter.scalars.ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))

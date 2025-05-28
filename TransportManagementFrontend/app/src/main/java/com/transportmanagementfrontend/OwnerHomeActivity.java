@@ -1,4 +1,3 @@
-
 package com.transportmanagementfrontend;
 
 import android.app.AlertDialog;
@@ -19,7 +18,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class OwnerHomeActivity extends AppCompatActivity {
 
-
     private ApiService apiService;
 
     @Override
@@ -39,11 +37,12 @@ public class OwnerHomeActivity extends AppCompatActivity {
 
         // Get user details
         String firstName = getIntent().getStringExtra("FIRST_NAME");
+        String ownerId = getIntent().getStringExtra("ownerId");  // not "OWNER_ID"
         welcomeText.setText(firstName != null && !firstName.isEmpty() ? "Hello, " + firstName + "!" : "");
 
         // Initialize Retrofit
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8080/api/")
+                .baseUrl("http://10.0.2.2:5000/api/")
                 //.baseUrl("http://gkct1transport.us-east-1.elasticbeanstalk.com/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -51,7 +50,12 @@ public class OwnerHomeActivity extends AppCompatActivity {
         apiService = retrofit.create(ApiService.class);
 
         // Click Listeners for Buttons
-        btnProfile.setOnClickListener(view -> startActivity(new Intent(OwnerHomeActivity.this, OwnerProfileActivity.class)));
+        btnProfile.setOnClickListener(view -> {
+            Intent intent = new Intent(OwnerHomeActivity.this, OwnerProfileActivity.class);
+            intent.putExtra("ownerId", ownerId); // ✅ Pass ownerId to profile
+            startActivity(intent);
+        });
+
         btnOtherServices.setOnClickListener(view -> startActivity(new Intent(OwnerHomeActivity.this, OtherServicesActivity.class)));
         btnVehicleOrder.setOnClickListener(view -> startActivity(new Intent(OwnerHomeActivity.this, VehicleOrderActivity.class)));
         btnVehicleTracking.setOnClickListener(view -> startActivity(new Intent(OwnerHomeActivity.this, VehicleTrackingActivity.class)));
@@ -60,13 +64,13 @@ public class OwnerHomeActivity extends AppCompatActivity {
         // Handle Driver Details Click
         btnDriverDetails.setOnClickListener(view -> showVehicleNumberDialog());
 
-        // Customer Support Buttons
+        // Customer Support Buttons (To be implemented later)
         btnWhatsApp.setOnClickListener(view -> {
-            // WhatsApp functionality to be added later
+            // WhatsApp functionality placeholder
         });
 
         btnCall.setOnClickListener(view -> {
-            // Call functionality to be added later
+            // Call functionality placeholder
         });
     }
 
@@ -113,5 +117,4 @@ public class OwnerHomeActivity extends AppCompatActivity {
             }
         });
     }
-
 }
