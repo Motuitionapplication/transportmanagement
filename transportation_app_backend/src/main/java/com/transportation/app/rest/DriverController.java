@@ -3,12 +3,21 @@ package com.transportation.app.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.transportation.app.binding.DriverParameter;
 import com.transportation.app.binding.LoginParamDriver;
 import com.transportation.app.binding.LoginResponseDriver;
-import com.transportation.app.service.DriverService;
+import com.transportation.app.service.DriverServiceImpl;
+
+import jakarta.validation.Valid;
 
 /**
  * REST controller for managing Driver-related operations.
@@ -19,7 +28,7 @@ import com.transportation.app.service.DriverService;
 public class DriverController {
 
     @Autowired
-    private DriverService driverService;
+    private DriverServiceImpl driverService;
 
     /**
      * Creates a new Driver and links it with an Owner via username.
@@ -28,14 +37,15 @@ public class DriverController {
      * @return a response message indicating success or failure
      */
     @PostMapping("/driver/AddUpdateDriver")
-    public ResponseEntity<String> registerDriver(@RequestBody DriverParameter driverParameter) {
+    public ResponseEntity<String> addOrUpdateDriver(@RequestBody @Valid DriverParameter driverParameter) {
         if (driverParameter.getOwner() == null || driverParameter.getOwner().getUsername() == null) {
             return ResponseEntity.badRequest().body("Owner username must be provided.");
         }
 
-        String result = driverService.createOrUpdateDriver(driverParameter);
-        return ResponseEntity.status(HttpStatus.CREATED).body(result);
+        String message = driverService.createOrUpdateDriver(driverParameter);
+        return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
+
 
 
     /**
@@ -72,12 +82,12 @@ public class DriverController {
      * @param driverParameter the updated driver details
      * @return a response message indicating success or failure
      */
-    @PutMapping("/driver/update/{id}")
-    public ResponseEntity<String> updateDriver(@PathVariable int id, @RequestBody DriverParameter driverParameter) {
-        driverParameter.setId(id);
-        String result = driverService.updateDriver(driverParameter);
-        return ResponseEntity.ok(result);
-    }
+//    @PutMapping("/driver/update/{id}")
+//    public ResponseEntity<String> updateDriver(@PathVariable int id, @RequestBody DriverParameter driverParameter) {
+//        driverParameter.setId(id);
+//        String result = driverService.updateDriver(driverParameter);
+//        return ResponseEntity.ok(result);
+//    }
 
     /**
      * Deletes a driver by ID.
