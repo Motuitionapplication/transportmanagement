@@ -1,9 +1,11 @@
 package com.transportation.app.binding;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,14 +19,15 @@ import jakarta.persistence.Table;
 public class DriverParameter {
 
 	@Id
+	@JsonIgnore
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	
 	
-	@ManyToOne
-	@JsonBackReference
-	@JoinColumn(name = "owner_id")  // This should match the FK column in your DB table
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "owner_username",referencedColumnName = "username") 
+	@JsonBackReference// This should match the FK column in your DB table
 	private OwnerParameter owner;
 	
 	@Schema(description = "Driver's first name", example = "Rajesh")
@@ -76,8 +79,8 @@ public class DriverParameter {
 	@Schema(description = "Role of the user", example = "Driver")
 	private String role;
 
-	public DriverParameter() {
-	}
+	public DriverParameter() {}
+	
 
 	public Integer getId() {
 		return id;

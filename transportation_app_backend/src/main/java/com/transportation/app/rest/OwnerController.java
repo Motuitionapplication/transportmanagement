@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +18,7 @@ import com.transportation.app.binding.LoginParamOwner;
 import com.transportation.app.binding.LoginResponseOwner;
 import com.transportation.app.binding.OwnerParameter;
 import com.transportation.app.service.DriverService;
+import com.transportation.app.service.DriverServiceImpl;
 import com.transportation.app.service.OwnerService;
 
 /**
@@ -32,10 +32,11 @@ public class OwnerController {
     @Autowired
     private final OwnerService ownerService;
 
-    private final DriverService driverService;
+    @Autowired
+    private final DriverServiceImpl driverService;
 
     // Constructor injection
-    public OwnerController(OwnerService ownerService, DriverService driverService) {
+    public OwnerController(OwnerService ownerService, DriverServiceImpl driverService) {
         this.ownerService = ownerService;
         this.driverService = driverService;
     }

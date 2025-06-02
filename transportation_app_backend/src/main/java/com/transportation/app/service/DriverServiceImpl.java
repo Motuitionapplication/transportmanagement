@@ -14,7 +14,7 @@ import com.transportation.app.repo.DriverRepository;
 import com.transportation.app.repo.OwnerRepository;
 
 @Service
-public class DriverServiceImpl implements DriverService {
+public class DriverServiceImpl {
 
     private final DriverRepository driverRepo;
     private final OwnerRepository  ownerRepo;
@@ -28,50 +28,33 @@ public class DriverServiceImpl implements DriverService {
     /* --------------------------------------------------
      * CREATE or UPDATE
      * -------------------------------------------------- */
-    @Override
+  
     @Transactional
     public String createOrUpdateDriver(DriverParameter driverParameter) {
-
-        /* 1️⃣  Resolve the owner by username (FK) */
-        if (driverParameter.getOwner() == null ||
-            driverParameter.getOwner().getUsername() == null) {
-            return "Owner username must be provided";
+        if (driverParameter.getOwner() == null || driverParameter.getOwner().getUsername() == null) {
+            throw new IllegalArgumentException("Owner username must be provided.");
         }
 
-        OwnerParameter owner = ownerRepo
-                .findByUsername(driverParameter.getOwner().getUsername())
-                .orElseThrow(() ->
-                     new IllegalArgumentException(
-                         "Owner not found with username: "
-                         + driverParameter.getOwner().getUsername()));
+        String ownerUsername = driverParameter.getOwner().getUsername();
 
-        driverParameter.setOwner(owner);           // link FK
+        // Fetch existing owner
+        OwnerParameter owner = ownerRepo.findByUsername(ownerUsername)
+            .orElseThrow(() -> new RuntimeException("Owner not found with username: " + ownerUsername));
 
-        /* 2️⃣  UPDATE path */
-        if (driverParameter.getId() != null &&
-            driverRepo.existsById(driverParameter.getId())) {
+        // Set the full owner entity to the driver
+        driverParameter.setOwner(owner);
 
-            DriverParameter existing = driverRepo
-                    .findById(driverParameter.getId())
-                    .orElseThrow();                // should exist
-
-            copyFields(driverParameter, existing);
-            driverRepo.save(existing);
-            return "Driver updated successfully";
-        }
-
-        /* 3️⃣  CREATE path */
-        if (driverParameter.getRole() == null) {
-            driverParameter.setRole("DRIVER");     // sensible default
-        }
         driverRepo.save(driverParameter);
-        return "Driver created successfully";
+
+        return "Driver updated successfully";
     }
 
+
+     
     /* --------------------------------------------------
      * AUTHENTICATION
      * -------------------------------------------------- */
-    @Override
+   
     public LoginResponseDriver checkLogin(LoginParamDriver loginParamDriver) {
         LoginResponseDriver resp = new LoginResponseDriver();
 
@@ -95,17 +78,17 @@ public class DriverServiceImpl implements DriverService {
     /* --------------------------------------------------
      * QUERY helpers
      * -------------------------------------------------- */
-    @Override
+    
     public List<DriverParameter> getDriversByVehicleNumber(String vehicleNumber) {
         return driverRepo.findByVehicleNumber(vehicleNumber);
     }
 
-    @Override
+    
     public DriverParameter getDriverById(int id) {
         return driverRepo.findById(id).orElse(null);
     }
 
-    @Override
+    
     public DriverParameter findByUsername(String username) {
         return driverRepo.findByUsername(username);
     }
@@ -113,44 +96,44 @@ public class DriverServiceImpl implements DriverService {
     /* --------------------------------------------------
      * UPDATE (via controller) – PUT /driver/update/{id}
      * -------------------------------------------------- */
-    @Override
-    @Transactional
-    public String updateDriver(DriverParameter driverParameter) {
-
-        if (driverParameter.getId() == null) {
-            return "Driver ID is required for update";
-        }
-
-        DriverParameter existing = driverRepo
-                .findById(driverParameter.getId())
-                .orElse(null);
-
-        if (existing == null) {
-            return "Driver not found";
-        }
-
-        /* FK update (optional) */
-        if (driverParameter.getOwner() != null &&
-            driverParameter.getOwner().getUsername() != null) {
-
-            OwnerParameter owner = ownerRepo
-                    .findByUsername(driverParameter.getOwner().getUsername())
-                    .orElseThrow(() ->
-                         new IllegalArgumentException(
-                             "Owner not found with username: "
-                             + driverParameter.getOwner().getUsername()));
-            existing.setOwner(owner);
-        }
-
-        copyFields(driverParameter, existing);
-        driverRepo.save(existing);
-        return "Driver updated successfully";
-    }
+    
+//    @Transactional
+//    public String updateDriver(DriverParameter driverParameter) {
+//
+//        if (driverParameter.getId() == null) {
+//            return "Driver ID is required for update";
+//        }
+//
+//        DriverParameter existing = driverRepo
+//                .findById(driverParameter.getId())
+//                .orElse(null);
+//
+//        if (existing == null) {
+//            return "Driver not found";
+//        }
+//
+//        /* FK update (optional) */
+//        if (driverParameter.getOwner() != null &&
+//            driverParameter.getOwner().getUsername() != null) {
+//
+//            OwnerParameter owner = ownerRepo
+//                    .findByUsername(driverParameter.getOwner().getUsername())
+//                    .orElseThrow(() ->
+//                         new IllegalArgumentException(
+//                             "Owner not found with username: "
+//                             + driverParameter.getOwner().getUsername()));
+//            existing.setOwner(owner);
+//        }
+//
+//        copyFields(driverParameter, existing);
+//        driverRepo.save(existing);
+//        return "Driver updated successfully";
+//    }
 
     /* --------------------------------------------------
      * DELETE
      * -------------------------------------------------- */
-    @Override
+ 
     public String deleteDriver(int id) {
         if (driverRepo.existsById(id)) {
             driverRepo.deleteById(id);

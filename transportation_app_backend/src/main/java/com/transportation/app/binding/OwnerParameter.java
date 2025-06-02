@@ -2,6 +2,7 @@ package com.transportation.app.binding;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,6 +24,7 @@ import jakarta.persistence.Version;
 public class OwnerParameter {
 
 	@Id
+	@JsonIgnore
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
@@ -36,6 +38,7 @@ public class OwnerParameter {
 	private String phone;
 
 	@Schema(description = "Username for login", example = "vibek123")
+	@Column(unique = true, nullable = false)
 	private String username;
 
 	@Schema(description = "Password for login", example = "password@123")
@@ -100,9 +103,11 @@ public class OwnerParameter {
 
 	// ✅ RELATIONSHIP: One Owner to Many Drivers
 	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
 	@JsonManagedReference
 	private List<DriverParameter> drivers;
 
+	 public OwnerParameter() {}
 	// ---------------- Getters & Setters ----------------
 
 	public Integer getId() {
