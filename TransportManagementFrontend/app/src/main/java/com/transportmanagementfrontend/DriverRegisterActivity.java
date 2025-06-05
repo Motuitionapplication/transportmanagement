@@ -2,7 +2,6 @@ package com.transportmanagementfrontend;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -22,8 +21,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class DriverRegisterActivity extends AppCompatActivity {
 
     // UI Elements
-    private TextInputLayout firstNameLayout, lastNameLayout, phoneLayout, emailLayout, dlNumberLayout, vehicleNumberLayout, usernameLayout, passwordLayout;
-    private TextInputEditText firstNameEditText, lastNameEditText, phoneEditText, emailEditText, dlNumberEditText, vehicleNumberEditText, usernameEditText, passwordEditText;
+    private TextInputLayout firstNameLayout, lastNameLayout, phoneLayout, emailLayout, dlNumberLayout, vehicleNumberLayout, usernameLayout, passwordLayout, ownerLayout;
+    private TextInputEditText firstNameEditText, lastNameEditText, phoneEditText, emailEditText, dlNumberEditText, vehicleNumberEditText, usernameEditText, passwordEditText, ownerEditText;
     private Button createAccountButton;
     private String selectedRole = "Driver"; // Default role
 
@@ -41,6 +40,7 @@ public class DriverRegisterActivity extends AppCompatActivity {
         vehicleNumberLayout = findViewById(R.id.vehicleNumberLayout);
         usernameLayout = findViewById(R.id.usernameLayout);
         passwordLayout = findViewById(R.id.passwordLayout);
+        ownerLayout = findViewById(R.id.ownerLayout);
 
         firstNameEditText = findViewById(R.id.firstName);
         lastNameEditText = findViewById(R.id.lastName);
@@ -50,6 +50,7 @@ public class DriverRegisterActivity extends AppCompatActivity {
         vehicleNumberEditText = findViewById(R.id.vehicleNumber);
         usernameEditText = findViewById(R.id.username);
         passwordEditText = findViewById(R.id.password);
+        ownerEditText = findViewById(R.id.owner);
 
         createAccountButton = findViewById(R.id.createAccountButton);
 
@@ -61,8 +62,9 @@ public class DriverRegisterActivity extends AppCompatActivity {
         setValidationOnFocus(passwordEditText, passwordLayout, "Password must be at least 6 characters");
         setValidationOnFocus(dlNumberEditText, dlNumberLayout, "Please enter a valid Driver's License Number");
         setValidationOnFocus(vehicleNumberEditText, vehicleNumberLayout, "Please enter your Vehicle Number");
+        setValidationOnFocus(ownerEditText, ownerLayout, "Please enter owner's username");
 
-        // Phone number validation (10-digit requirement)
+        // Phone number validation
         phoneEditText.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
                 String phone = phoneEditText.getText().toString().trim();
@@ -76,7 +78,7 @@ public class DriverRegisterActivity extends AppCompatActivity {
             }
         });
 
-        // Register button click listener
+        // Register button click
         createAccountButton.setOnClickListener(v -> {
             String firstName = getSafeText(firstNameEditText);
             String lastName = getSafeText(lastNameEditText);
@@ -86,26 +88,28 @@ public class DriverRegisterActivity extends AppCompatActivity {
             String vehicleNumber = getSafeText(vehicleNumberEditText);
             String username = getSafeText(usernameEditText);
             String password = getSafeText(passwordEditText);
+            String owner = getSafeText(ownerEditText);
 
             // Validate required fields
             if (firstName.isEmpty() || lastName.isEmpty() || phone.isEmpty() || email.isEmpty() ||
-                    dlNumber.isEmpty() || vehicleNumber.isEmpty() || username.isEmpty() || password.isEmpty()) {
+                    dlNumber.isEmpty() || vehicleNumber.isEmpty() || username.isEmpty() ||
+                    password.isEmpty() || owner.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Validate email format
+            // Validate email
             if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 Toast.makeText(this, "Enter a valid email", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Register API call
-            registerDriver(firstName, lastName, phone, email, dlNumber, vehicleNumber, username, password);
+            // Proceed with API call
+            registerDriver(firstName, lastName, phone, email, dlNumber, vehicleNumber, username, password, owner);
         });
     }
 
-    // Function to set validation on focus change
+    // Validation helper
     private void setValidationOnFocus(TextInputEditText editText, TextInputLayout layout, String errorMessage) {
         editText.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
@@ -120,25 +124,27 @@ public class DriverRegisterActivity extends AppCompatActivity {
         });
     }
 
-    // Function to safely get text from input
+    // Safe text fetcher
     private String getSafeText(TextInputEditText editText) {
         return (editText != null && editText.getText() != null) ? editText.getText().toString().trim() : "";
     }
 
-    // API Call to register driver
+    // Register API call
     private void registerDriver(String firstName, String lastName, String phone, String email,
-                                String dlNumber, String vehicleNumber, String username, String password) {
+                                String dlNumber, String vehicleNumber, String username, String password, String owner) {
         Gson gson = new GsonBuilder().setLenient().create();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:5000/api/")
-                //.baseUrl("http://gkct1transport.us-east-1.elasticbeanstalk.com/api/")
                 .addConverterFactory(retrofit2.converter.scalars.ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         ApiService apiService = retrofit.create(ApiService.class);
-        DriverRegisterRequest registerRequest = new DriverRegisterRequest(firstName, lastName, phone, email, dlNumber, vehicleNumber, username, password, "driver");
+        DriverRegisterRequest registerRequest = new DriverRegisterRequest(
+                firstName, lastName, phone, email, dlNumber, vehicleNumber,
+                username, password, "driver", owner
+        );
 
         Call<String> call = apiService.registerDriver(registerRequest);
         call.enqueue(new Callback<String>() {
@@ -146,8 +152,7 @@ public class DriverRegisterActivity extends AppCompatActivity {
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Toast.makeText(DriverRegisterActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(DriverRegisterActivity.this, DriverHomeActivity.class);
-                    startActivity(intent);
+                    startActivity(new Intent(DriverRegisterActivity.this, DriverHomeActivity.class));
                     finish();
                 } else {
                     Toast.makeText(DriverRegisterActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();

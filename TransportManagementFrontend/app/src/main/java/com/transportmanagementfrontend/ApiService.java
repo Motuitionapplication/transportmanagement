@@ -1,6 +1,8 @@
 package com.transportmanagementfrontend;
 
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -13,19 +15,23 @@ import retrofit2.http.Query;
 
 public interface ApiService {
 
-    @POST("login") // Adjust endpoint if needed
+    @POST("login")
+        // Adjust endpoint if needed
     Call<CustomerLoginResponse> loginUser(@Body CustomerLoginRequest loginRequest);
 
-    @POST("loginOwner") // Adjust endpoint if needed
+    @POST("loginOwner")
+        // Adjust endpoint if needed
     Call<OwnerLoginResponse> loginOwner(@Body OwnerLoginRequest loginRequest);
 
-    @POST("addUser") // Backend API for customer registration
+    @POST("addUser")
+        // Backend API for customer registration
     Call<String> registerUser(@Body CustomerRegisterRequest registerRequest);
 
-    @POST("addDriver") // Driver registration
+    @POST("driver/AddUpdateDriver")
+        // Driver registration
     Call<String> registerDriver(@Body DriverRegisterRequest registerRequest);
 
-    @POST("Driverlogin")
+    @POST("loginDriver")
     Call<DriverLoginResponse> loginDriver(@Body DriverLoginRequest request);
 
     @POST("AddUpdateOwner")
@@ -34,7 +40,8 @@ public interface ApiService {
     @PUT("update/{ownerId}")
     Call<String> updateOwner(@Path("ownerId") int ownerId, @Body OwnerRegisterRequest request);
 
-    @POST("createOwner") // Your backend endpoint for full owner creation
+    @POST("createOwner")
+        // Your backend endpoint for full owner creation
     Call<String> createOwner(@Body OwnerParameter owner);
 
     @GET("FindOwner/{id}")
@@ -51,6 +58,6 @@ public interface ApiService {
     Call<String> verifyCode(@Field("email") String email, @Field("code") String code);
 
     // Fetch driver details by vehicle number (Updated)
-    @GET("driverDetails")
-    Call<DriverParameter> getDriverByVehicle(@Query("vehicleNumber") String vehicleNumber);
+    @GET("api/owners/drivers/{vehicleNumber}")
+    Call<List<DriverParameter>> getDriverByVehicle(@Path("vehicleNumber") String vehicleNumber);
 }

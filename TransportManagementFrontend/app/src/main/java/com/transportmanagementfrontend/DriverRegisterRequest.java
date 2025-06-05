@@ -10,10 +10,12 @@ public class DriverRegisterRequest {
     private String username;
     private String password;
     private String role;
+    private OwnerParameter owner;
 
     public DriverRegisterRequest() {}
 
-    public DriverRegisterRequest(String firstName, String lastName, String phone, String email, String dlNumber, String vehicleNumber, String username, String password, String role) {
+    public DriverRegisterRequest(String firstName, String lastName, String phone, String email, String dlNumber,
+                                 String vehicleNumber, String username, String password, String role, String owner) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -23,8 +25,24 @@ public class DriverRegisterRequest {
         this.username = username;
         this.password = password;
         this.role = role;
+        this.owner = new OwnerParameter(owner); // Wrap inside Owner object
     }
 
+    public static class OwnerParameter {
+        private String username;
+
+        public OwnerParameter(String username) {
+            this.username = username;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+    }
     // Getters
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
