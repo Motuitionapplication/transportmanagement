@@ -1,0 +1,64 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".TransitCustomerInfoActivity"
+    android:background="@drawable/other_background">
+
+    <!-- Header Text -->
+    <TextView
+        android:id="@+id/txtHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Transit And Customer Info"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <!-- Transparent Rounded Box for ALL content -->
+    <LinearLayout
+        android:id="@+id/transparentBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="vertical"
+        android:background="@drawable/transparent_rounded_box"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/txtHeader"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Customer and Goods Details -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Customer Details:-\nName: Vibek Jena\n\nGoods Details:-\nType: Home Appliances\nWeight: 200 Kg\n\nTransaction :\nPending or Paid\n\nADMIN:\nApproved or Not Approved"
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />
+
+        <!-- Start Location Button -->
+        <Button
+            android:id="@+id/btnStartLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:text="Start Location"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#4A00E0" />
+
+        <!-- Static Map Image -->
+        <ImageView
+            android:id="@+id/staticMap"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:layout_marginTop="12dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/map_sample" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

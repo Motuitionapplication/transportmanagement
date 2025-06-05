@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -95,12 +97,12 @@ public class OwnerHomeActivity extends AppCompatActivity {
     }
 
     private void fetchDriverDetails(String vehicleNumber) {
-        Call<DriverParameter> call = apiService.getDriverByVehicle(vehicleNumber);
-        call.enqueue(new Callback<DriverParameter>() {
+        Call<List<DriverParameter>> call = apiService.getDriverByVehicle(vehicleNumber);
+        call.enqueue(new Callback<List<DriverParameter>>() {
             @Override
-            public void onResponse(Call<DriverParameter> call, Response<DriverParameter> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    DriverParameter driver = response.body();
+            public void onResponse(Call<List<DriverParameter>> call, Response<List<DriverParameter>> response) {
+                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+                    DriverParameter driver = response.body().get(0); // Assuming one driver per vehicle
 
                     // Pass data to DriverDetailsActivity
                     Intent intent = new Intent(OwnerHomeActivity.this, DriverDetailsActivity.class);
@@ -112,9 +114,10 @@ public class OwnerHomeActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<DriverParameter> call, Throwable t) {
+            public void onFailure(Call<List<DriverParameter>> call, Throwable t) {
                 Toast.makeText(OwnerHomeActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 }
+
