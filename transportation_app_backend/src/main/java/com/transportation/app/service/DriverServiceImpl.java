@@ -58,22 +58,23 @@ public class DriverServiceImpl {
     public LoginResponseDriver checkLogin(LoginParamDriver loginParamDriver) {
         LoginResponseDriver resp = new LoginResponseDriver();
 
-        DriverParameter driver =
-                driverRepo.findByUsername(loginParamDriver.getUsername());
+        Optional<DriverParameter> driverOpt = driverRepo.findByUsername(loginParamDriver.getUsername());
 
-        if (driver != null &&
-            driver.getPassword().equals(loginParamDriver.getPassword())) {
-
-            resp.setSuccess(true);
-            resp.setStatus("Success");
-            resp.setDriver(Optional.of(driver));
-            return resp;
+        if (driverOpt.isPresent()) {
+            DriverParameter driver = driverOpt.get();
+            if (driver.getPassword().equals(loginParamDriver.getPassword())) {
+                resp.setSuccess(true);
+                resp.setStatus("Success");
+                resp.setDriver(Optional.of(driver));
+                return resp;
+            }
         }
 
         resp.setSuccess(false);
         resp.setStatus("Invalid Username or Password");
         return resp;
     }
+
 
     /* --------------------------------------------------
      * QUERY helpers
@@ -90,7 +91,8 @@ public class DriverServiceImpl {
 
     
     public DriverParameter findByUsername(String username) {
-        return driverRepo.findByUsername(username);
+        return driverRepo.findByUsername(username)
+                .orElse(null);  // or throw exception if preferred
     }
 
     /* --------------------------------------------------
