@@ -94,6 +94,25 @@
                 android:hint="Enter your last name"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fatherNameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_weight="0.15"
+                app:boxBackgroundColor="@android:color/white"
+                app:boxStrokeColor="#FFA500"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fatherName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter your father's name"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp" />
+            </com.google.android.material.textfield.TextInputLayout>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Phone Number -->
@@ -116,25 +135,8 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Father Name -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fatherNameLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.15"
-            app:boxBackgroundColor="@android:color/white"
-            app:boxStrokeColor="#FFA500"
-            app:errorEnabled="true"
-            android:layout_marginTop="8dp">
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/fatherName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter your father's name"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"/>
-        </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Address -->
+            <!-- Address -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/addressLayout"
             android:layout_width="match_parent"
