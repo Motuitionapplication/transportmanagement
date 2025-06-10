@@ -59,6 +59,9 @@ public class OwnerParameter {
 	@Version
 	private Integer version;
 
+	@Schema(description = "Availability status of the vehicle", example = "Unavailable")
+	private String vechicleAvailabilityStatus;
+
 	private String addressProofType;
 	private String addressProofNumber;
 	private boolean addressProofVerified;
@@ -74,31 +77,27 @@ public class OwnerParameter {
 	private AccountDetails accountDetails;
 
 	@Embedded
-	@AttributeOverrides({
-		@AttributeOverride(name = "at", column = @Column(name = "present_at")),
-		@AttributeOverride(name = "po", column = @Column(name = "present_po")),
-		@AttributeOverride(name = "town", column = @Column(name = "present_town")),
-		@AttributeOverride(name = "ps", column = @Column(name = "present_ps")),
-		@AttributeOverride(name = "dist", column = @Column(name = "present_dist")),
-		@AttributeOverride(name = "state", column = @Column(name = "present_state")),
-		@AttributeOverride(name = "pin", column = @Column(name = "present_pin")),
-		@AttributeOverride(name = "mob", column = @Column(name = "present_mob")),
-		@AttributeOverride(name = "type", column = @Column(name = "present_type"))
-	})
+	@AttributeOverrides({ @AttributeOverride(name = "at", column = @Column(name = "present_at")),
+			@AttributeOverride(name = "po", column = @Column(name = "present_po")),
+			@AttributeOverride(name = "town", column = @Column(name = "present_town")),
+			@AttributeOverride(name = "ps", column = @Column(name = "present_ps")),
+			@AttributeOverride(name = "dist", column = @Column(name = "present_dist")),
+			@AttributeOverride(name = "state", column = @Column(name = "present_state")),
+			@AttributeOverride(name = "pin", column = @Column(name = "present_pin")),
+			@AttributeOverride(name = "mob", column = @Column(name = "present_mob")),
+			@AttributeOverride(name = "type", column = @Column(name = "present_type")) })
 	private Address presentAddress;
 
 	@Embedded
-	@AttributeOverrides({
-		@AttributeOverride(name = "at", column = @Column(name = "permanent_at")),
-		@AttributeOverride(name = "po", column = @Column(name = "permanent_po")),
-		@AttributeOverride(name = "town", column = @Column(name = "permanent_town")),
-		@AttributeOverride(name = "ps", column = @Column(name = "permanent_ps")),
-		@AttributeOverride(name = "dist", column = @Column(name = "permanent_dist")),
-		@AttributeOverride(name = "state", column = @Column(name = "permanent_state")),
-		@AttributeOverride(name = "pin", column = @Column(name = "permanent_pin")),
-		@AttributeOverride(name = "mob", column = @Column(name = "permanent_mob")),
-		@AttributeOverride(name = "type", column = @Column(name = "permanent_type"))
-	})
+	@AttributeOverrides({ @AttributeOverride(name = "at", column = @Column(name = "permanent_at")),
+			@AttributeOverride(name = "po", column = @Column(name = "permanent_po")),
+			@AttributeOverride(name = "town", column = @Column(name = "permanent_town")),
+			@AttributeOverride(name = "ps", column = @Column(name = "permanent_ps")),
+			@AttributeOverride(name = "dist", column = @Column(name = "permanent_dist")),
+			@AttributeOverride(name = "state", column = @Column(name = "permanent_state")),
+			@AttributeOverride(name = "pin", column = @Column(name = "permanent_pin")),
+			@AttributeOverride(name = "mob", column = @Column(name = "permanent_mob")),
+			@AttributeOverride(name = "type", column = @Column(name = "permanent_type")) })
 	private Address permanentAddress;
 
 	// ✅ RELATIONSHIP: One Owner to Many Drivers
@@ -107,7 +106,8 @@ public class OwnerParameter {
 	@JsonManagedReference
 	private List<DriverParameter> drivers;
 
-	 public OwnerParameter() {}
+	public OwnerParameter() {
+	}
 	// ---------------- Getters & Setters ----------------
 
 	public Integer getId() {
@@ -189,8 +189,6 @@ public class OwnerParameter {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-
 
 	public String getAddressProofType() {
 		return addressProofType;
@@ -279,4 +277,21 @@ public class OwnerParameter {
 	public void setDrivers(List<DriverParameter> drivers) {
 		this.drivers = drivers;
 	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
+
+	public String getVechicleAvailabilityStatus() {
+		return vechicleAvailabilityStatus;
+	}
+
+	public void setVechicleAvailabilityStatus(String vechicleAvailabilityStatus) {
+		this.vechicleAvailabilityStatus = vechicleAvailabilityStatus;
+	}
+
 }

@@ -1,9 +1,14 @@
 package com.transportation.app.binding;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,13 +29,14 @@ public class DriverParameter {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	
-	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "owner_username",referencedColumnName = "username") 
-	@JsonBackReference// This should match the FK column in your DB table
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@JoinColumn(name = "owner_username", referencedColumnName = "username")
+	@JsonBackReference // This should match the FK column in your DB table
 	private OwnerParameter owner;
-	
+
+	@OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PaymentTable> payments = new ArrayList<>();
+
 	@Schema(description = "Driver's first name", example = "Rajesh")
 	private String firstName;
 
@@ -40,6 +47,7 @@ public class DriverParameter {
 	private String phone;
 
 	@Schema(description = "Username or User ID", example = "rajesh.kumar")
+	@Column(unique = true, nullable = false)
 	private String username;
 
 	@Schema(description = "Password", example = "Pass@123")
@@ -79,8 +87,16 @@ public class DriverParameter {
 	@Schema(description = "Role of the user", example = "Driver")
 	private String role;
 
-	public DriverParameter() {}
-	
+	@Schema(description = "Type of the vehicle", example = "Truck")
+	private String vehicleType;
+
+	@Schema(description = "Availability status of the driver", example = "Available")
+	private String driverAvelablilityStatus;
+
+	public DriverParameter() {
+	}
+
+	// Getters and Setters
 
 	public Integer getId() {
 		return id;
@@ -218,24 +234,40 @@ public class DriverParameter {
 		this.role = role;
 	}
 
-
 	public OwnerParameter getOwner() {
 		return owner;
 	}
-
 
 	public void setOwner(OwnerParameter owner) {
 		this.owner = owner;
 	}
 
 
-	
+	public String getVehicleType() {
+		return vehicleType;
+	}
 
-	
+	public void setVehicleType(String vehicleType) {
+		this.vehicleType = vehicleType;
+	}
 
+	public List<PaymentTable> getPayments() {
+		return payments;
+	}
 
+	public void setPayments(List<PaymentTable> payments) {
+		this.payments = payments;
+	}
 
-	// Getters and Setters (same as before)
+	public String getDriverAvelablilityStatus() {
+		return driverAvelablilityStatus;
+	}
+
+	public void setDriverAvelablilityStatus(String driverAvelablilityStatus) {
+		this.driverAvelablilityStatus = driverAvelablilityStatus;
+	}
+
+// (same as before)
 
 	// ... [getters and setters omitted for brevity] ...
 
