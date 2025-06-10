@@ -1,33 +1,60 @@
 package com.transportmanagementfrontend;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class PaymentParameter implements Serializable {
 
     private String date;
     private String transactionId;
-    private String pickup;
-    private String drop;
-    private String fare;
-    private String driverName;
-    private String vehicleNo;
+    private String pickupPin;
+    private String dropPin;
+    private String city;
+    private double distance;
+    private String paymentMode;
+    private BigDecimal amount;
 
-    public PaymentParameter(String date, String transactionId, String pickup, String drop,
-                            String fare, String driverName, String vehicleNo) {
+    public PaymentParameter(String date, String transactionId, String pickupPin, String dropPin,
+                            String city, double distance, String paymentMode, BigDecimal amount) {
         this.date = date;
         this.transactionId = transactionId;
-        this.pickup = pickup;
-        this.drop = drop;
-        this.fare = fare;
-        this.driverName = driverName;
-        this.vehicleNo = vehicleNo;
+        this.pickupPin = pickupPin;
+        this.dropPin = dropPin;
+        this.city = city;
+        this.distance = distance;
+        this.paymentMode = paymentMode;
+        this.amount = amount;
     }
 
-    public String getDate() { return date; }
-    public String getTransactionId() { return transactionId; }
-    public String getPickup() { return pickup; }
-    public String getDrop() { return drop; }
-    public String getFare() { return fare; }
-    public String getDriverName() { return driverName; }
-    public String getVehicleNo() { return vehicleNo; }
+    public String getDate() {
+        return date;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public String getPickupPin() {
+        return pickupPin;
+    }
+
+    public String getDropPin() {
+        return dropPin;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public String getPaymentMode() {
+        return paymentMode;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
 }
