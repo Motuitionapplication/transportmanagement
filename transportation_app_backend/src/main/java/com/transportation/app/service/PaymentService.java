@@ -7,12 +7,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface PaymentService {
-	
-	PaymentTable savePayment(PaymentTable payment);
+	public PaymentTable savePayment(PaymentTable payment);
 
-	Optional<PaymentTable> getPaymentById(UUID transactionId);
+	public Optional<PaymentTable> getPaymentById(Integer transactionId);
 
-	List<PaymentTable> getAllPayments();
+	public List<PaymentTable> getAllPayments();
 
-	void deletePayment(UUID transactionId);
+	public void deletePayment(Integer transactionId);
 }

@@ -1,10 +1,10 @@
 package com.transportation.app.binding;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.CascadeType;
@@ -35,7 +35,9 @@ public class DriverParameter {
 	private OwnerParameter owner;
 
 	@OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<PaymentTable> payments = new ArrayList<>();
+	@JsonIgnore
+	@JsonManagedReference
+	private List<PaymentTable> payments ;
 
 	@Schema(description = "Driver's first name", example = "Rajesh")
 	private String firstName;

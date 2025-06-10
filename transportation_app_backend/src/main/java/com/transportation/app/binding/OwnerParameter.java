@@ -278,13 +278,7 @@ public class OwnerParameter {
 		this.drivers = drivers;
 	}
 
-	public Integer getVersion() {
-		return version;
-	}
-
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+	
 
 	public String getVechicleAvailabilityStatus() {
 		return vechicleAvailabilityStatus;

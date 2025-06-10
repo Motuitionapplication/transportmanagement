@@ -2,14 +2,15 @@ package com.transportation.app.binding;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -20,13 +21,14 @@ public class PaymentTable {
 
 	@Id
 	@JsonIgnore
-	@Column(name = "transaction_id", updatable = false, nullable = false)
-	private UUID transactionId;
+	@GeneratedValue
+	private Integer transactionId;
 
-	@ManyToOne
-	@JsonBackReference
-	@JoinColumn(name = "driver_Username", referencedColumnName = "username")
-	private DriverParameter driver;
+	 @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+	    @JsonBackReference
+	    @JoinColumn(name = "driver_Username", referencedColumnName = "username")
+	    private DriverParameter driver;
+
 
 	private LocalDate date;
 
@@ -51,17 +53,7 @@ public class PaymentTable {
 	@DecimalMin(value = "0.0", inclusive = false)
 	private BigDecimal amount;
 
-	private String driverName;
-	
-	private String vehicleNumber;
-
-	// Getters and setters
-	public LocalDate getDate() {
-		return date;
-	}
-
-	public void setDate(LocalDate date) {
-		this.date = date;
+	public PaymentTable() {
 	}
 
 	public DriverParameter getDriver() {
@@ -72,12 +64,12 @@ public class PaymentTable {
 		this.driver = driver;
 	}
 
-	public UUID getTransactionId() {
-		return transactionId;
+	public LocalDate getDate() {
+		return date;
 	}
 
-	public void setTransactionId(UUID transactionId) {
-		this.transactionId = transactionId;
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
 
 	public String getPickupPin() {
@@ -128,21 +120,12 @@ public class PaymentTable {
 		this.amount = amount;
 	}
 
-	public String getDriverName() {
-		return driverName;
+	public Integer getTransactionId() {
+		return transactionId;
 	}
 
-	public void setDriverName(String driverName) {
-		this.driverName = driverName;
+	public void setTransactionId(Integer transactionId) {
+		this.transactionId = transactionId;
 	}
 
-	public String getVehicleNumber() {
-		return vehicleNumber;
-	}
-
-	public void setVehicleNumber(String vehicleNumber) {
-		this.vehicleNumber = vehicleNumber;
-	}
-	
-	
 }
