@@ -47,6 +47,14 @@ public interface ApiService {
     @GET("FindOwner/{id}")
     Call<OwnerParameter> getOwnerById(@Path("id") int id);
 
+    // Get all payment records (dummy or real)
+    @GET("payments/get_all")
+    Call<List<PaymentParameter>> getAllPayments();
+
+    // Get vehicle orders
+    @GET("orders") // Endpoint: /api/orders
+    Call<List<VehicleOrderParameter>> getVehicleOrders();
+
     // Endpoint to send a verification code to the user's email
     @POST("user/forgot-password")
     @FormUrlEncoded

@@ -15,61 +15,54 @@
         android:background="@android:color/white">
 
         <TextView
-            android:id="@+id/txtDate"
+            android:id="@+id/orderId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date"
+            android:text="Order ID"
             android:textStyle="bold"
             android:textSize="16sp"
             android:layout_marginBottom="4dp" />
 
         <TextView
-            android:id="@+id/txtTransactionId"
+            android:id="@+id/vehicleNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Transaction ID"
+            android:text="Vehicle No"
             android:layout_marginBottom="4dp" />
 
         <TextView
-            android:id="@+id/txtPickupPin"
+            android:id="@+id/pickup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pickup Pin"
+            android:text="Pickup"
             android:layout_marginBottom="4dp" />
 
         <TextView
-            android:id="@+id/txtDropPin"
+            android:id="@+id/drop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Drop Pin"
+            android:text="Drop"
             android:layout_marginBottom="4dp" />
 
         <TextView
-            android:id="@+id/txtCity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="City"
-            android:layout_marginBottom="4dp" />
-
-        <TextView
-            android:id="@+id/txtDistance"
+            android:id="@+id/distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Distance"
             android:layout_marginBottom="4dp" />
 
         <TextView
-            android:id="@+id/txtPaymentMode"
+            android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Payment Mode"
+            android:text="Price"
             android:layout_marginBottom="4dp" />
 
         <TextView
-            android:id="@+id/txtAmount"
+            android:id="@+id/availability"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Amount"
+            android:text="Availability"
             android:textStyle="bold"
             android:textColor="#FF6200EE"
             android:textSize="16sp" />
