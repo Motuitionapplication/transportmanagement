@@ -1,5 +1,7 @@
 package com.transportation.app.rest;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -100,4 +102,26 @@ public class DriverController {
         String result = driverService.deleteDriver(id);
         return ResponseEntity.ok(result);
     }
+    
+    @PostMapping("/driver/filter")
+    public ResponseEntity<List<DriverParameter>> filterDrivers(@RequestBody DriverParameter filter) {
+        String city = filter.getCity();
+        String vehicleNumber = filter.getVehicleNumber();
+        String vehicleType = filter.getVehicleType();
+
+        if (city == null || vehicleNumber == null || vehicleType == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        List<DriverParameter> drivers = driverService.filterDrivers(city, vehicleNumber, vehicleType);
+
+        if (drivers.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(drivers);
+    }
+
+    
 }
+

@@ -15,4 +15,7 @@ public interface DriverRepository extends JpaRepository<DriverParameter, Integer
     
     // Fetch drivers by vehicleNumber
     List<DriverParameter> findByVehicleNumber(String vehicleNumber);
+    
+    List<DriverParameter> findByCityAndVehicleNumberAndVehicleType(String city, String vehicleNumber, String vehicleType);
+
 }

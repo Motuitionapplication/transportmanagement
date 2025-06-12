@@ -165,4 +165,9 @@ public class DriverServiceImpl {
         dest.setVehicleNumber(src.getVehicleNumber());
         dest.setRole(src.getRole());
     }
+    
+    public List<DriverParameter> filterDrivers(String city, String vehicleNumber, String vehicleType) {
+        return driverRepo.findByCityAndVehicleNumberAndVehicleType(city, vehicleNumber, vehicleType);
+    }
+
 }
