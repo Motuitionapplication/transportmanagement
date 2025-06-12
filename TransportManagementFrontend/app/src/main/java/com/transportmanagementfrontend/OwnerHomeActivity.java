@@ -39,12 +39,12 @@ public class OwnerHomeActivity extends AppCompatActivity {
 
         // Get user details
         String firstName = getIntent().getStringExtra("FIRST_NAME");
-        String ownerId = getIntent().getStringExtra("ownerId");  // not "OWNER_ID"
+        String ownerId = getIntent().getStringExtra("ownerId");
         welcomeText.setText(firstName != null && !firstName.isEmpty() ? "Hello, " + firstName + "!" : "");
 
         // Initialize Retrofit
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:5000/api/")
+                .baseUrl("http://10.0.2.2:5000/")
                 //.baseUrl("http://gkct1transport.us-east-1.elasticbeanstalk.com/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

@@ -1,48 +1,60 @@
 package com.transportmanagementfrontend;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class VehicleOrderActivity extends AppCompatActivity {
 
-    private TextView txtOrderId,
-            txtVehicleNo,
-            txtPickup,
-            txtDrop,
-            txtDistance,
-            txtPrice,
-            txtAvailability;
+    private RecyclerView recyclerView;
+    private VehicleOrderAdapter adapter;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehicle_order);
 
-        // Initialize UI components
-        txtOrderId      = findViewById(R.id.txtOrderId);
-        txtVehicleNo    = findViewById(R.id.txtVehicleNo);
-        txtPickup       = findViewById(R.id.txtPickup);
-        txtDrop         = findViewById(R.id.txtDrop);
-        txtDistance     = findViewById(R.id.txtDistance);
-        txtPrice        = findViewById(R.id.txtPrice);
-        txtAvailability = findViewById(R.id.txtAvailability);
+        recyclerView = findViewById(R.id.recyclerViewVehicleOrders); // Make sure this ID exists in your XML
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Get order details from Intent
-        OrderParameter order = (OrderParameter) getIntent().getSerializableExtra("ORDER");
+        fetchOrderData();
+    }
 
-        if (order != null) {
-            txtOrderId.setText("Order ID: " + order.getOrderId());
-            txtVehicleNo.setText("Vehicle No: " + order.getVehicleNumber());
-            txtPickup.setText("Pickup: " + order.getPickupLocation());
-            txtDrop.setText("Drop: " + order.getDropLocation());
-            txtDistance.setText("Distance: " + order.getDistance() + " km");
-            txtPrice.setText("Price: ₹" + order.getPrice());
-            txtAvailability.setText("Availability: " +
-                    (order.isAvailable() ? "Available" : "Not Available"));
-        }
+    private void fetchOrderData() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:5000/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ApiService apiService = retrofit.create(ApiService.class);
+        Call<List<VehicleOrderParameter>> call = apiService.getVehicleOrders();
+
+        call.enqueue(new Callback<List<VehicleOrderParameter>>() {
+            @Override
+            public void onResponse(Call<List<VehicleOrderParameter>> call, Response<List<VehicleOrderParameter>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    adapter = new VehicleOrderAdapter(response.body());
+                    recyclerView.setAdapter(adapter);
+                } else {
+                    Toast.makeText(getApplicationContext(), "No vehicle orders found", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<VehicleOrderParameter>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Error: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

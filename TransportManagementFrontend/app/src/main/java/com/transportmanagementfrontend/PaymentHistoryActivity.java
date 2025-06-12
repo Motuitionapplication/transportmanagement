@@ -1,20 +1,26 @@
 package com.transportmanagementfrontend;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PaymentHistoryActivity extends AppCompatActivity {
 
     private RecyclerView recyclerViewPayments;
     private PaymentAdapter paymentAdapter;
-    private ArrayList<PaymentParameter> paymentList;
+    private List<PaymentParameter> paymentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,36 +30,40 @@ public class PaymentHistoryActivity extends AppCompatActivity {
         recyclerViewPayments = findViewById(R.id.recyclerViewPayments);
         recyclerViewPayments.setLayoutManager(new LinearLayoutManager(this));
 
-        // Try to get the payment list from Intent
-        paymentList = (ArrayList<PaymentParameter>) getIntent().getSerializableExtra("PAYMENT_LIST");
-
-        if (paymentList == null) {
-            // If no data passed, create dummy data for testing
-            paymentList = new ArrayList<>();
-            paymentList.add(new PaymentParameter("2025-06-05", "TXN12345", "560001", "560100", "Bangalore", 15.2, "Card", new BigDecimal("350.00")));
-            paymentList.add(new PaymentParameter("2025-06-01", "TXN12346", "560002", "560105", "Bangalore", 10.0, "Cash", new BigDecimal("350.00")));
-        }
-
+        paymentList = new ArrayList<>();
         paymentAdapter = new PaymentAdapter(paymentList);
         recyclerViewPayments.setAdapter(paymentAdapter);
 
-        // Simulate receiving updated data (like from Retrofit/Firebase)
-        simulateDataUpdate();
+        fetchPaymentsFromBackend();
     }
 
-    // Simulate an async data update callback
-    private void simulateDataUpdate() {
-        // New dummy updated data list
-        List<PaymentParameter> newList = new ArrayList<>();
-        newList.add(new PaymentParameter("2025-06-06", "TXN99999", "560003", "560106", "Bangalore", 20.0, "UPI", new BigDecimal("350.00")));
-        newList.add(new PaymentParameter("2025-06-07", "TXN88888", "560004", "560107", "Bangalore", 5.5, "Card", new BigDecimal("350.00")));
+    private void fetchPaymentsFromBackend() {
+        // Retrofit setup
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:5000/api/") // Replace with actual backend URL
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        // Call the method to update adapter's data
-        onDataReceived(newList);
-    }
+        ApiService apiService = retrofit.create(ApiService.class);
 
-    // Example Retrofit or Firebase callback method to update data
-    public void onDataReceived(List<PaymentParameter> newList) {
-        paymentAdapter.updatePayments(newList);
+        Call<List<PaymentParameter>> call = apiService.getAllPayments();
+        call.enqueue(new Callback<List<PaymentParameter>>() {
+            @Override
+            public void onResponse(Call<List<PaymentParameter>> call, Response<List<PaymentParameter>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    paymentList.clear();
+                    paymentList.addAll(response.body());
+                    paymentAdapter.notifyDataSetChanged();
+                    Log.d("API", "Payments fetched: " + paymentList.size());
+                } else {
+                    Log.e("API", "Empty or error response");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PaymentParameter>> call, Throwable t) {
+                Log.e("API Error", "Failed to fetch payments: " + t.getMessage());
+            }
+        });
     }
 }

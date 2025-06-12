@@ -9,12 +9,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.PaymentViewHolder> {
 
     private List<PaymentParameter> paymentList;
+
+    public PaymentAdapter() {
+        this.paymentList = new ArrayList<>();
+    }
 
     public PaymentAdapter(List<PaymentParameter> paymentList) {
         this.paymentList = paymentList;
@@ -44,7 +49,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.PaymentV
         holder.txtCity.setText("City: " + payment.getCity());
         holder.txtDistance.setText("Distance: " + payment.getDistance() + " km");
         holder.txtPaymentMode.setText("Mode: " + payment.getPaymentMode());
-        // Format amount nicely
+
         NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "IN"));
         String formattedAmount = formatter.format(payment.getAmount());
         holder.txtAmount.setText("Amount: " + formattedAmount);
@@ -52,7 +57,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.PaymentV
 
     @Override
     public int getItemCount() {
-        return paymentList.size();
+        return (paymentList != null) ? paymentList.size() : 0;
     }
 
     static class PaymentViewHolder extends RecyclerView.ViewHolder {
@@ -73,5 +78,4 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.PaymentV
             txtAmount = itemView.findViewById(R.id.txtAmount);
         }
     }
-
 }

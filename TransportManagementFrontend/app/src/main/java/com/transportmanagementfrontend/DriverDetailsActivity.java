@@ -2,6 +2,7 @@ package com.transportmanagementfrontend;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ public class DriverDetailsActivity extends AppCompatActivity {
 
         // Get driver object from Intent
         DriverParameter driver = (DriverParameter) getIntent().getSerializableExtra("DRIVER");
+        Log.d("DEBUG", "Received Driver: " + (driver != null ? driver.getFirstName() : "null"));
 
         if (driver != null) {
             // Set values to the text views
