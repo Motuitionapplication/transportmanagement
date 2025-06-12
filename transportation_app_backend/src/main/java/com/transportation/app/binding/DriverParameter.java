@@ -38,6 +38,9 @@ public class DriverParameter {
 	@JsonIgnore
 	@JsonManagedReference
 	private List<PaymentTable> payments ;
+	
+	
+	
 
 	@Schema(description = "Driver's first name", example = "Rajesh")
 	private String firstName;
@@ -94,6 +97,18 @@ public class DriverParameter {
 
 	@Schema(description = "Availability status of the driver", example = "Available")
 	private String driverAvelablilityStatus;
+	
+	@Schema(description = "Driver's current city", example = "Delhi")
+	private String city;
+
+	public String getCity() {
+	    return city;
+	}
+
+	public void setCity(String city) {
+	    this.city = city;
+	}
+
 
 	public DriverParameter() {
 	}

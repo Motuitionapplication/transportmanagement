@@ -24,11 +24,10 @@ public class PaymentTable {
 	@GeneratedValue
 	private Integer transactionId;
 
-	 @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-	    @JsonBackReference
-	    @JoinColumn(name = "driver_Username", referencedColumnName = "username")
-	    private DriverParameter driver;
-
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH })
+	@JsonBackReference
+	@JoinColumn(name = "driver_Username", referencedColumnName = "username")
+	private DriverParameter driver;
 
 	private LocalDate date;
 
