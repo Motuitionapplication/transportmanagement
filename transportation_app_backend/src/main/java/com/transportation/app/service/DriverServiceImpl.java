@@ -14,7 +14,7 @@ import com.transportation.app.repo.DriverRepository;
 import com.transportation.app.repo.OwnerRepository;
 
 @Service
-public class DriverServiceImpl {
+public class DriverServiceImpl{
 
     private final DriverRepository driverRepo;
     private final OwnerRepository  ownerRepo;
@@ -36,7 +36,6 @@ public class DriverServiceImpl {
         }
 
         String ownerUsername = driverParameter.getOwner().getUsername();
-
         // Fetch existing owner
         OwnerParameter owner = ownerRepo.findByUsername(ownerUsername)
             .orElseThrow(() -> new RuntimeException("Owner not found with username: " + ownerUsername));
@@ -90,9 +89,9 @@ public class DriverServiceImpl {
     }
 
     
-    public DriverParameter findByUsername(String username) {
+    public DriverParameter getDriverByUsername(String username) {
         return driverRepo.findByUsername(username)
-                .orElse(null);  // or throw exception if preferred
+                .orElse(null);
     }
 
     /* --------------------------------------------------

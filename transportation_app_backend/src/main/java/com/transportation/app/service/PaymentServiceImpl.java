@@ -25,32 +25,21 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     @Transactional
     public PaymentTable savePayment(PaymentTable payment) {
-        // Handle driver reference first
-        if (payment.getDriver() != null) {
-            // If driver has username (your join column is on username)
-            if (payment.getDriver().getUsername() != null) {
-                DriverParameter existingDriver = driverRepository.findByUsername(payment.getDriver().getUsername())
-                    .orElseThrow(() -> new RuntimeException("Driver not found with username: " + payment.getDriver().getUsername()));
-                payment.setDriver(existingDriver);
-            }
-            // If driver doesn't have username but has ID
-            else if (payment.getDriver().getId() != null) {
-                DriverParameter existingDriver = driverRepository.findById(payment.getDriver().getId())
-                    .orElseThrow(() -> new RuntimeException("Driver not found with id: " + payment.getDriver().getId()));
-                payment.setDriver(existingDriver);
-            }
-            // If new driver (no username or ID)
-            else {
-                throw new RuntimeException("Driver must be registered before creating payment");
-            }
+        // If driverUsername was set via JSON, resolve the full driver entity
+        if (payment.getFk_driver() != null && payment.getFk_driver().getUsername() != null) {
+            String username = payment.getFk_driver().getUsername();
+            DriverParameter existingDriver = driverRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Driver not found with username: " + username));
+            payment.setFk_driver(existingDriver);
+        } else {
+            throw new RuntimeException("Driver username must be provided in the request");
         }
 
-        // Handle payment save/update
+        // Update existing payment if transactionId is present
         if (payment.getTransactionId() != null) {
             return paymentRepository.findById(payment.getTransactionId())
                 .map(existingPayment -> {
-                    // Update existing payment
-                    existingPayment.setDriver(payment.getDriver());
+                    existingPayment.setFk_driver(payment.getFk_driver());
                     existingPayment.setDate(payment.getDate());
                     existingPayment.setPickupPin(payment.getPickupPin());
                     existingPayment.setDropPin(payment.getDropPin());
@@ -62,8 +51,11 @@ public class PaymentServiceImpl implements PaymentService {
                 })
                 .orElseThrow(() -> new RuntimeException("Payment not found with id: " + payment.getTransactionId()));
         }
+
+        // Save new payment
         return paymentRepository.save(payment);
     }
+
     @Override
     public Optional<PaymentTable> getPaymentById(Integer transactionId) {
         return paymentRepository.findById(transactionId);
@@ -78,6 +70,4 @@ public class PaymentServiceImpl implements PaymentService {
     public void deletePayment(Integer transactionId) {
         paymentRepository.deleteById(transactionId);
     }
-    
- 
 }

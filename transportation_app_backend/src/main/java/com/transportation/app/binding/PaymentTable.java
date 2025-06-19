@@ -19,112 +19,128 @@ import jakarta.validation.constraints.DecimalMin;
 @Entity
 public class PaymentTable {
 
-	@Id
-	@JsonIgnore
-	@GeneratedValue
-	private Integer transactionId;
+    @Id
+    @JsonIgnore
+    @GeneratedValue
+    private Integer transactionId;
 
-	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH })
-	@JsonBackReference
-	@JoinColumn(name = "driver_Username", referencedColumnName = "username")
-	private DriverParameter driver;
+    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH })
+    @JoinColumn(name = "driver_Username", referencedColumnName = "username")
+    @JsonBackReference
+    private DriverParameter fk_driver;
 
-	private LocalDate date;
+    private LocalDate date;
 
-	@Schema(description = "Pickup area pin code", example = "751003")
-	@Column(name = "pickup_pin")
-	private String pickupPin;
+    @Schema(description = "Pickup area pin code", example = "751003")
+    @Column(name = "pickup_pin")
+    private String pickupPin;
 
-	@Schema(description = "Drop area pin code", example = "110001")
-	@Column(name = "drop_pin")
-	private String dropPin;
+    @Schema(description = "Drop area pin code", example = "110001")
+    @Column(name = "drop_pin")
+    private String dropPin;
 
-	@Schema(description = "City of travel", example = "Delhi")
-	private String city;
+    @Schema(description = "City of travel", example = "Delhi")
+    private String city;
 
-	@Schema(description = "Distance between pickup and drop in kilometers", example = "12.5")
-	private Double distance;
+    @Schema(description = "Distance between pickup and drop in kilometers", example = "12.5")
+    private Double distance;
 
-	@Schema(description = "Mode of payment", example = "UPI")
-	private String paymentMode;
+    @Schema(description = "Mode of payment", example = "UPI")
+    private String paymentMode;
 
-	@Schema(description = "Payment amount in INR", example = "350.75")
-	@DecimalMin(value = "0.0", inclusive = false)
-	private BigDecimal amount;
+    @Schema(description = "Payment amount in INR", example = "350.75")
+    @DecimalMin(value = "0.0", inclusive = false)
+    private BigDecimal amount;
 
-	public PaymentTable() {
-	}
+    // ✅ This field will appear in Swagger and JSON responses
+    @Schema(description = "Driver's username" )
+    public String getDriverUsername() {
+        return fk_driver != null ? fk_driver.getUsername() : null;
+    }
 
-	public DriverParameter getDriver() {
-		return driver;
-	}
+    
+    @Schema(description = "Driver's username")
+    public void setDriverUsername(String username) {
+        if (this.fk_driver == null) {
+            this.fk_driver = new DriverParameter();
+        }
+        this.fk_driver.setUsername(username);
+    }
 
-	public void setDriver(DriverParameter driver) {
-		this.driver = driver;
-	}
+    
+    
+    public PaymentTable() {
+    }
 
-	public LocalDate getDate() {
-		return date;
-	}
+    public DriverParameter getFk_driver() {
+        return fk_driver;
+    }
 
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
+    public void setFk_driver(DriverParameter fk_driver) {
+        this.fk_driver = fk_driver;
+    }
 
-	public String getPickupPin() {
-		return pickupPin;
-	}
+    public LocalDate getDate() {
+        return date;
+    }
 
-	public void setPickupPin(String pickupPin) {
-		this.pickupPin = pickupPin;
-	}
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
-	public String getDropPin() {
-		return dropPin;
-	}
+    public String getPickupPin() {
+        return pickupPin;
+    }
 
-	public void setDropPin(String dropPin) {
-		this.dropPin = dropPin;
-	}
+    public void setPickupPin(String pickupPin) {
+        this.pickupPin = pickupPin;
+    }
 
-	public String getCity() {
-		return city;
-	}
+    public String getDropPin() {
+        return dropPin;
+    }
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+    public void setDropPin(String dropPin) {
+        this.dropPin = dropPin;
+    }
 
-	public Double getDistance() {
-		return distance;
-	}
+    public String getCity() {
+        return city;
+    }
 
-	public void setDistance(Double distance) {
-		this.distance = distance;
-	}
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-	public String getPaymentMode() {
-		return paymentMode;
-	}
+    public Double getDistance() {
+        return distance;
+    }
 
-	public void setPaymentMode(String paymentMode) {
-		this.paymentMode = paymentMode;
-	}
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
 
-	public BigDecimal getAmount() {
-		return amount;
-	}
+    public String getPaymentMode() {
+        return paymentMode;
+    }
 
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
+    public void setPaymentMode(String paymentMode) {
+        this.paymentMode = paymentMode;
+    }
 
-	public Integer getTransactionId() {
-		return transactionId;
-	}
+    public BigDecimal getAmount() {
+        return amount;
+    }
 
-	public void setTransactionId(Integer transactionId) {
-		this.transactionId = transactionId;
-	}
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
 
+    public Integer getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(Integer transactionId) {
+        this.transactionId = transactionId;
+    }
 }
