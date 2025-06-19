@@ -17,7 +17,6 @@ import com.transportation.app.binding.DriverParameter;
 import com.transportation.app.binding.LoginParamOwner;
 import com.transportation.app.binding.LoginResponseOwner;
 import com.transportation.app.binding.OwnerParameter;
-import com.transportation.app.service.DriverService;
 import com.transportation.app.service.DriverServiceImpl;
 import com.transportation.app.service.OwnerService;
 

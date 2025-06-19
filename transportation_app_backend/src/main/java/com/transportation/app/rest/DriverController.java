@@ -56,14 +56,15 @@ public class DriverController {
      * @param id the driver's ID
      * @return the driver details or 404 if not found
      */
-    @GetMapping("driver/FindDriver/{id}")
-    public ResponseEntity<DriverParameter> getDriverById(@PathVariable int id) {
-        DriverParameter driver = driverService.getDriverById(id);
+    @GetMapping("driver/FindDriver/{username}")
+    public ResponseEntity<DriverParameter> getDriverByUsername(@PathVariable String username) {
+        DriverParameter driver = driverService.getDriverByUsername(username);
         if (driver == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(driver);
     }
+
 
     /**
      * Authenticates a driver using username and password.

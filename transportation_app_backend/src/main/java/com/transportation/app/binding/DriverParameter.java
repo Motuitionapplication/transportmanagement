@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.CascadeType;
@@ -34,72 +35,74 @@ public class DriverParameter {
 	@JsonBackReference // This should match the FK column in your DB table
 	private OwnerParameter owner;
 
-	@OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonIgnore
+	
+	@OneToMany(mappedBy = "fk_driver", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonManagedReference
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private List<PaymentTable> payments ;
 	
 	
 	
 
-	@Schema(description = "Driver's first name", example = "Rajesh")
+	@Schema(description = "Driver's first name", example = "Suresh")
 	private String firstName;
 
-	@Schema(description = "Driver's last name", example = "Kumar")
+	@Schema(description = "Driver's last name", example = "Naik")
 	private String lastName;
 
-	@Schema(description = "Mobile number", example = "9876543210")
+	@Schema(description = "Mobile number", example = "9123456789")
 	private String phone;
 
-	@Schema(description = "Username or User ID", example = "rajesh.kumar")
+	@Schema(description = "Username or User ID", example = "suresh.naik95")
 	@Column(unique = true, nullable = false)
 	private String username;
 
-	@Schema(description = "Password", example = "Pass@123")
+	@Schema(description = "Password", example = "Drive@2025")
 	private String password;
 
-	@Schema(description = "Driving license number", example = "DL0420190012345")
+	@Schema(description = "Driving license number", example = "OD1420230098765")
 	private String dlNumber;
 
-	@Schema(description = "Type of driving license", example = "LMV")
+	@Schema(description = "Type of driving license", example = "HMV")
 	private String dlType;
 
-	@Schema(description = "Email ID", example = "rajesh.kumar@example.com")
+	@Schema(description = "Email ID", example = "suresh.naik95@gmail.com")
 	private String email;
 
-	@Schema(description = "Father or husband name", example = "Ramesh Kumar")
+	@Schema(description = "Father or husband name", example = "Ganesh Naik")
 	private String fatherOrHusbandName;
 
 	@Lob
-	@Schema(description = "Passport size photo (compressed)", example = "Base64 encoded image bytes")
+	@Schema(description = "Passport size photo (Base64 encoded)", example = "data:image/jpeg;base64,/9j/4AAQSkZJRgABA...")
 	private String passportPhoto;
 
-	@Schema(description = "Type of identity proof", example = "Aadhar")
+	@Schema(description = "Type of identity proof", example = "Voter ID")
 	private String identityProofType;
 
-	@Schema(description = "Path to uploaded identity proof file", example = "/uploads/docs/aadhar_101.pdf")
+	@Schema(description = "Path to uploaded identity proof file", example = "/documents/idproofs/voterid_suresh.pdf")
 	private String identityProofFilePath;
 
-	@Schema(description = "Blood group", example = "B+")
+	@Schema(description = "Blood group", example = "O+")
 	private String bloodGroup;
 
-	@Schema(description = "Path to uploaded insurance paper", example = "/uploads/docs/insurance_101.pdf")
+	@Schema(description = "Path to uploaded insurance paper", example = "/documents/insurance/insurance_suresh.pdf")
 	private String insurancePaperFilePath;
 
-	@Schema(description = "Vehicle number assigned", example = "MH12AB1234")
+	@Schema(description = "Vehicle number assigned", example = "OD05AZ7896")
 	private String vehicleNumber;
 
 	@Schema(description = "Role of the user", example = "Driver")
 	private String role;
 
-	@Schema(description = "Type of the vehicle", example = "Truck")
+	@Schema(description = "Type of the vehicle", example = "Mini Truck")
 	private String vehicleType;
 
-	@Schema(description = "Availability status of the driver", example = "Available")
+	@Schema(description = "Availability status of the driver", example = "Unavailable")
 	private String driverAvelablilityStatus;
-	
-	@Schema(description = "Driver's current city", example = "Delhi")
+
+	@Schema(description = "Driver's current city", example = "Bhubaneswar")
 	private String city;
+
 
 	public String getCity() {
 	    return city;
