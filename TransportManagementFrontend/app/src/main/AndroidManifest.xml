@@ -32,11 +32,56 @@
             android:exported="true"
             android:label="@string/login_activity_label" />
 
-        <!-- RegisterActivity -->
+        <!-- CustomerRegisterActivity -->
         <activity
-            android:name=".RegisterActivity"
+            android:name=".CustomerRegisterActivity"
             android:exported="true"
-            android:label="@string/register_activity_label" />
+            android:label="@string/register_activity_label"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- DriverRegisterActivity -->
+        <activity
+            android:name=".DriverRegisterActivity"
+            android:exported="true"
+            android:label="@string/register_activity_label"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".TransitCustomerInfoActivity"
+            android:exported="true"
+            android:label="Transit Customer Info" />
+
+        <activity
+            android:name=".ServiceCenterActivity"
+            android:exported="true"
+            android:label="Service Center" />
+
+        <activity
+            android:name=".ComplaintSectionActivity"
+            android:exported="true"
+            android:label="Complaint Section" />
+
+        <activity
+            android:name=".NotificationsActivity"
+            android:exported="true"
+            android:label="Notifications" />
+
+        <activity
+            android:name=".VendorTrackingActivity"
+            android:exported="true"
+            android:label="Vendor Tracking" />
+
+        <activity
+            android:name=".DeliveryConfirmationActivity"
+            android:exported="true"
+            android:label="Delivery Confirmation" />
+
+
+        <!-- OwnerRegisterActivity -->
+        <activity
+            android:name=".OwnerRegisterActivity"
+            android:exported="true"
+            android:label="@string/register_activity_label"
+            android:windowSoftInputMode="adjustResize" />
 
         <!-- ForgotPasswordActivity -->
         <activity
@@ -85,6 +130,43 @@
             android:name=".DriverHomeActivity"
             android:exported="true"
             android:label="Driver Home"/>
+
+        <!-- Profile screen -->
+        <activity
+            android:name=".OwnerProfileActivity"
+            android:exported="true"
+            android:label="Profile" />
+
+        <!-- “Other Services” screen -->
+        <activity
+            android:name=".OtherServicesActivity"
+            android:exported="true"
+            android:label="Other Services" />
+
+        <!-- Vehicle Order screen -->
+        <activity
+            android:name=".VehicleOrderActivity"
+            android:exported="true"
+            android:label="Vehicle Orders" />
+
+        <!-- Vehicle Tracking screen -->
+        <activity
+            android:name=".VehicleTrackingActivity"
+            android:exported="true"
+            android:label="Vehicle Tracking" />
+
+        <!-- Payment History screen -->
+        <activity
+            android:name=".PaymentHistoryActivity"
+            android:exported="true"
+            android:label="Payment History" />
+
+        <!-- Driver Details (fetched via dialog) -->
+        <activity
+            android:name=".DriverDetailsActivity"
+            android:exported="true"
+            android:label="Driver Details" />
+
 
         <!-- Google Maps API Key -->
         <meta-data

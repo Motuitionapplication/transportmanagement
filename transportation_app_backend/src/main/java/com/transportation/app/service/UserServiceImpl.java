@@ -16,6 +16,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private SmsService fast2SMSService;
+    
+    @Autowired
+    private EmailService emailService;
 
     @Override
     public String createUser(UserParameter userParameter) {
@@ -29,11 +32,10 @@ public class UserServiceImpl implements UserService {
         Optional<UserParameter> user = Optional.empty();
         try {
             user = Optional.ofNullable(userRepo.findByUsername(loginParam.getUsername()));
-            if (user.get().getPassword().equals(loginParam.getPassword())) {
+            if (user.isPresent() && user.get().getPassword().equals(loginParam.getPassword())) {
                 response.setStatus("Success");
                 response.setSuccess(true);
                 response.setUser(user);
-
                 return response;
             }
         } catch (Exception e) {
@@ -43,21 +45,10 @@ public class UserServiceImpl implements UserService {
         return response;
     }
 
-    /**
-     * This method generates an OTP and sends it via Fast2SMS.
-     *
-     * @param mobileNumber the mobile number for which the OTP is generated
-     * @return a response string indicating success or failure
-     */
     @Override
     public String generateOTP(String phone) {
-        // Convert mobile number to string (ensure it is in the correct format)
         String mobileStr = String.valueOf(phone);
-        
-        // Send the OTP via Fast2SMS and capture the generated OTP
         String otp = fast2SMSService.sendOTP(mobileStr);
-
-        // If needed, store the OTP in the user record or a separate OTP storage
         Optional<UserParameter> userOptional = userRepo.findByPhone(phone);
         if (userOptional.isPresent()) {
             UserParameter user = userOptional.get();
@@ -68,6 +59,18 @@ public class UserServiceImpl implements UserService {
             return "User with mobile number " + phone + " not found.";
         }
     }
-
-	
+    
+    @Override
+    public String forgotPassword(String email) {
+        UserParameter user = userRepo.findByEmail(email);
+        
+        if (user != null) {
+            String subject = "Forgot Password Request";
+            String message = "Hey, " + user.getUsername() + " this is your password: " + user.getPassword();
+            emailService.sendSimpleMessage(user.getEmail(), subject, message);
+            return "Password sent to your email.";
+        } else {
+            return "Email not valid.";
+        }
+    }
 }

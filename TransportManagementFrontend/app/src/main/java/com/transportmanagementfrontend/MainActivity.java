@@ -2,12 +2,12 @@ package com.transportmanagementfrontend;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -57,12 +57,26 @@ public class MainActivity extends AppCompatActivity {
             selectedRole = ((Button) v).getText().toString();
 
             if (isRegistering) {
-                showToast("Registering As: " + selectedRole);
-                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+                logMessage("Registering As: " + selectedRole);
+                Intent intent;
+                switch (selectedRole.toLowerCase()) {
+                    case "customer":
+                        intent = new Intent(MainActivity.this, CustomerRegisterActivity.class);
+                        break;
+                    case "owner":
+                        intent = new Intent(MainActivity.this, OwnerRegisterActivity.class);
+                        break;
+                    case "driver":
+                        intent = new Intent(MainActivity.this, DriverRegisterActivity.class);
+                        break;
+                    default:
+                        logMessage("Invalid role selected!");
+                        return;
+                }
                 intent.putExtra("ROLE", selectedRole);
                 startActivity(intent);
             } else {
-                showToast("Logging In As: " + selectedRole);
+                logMessage("Logging In As: " + selectedRole);
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 intent.putExtra("ROLE", selectedRole);
                 startActivity(intent);
@@ -85,10 +99,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Displays a toast message.
-     * @param message The message to display.
+     * Logs a message to Logcat with the tag "MainActivity".
+     * @param message The message to log.
      */
-    private void showToast(String message) {
-        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+    private void logMessage(String message) {
+        Log.d("MainActivity", message);
     }
 }

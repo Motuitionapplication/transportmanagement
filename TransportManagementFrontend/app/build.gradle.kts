@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "com.transportmanagementfrontend"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -18,11 +18,14 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+           isShrinkResources = true
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -44,9 +47,16 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation("com.github.dangiashish:Google-Direction-Api:1.6")
+   // implementation("com.github.dangiashish:Google-Direction-Api:1.6")
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation("com.google.android.gms:play-services-maps:18.1.0")
-    implementation ("com.google.android.libraries.places:places:3.3.0")
+    implementation ("com.google.android.libraries.places:places:3.4.0")
     implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation ("com.google.maps.android:android-maps-utils:2.2.3")
+    implementation ("com.google.android.material:material:1.4.0")
 
-}
+
+        implementation ("androidx.recyclerview:recyclerview:1.3.0")
+    }
+
+
