@@ -20,7 +20,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
 @Entity
-@Table(name = "OWNER_REG_DETAILS")
+@Table(name = "OWNER")
 public class OwnerParameter {
 
 	@Id
