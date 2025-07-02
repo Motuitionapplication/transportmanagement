@@ -1,0 +1,22 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Head -->
+    <path
+        android:fillColor="#3F51B5"
+        android:pathData="M12 4a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0 -5z"/>
+
+    <!-- Shoulders / Body -->
+    <path
+        android:fillColor="#3F51B5"
+        android:pathData="M7 17v-1.5c0-1.38 1.12-2.5 2.5-2.5h5c1.38 0 2.5 1.12 2.5 2.5V17H7z"/>
+
+    <!-- Shield (Admin Role) -->
+    <path
+        android:fillColor="#FFC107"
+        android:pathData="M18.5 8l-2.5 1.25V12c0 1.54 1.18 2.94 2.5 3.5
+            1.32-.56 2.5-1.96 2.5-3.5V9.25L18.5 8z"/>
+</vector>

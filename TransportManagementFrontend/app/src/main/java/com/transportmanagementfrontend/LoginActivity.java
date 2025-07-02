@@ -72,7 +72,6 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra("USERNAME", username);
                         intent.putExtra("ROLE", selectedRole);
                         intent.putExtra("FIRST_NAME", loginResponse.getOwner().getFirstName());
-                        intent.putExtra("ownerId", String.valueOf(loginResponse.getOwner().getId()));
                         startActivity(intent);
                         finish();
                     } else {

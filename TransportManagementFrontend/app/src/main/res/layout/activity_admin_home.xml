@@ -1,21 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AdminHomeActivity">
+    android:background="@drawable/other_background"
+    android:padding="16dp">
 
-    <TextView
-        android:id="@+id/welcomeText"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Welcome To Admin Page"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="50dp"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:paddingBottom="16dp">
+
+        <!-- Header -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Admin Dashboard"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#FF5722"
+            android:layout_marginBottom="24dp" />
+
+        <!-- SECTION: User Controls -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="User Controls"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_marginBottom="8dp" />
+
+        <!-- User Management -->
+        <include layout="@layout/item_card_with_icon" android:id="@+id/card_user_management" />
+
+        <!-- Financial Management -->
+        <include layout="@layout/item_card_with_icon" android:id="@+id/card_financial_management" />
+
+        <!-- Vehicle Management -->
+        <include layout="@layout/item_card_with_icon" android:id="@+id/card_vehicle_management" />
+
+        <!-- SECTION: Monitoring -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Monitoring"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Live Tracking -->
+        <include layout="@layout/item_card_with_icon" android:id="@+id/card_live_tracking" />
+
+        <!-- Analytics -->
+        <include layout="@layout/item_card_with_icon" android:id="@+id/card_analytics" />
+
+        <!-- SECTION: System Settings -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="System Settings"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Admin Profile -->
+        <include layout="@layout/item_card_with_icon" android:id="@+id/card_admin_profile" />
+
+        <!-- Dispute Management -->
+        <include layout="@layout/item_card_with_icon" android:id="@+id/card_dispute_management" />
+
+        <!-- Complaint Section -->
+        <include layout="@layout/item_card_with_icon" android:id="@+id/card_complaints" />
+
+        <!-- Driver Management -->
+        <include layout="@layout/item_card_with_icon" android:id="@+id/card_driver_management" />
+
+        <!-- Owner Management -->
+        <include layout="@layout/item_card_with_icon" android:id="@+id/card_owner_management" />
+
+        <!-- Backup -->
+        <include layout="@layout/item_card_with_icon" android:id="@+id/card_backup" />
+    </LinearLayout>
+</ScrollView>
+
+
