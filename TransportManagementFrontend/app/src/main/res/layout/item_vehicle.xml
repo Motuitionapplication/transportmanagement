@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    android:orientation="vertical"
+    android:background="#EEEEEE"
+    android:layout_marginBottom="8dp">
+
+    <TextView
+        android:id="@+id/txtVehicleNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vehicle No: OR01AB1234"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status: Reserved"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtOwnerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Owner: Mr. Mishra" />
+
+    <TextView
+        android:id="@+id/txtDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date: 2025-06-21"
+        android:textSize="12sp"
+        android:textColor="#888888" />
+</LinearLayout>

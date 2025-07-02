@@ -1,0 +1,28 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <!-- Left person -->
+    <path
+        android:fillColor="#64B5F6"
+        android:pathData="M10 12a4 4 0 1 1 8 0 4 4 0 0 1 -8 0z"/>
+    <path
+        android:fillColor="#64B5F6"
+        android:pathData="M8 18h12v4H8z"/>
+
+    <!-- Right person -->
+    <path
+        android:fillColor="#FFD54F"
+        android:pathData="M30 12a4 4 0 1 1 8 0 4 4 0 0 1 -8 0z"/>
+    <path
+        android:fillColor="#FFD54F"
+        android:pathData="M28 18h12v4H28z"/>
+
+    <!-- Dispute symbol (lightning bolt) -->
+    <path
+        android:fillColor="#D32F2F"
+        android:pathData="M22 20l4 -6h-3l2 -6l-5 6h3z"/>
+
+</vector>

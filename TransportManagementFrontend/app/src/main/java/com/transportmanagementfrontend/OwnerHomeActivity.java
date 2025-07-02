@@ -39,13 +39,12 @@ public class OwnerHomeActivity extends AppCompatActivity {
 
         // Get user details
         String firstName = getIntent().getStringExtra("FIRST_NAME");
-        String ownerId = getIntent().getStringExtra("ownerId");
+        String username = getIntent().getStringExtra("username"); // Changed from ownerId to username
         welcomeText.setText(firstName != null && !firstName.isEmpty() ? "Hello, " + firstName + "!" : "");
 
         // Initialize Retrofit
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:5000/")
-                //.baseUrl("http://gkct1transport.us-east-1.elasticbeanstalk.com/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -54,7 +53,7 @@ public class OwnerHomeActivity extends AppCompatActivity {
         // Click Listeners for Buttons
         btnProfile.setOnClickListener(view -> {
             Intent intent = new Intent(OwnerHomeActivity.this, OwnerProfileActivity.class);
-            intent.putExtra("ownerId", ownerId); // ✅ Pass ownerId to profile
+            intent.putExtra("username", username); // Pass username instead of ownerId
             startActivity(intent);
         });
 
@@ -66,13 +65,15 @@ public class OwnerHomeActivity extends AppCompatActivity {
         // Handle Driver Details Click
         btnDriverDetails.setOnClickListener(view -> showVehicleNumberDialog());
 
-        // Customer Support Buttons (To be implemented later)
+        // Customer Support Buttons
         btnWhatsApp.setOnClickListener(view -> {
             // WhatsApp functionality placeholder
+            Toast.makeText(this, "WhatsApp support coming soon", Toast.LENGTH_SHORT).show();
         });
 
         btnCall.setOnClickListener(view -> {
             // Call functionality placeholder
+            Toast.makeText(this, "Call support coming soon", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -102,9 +103,8 @@ public class OwnerHomeActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<DriverParameter>> call, Response<List<DriverParameter>> response) {
                 if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    DriverParameter driver = response.body().get(0); // Assuming one driver per vehicle
+                    DriverParameter driver = response.body().get(0);
 
-                    // Pass data to DriverDetailsActivity
                     Intent intent = new Intent(OwnerHomeActivity.this, DriverDetailsActivity.class);
                     intent.putExtra("DRIVER", driver);
                     startActivity(intent);
@@ -120,4 +120,3 @@ public class OwnerHomeActivity extends AppCompatActivity {
         });
     }
 }
-

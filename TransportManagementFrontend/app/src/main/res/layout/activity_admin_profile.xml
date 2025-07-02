@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/other_background"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Admin Username -->
+        <EditText
+            android:id="@+id/edtAdminUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Admin Username" />
+
+        <!-- Admin Password -->
+        <EditText
+            android:id="@+id/edtAdminPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Admin Password"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/btnUpdateAdmin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Update Admin"
+            android:layout_marginTop="12dp" />
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cccccc"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Sub-Admin Creation -->
+        <EditText
+            android:id="@+id/edtSubAdminUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Sub-Admin Username" />
+
+        <EditText
+            android:id="@+id/edtSubAdminPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Sub-Admin Password"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/btnCreateSubAdmin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create Sub-Admin"
+            android:layout_marginTop="12dp" />
+    </LinearLayout>
+</ScrollView>
