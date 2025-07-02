@@ -1,17 +1,16 @@
 package com.transportation.app.repo;
 
 import java.io.Serializable;
-import java.util.Optional;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.transportation.app.binding.UserParameter;
 
-public interface UserRepository extends JpaRepository<UserParameter, Serializable> {
+import com.transportation.app.binding.User;
 
-    UserParameter findByPassword(String password);
+public interface UserRepository extends JpaRepository<User, Serializable> {
+	
+	 List<User> findByRole(String role);
+	 User findByUsername(String username);
 
-    UserParameter findByUsername(String username);
-    
-    Optional<UserParameter> findByPhone(String phone);
-    
-    UserParameter findByEmail(String email);
+
 }

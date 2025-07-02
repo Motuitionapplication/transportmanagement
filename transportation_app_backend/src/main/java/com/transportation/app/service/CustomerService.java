@@ -1,35 +1,39 @@
 package com.transportation.app.service;
 
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.transportation.app.binding.CustomerParameter;
 import com.transportation.app.binding.LoginParam;
 import com.transportation.app.binding.LoginResponse;
-import com.transportation.app.binding.UserParameter;
-import com.transportation.app.repo.UserRepository;
+
+import com.transportation.app.repo.CustomerRepository;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class CustomerService {
 
     @Autowired
-    private UserRepository userRepo;
+    private CustomerRepository userRepo;
 
     @Autowired
     private SmsService fast2SMSService;
-    
+
     @Autowired
     private EmailService emailService;
 
-    @Override
-    public String createUser(UserParameter userParameter) {
+    // CREATE USER
+    public String createUser(CustomerParameter userParameter) {
         userRepo.save(userParameter);
         return "User created";
     }
 
-    @Override
+    // LOGIN CHECK
     public LoginResponse checkLogin(LoginParam loginParam) {
         LoginResponse response = new LoginResponse();
-        Optional<UserParameter> user = Optional.empty();
+        Optional<CustomerParameter> user = Optional.empty();
+
         try {
             user = Optional.ofNullable(userRepo.findByUsername(loginParam.getUsername()));
             if (user.isPresent() && user.get().getPassword().equals(loginParam.getPassword())) {
@@ -41,17 +45,20 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         response.setStatus("Invalid User Name & Password");
+        response.setSuccess(false);
         return response;
     }
 
-    @Override
+    // GENERATE OTP
     public String generateOTP(String phone) {
         String mobileStr = String.valueOf(phone);
         String otp = fast2SMSService.sendOTP(mobileStr);
-        Optional<UserParameter> userOptional = userRepo.findByPhone(phone);
+
+        Optional<CustomerParameter> userOptional = userRepo.findByPhone(phone);
         if (userOptional.isPresent()) {
-            UserParameter user = userOptional.get();
+        	CustomerParameter user = userOptional.get();
             user.setOtp(otp);
             userRepo.save(user);
             return "OTP sent successfully to " + phone;
@@ -59,14 +66,14 @@ public class UserServiceImpl implements UserService {
             return "User with mobile number " + phone + " not found.";
         }
     }
-    
-    @Override
+
+    // FORGOT PASSWORD
     public String forgotPassword(String email) {
-        UserParameter user = userRepo.findByEmail(email);
-        
+    	CustomerParameter user = userRepo.findByEmail(email);
+
         if (user != null) {
             String subject = "Forgot Password Request";
-            String message = "Hey, " + user.getUsername() + " this is your password: " + user.getPassword();
+            String message = "Hey, " + user.getUsername() + ", this is your password: " + user.getPassword();
             emailService.sendSimpleMessage(user.getEmail(), subject, message);
             return "Password sent to your email.";
         } else {

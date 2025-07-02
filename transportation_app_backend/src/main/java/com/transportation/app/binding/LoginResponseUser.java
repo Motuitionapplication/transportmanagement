@@ -2,21 +2,17 @@ package com.transportation.app.binding;
 
 import java.util.Optional;
 
-public class LoginResponse {
+public class LoginResponseUser {
+
+	
 
 	private boolean success;
-	
-	private String status;
-    
-	private Optional<CustomerParameter> user;
-	
-	public Optional<CustomerParameter> getUser() {
-		return user;
-	}
 
-	public void setUser(Optional<CustomerParameter> user2) {
-		this.user = user2;
-	}
+	private String status;
+
+	private Optional<User> user;
+
+	
 
 	public boolean isSuccess() {
 		return success;
@@ -25,6 +21,7 @@ public class LoginResponse {
 	public void setSuccess(boolean success) {
 		this.success = success;
 	}
+
 	public String getStatus() {
 		return status;
 	}
@@ -33,9 +30,9 @@ public class LoginResponse {
 		this.status = status;
 	}
 
-	public void save(LoginParam loginParam) {
+	public void save(LoginParamDriver loginParamDriver) {
 		// TODO Auto-generated method stub
 
 	}
-
+	
 }

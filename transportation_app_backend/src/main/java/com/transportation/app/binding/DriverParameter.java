@@ -22,7 +22,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "DRIVER_REG_DETAILS")
+@Table(name = "DRIVER")
 public class DriverParameter {
 
 	@Id
@@ -102,6 +102,7 @@ public class DriverParameter {
 
 	@Schema(description = "Driver's current city", example = "Bhubaneswar")
 	private String city;
+
 
 
 	public String getCity() {

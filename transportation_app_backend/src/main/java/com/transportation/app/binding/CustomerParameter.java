@@ -8,8 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "USER_REG_DETAILS")
-public class UserParameter {
+@Table(name = "COUSTOMER")
+public class CustomerParameter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +46,7 @@ public class UserParameter {
     private String email;
 
     // Default constructor
-    public UserParameter() {}
+    public CustomerParameter() {}
 
     // Getters and Setters
     public int getId() { return id; }
