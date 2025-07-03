@@ -10,7 +10,8 @@ import com.transportation.app.binding.User;
 public interface UserRepository extends JpaRepository<User, Serializable> {
 	
 	 List<User> findByRole(String role);
-	 User findByUsername(String username);
+	User findByUsername(String username);
+
 
 
 }
