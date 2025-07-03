@@ -1,10 +1,7 @@
 package com.transportation.app.service;
 
-import com.transportation.app.binding.DriverParameter;
-import com.transportation.app.binding.LoginParam;
-import com.transportation.app.binding.LoginParamDriver;
-import com.transportation.app.binding.LoginResponse;
-import com.transportation.app.binding.LoginResponseDriver;
+import com.transportation.app.binding.LoginParamUser;
+import com.transportation.app.binding.LoginResponseUser;
 import com.transportation.app.binding.User;
 import com.transportation.app.constants.UserRoles;
 import com.transportation.app.repo.UserRepository;
@@ -65,6 +62,27 @@ public class UserService {
         userRepo.save(user);
         return "User promoted to super admin.";
     }
+
+
+    public LoginResponseUser checkLogin(LoginParamUser loginParamUser) {
+        LoginResponseUser response = new LoginResponseUser();
+
+        User user = userRepo.findByUsername(loginParamUser.getUsername());
+
+        if (user != null && user.getPassword().equals(loginParamUser.getPassword())) {
+            response.setSuccess(true);
+            response.setStatus("Login successful");
+            response.setUser(Optional.of(user));
+        } else {
+            response.setSuccess(false);
+            response.setStatus("Invalid username or password");
+            response.setUser(Optional.empty());
+        }
+
+        return response;
+    }
+
+
 
 //    public LoginResponseDriver checkLogin(LoginParamDriver loginParamDriver) {
 //        LoginResponseDriver resp = new LoginResponseDriver();
