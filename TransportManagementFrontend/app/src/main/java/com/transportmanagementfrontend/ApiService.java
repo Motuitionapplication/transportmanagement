@@ -74,6 +74,9 @@ public interface ApiService {
     @GET("api/owners/drivers/{vehicleNumber}")
     Call<List<DriverParameter>> getDriverByVehicle(@Path("vehicleNumber") String vehicleNumber);
 
+    @POST("admin/login")
+    Call<AdminLoginResponse> loginAdmin(@Body AdminLoginRequest request);
+
     @GET("api/admin/users")
     Call<List<UserModel>> getAllUsers();
 
