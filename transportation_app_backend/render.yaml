@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: transportation-app
+    env: java
+    plan: free
+    region: singapore
+    branch: main
+    runtime: java17
+    buildCommand: ./mvnw clean install
+    startCommand: java -jar target/transportation_app_backend-0.0.1-SNAPSHOT.jar
+    envVars:
+      - key: SERVER_PORT
+        value: 5000
