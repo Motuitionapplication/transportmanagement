@@ -75,7 +75,15 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.3</version> <!-- Use 42.7.3 (latest stable that works) -->
+			<scope>runtime</scope>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
