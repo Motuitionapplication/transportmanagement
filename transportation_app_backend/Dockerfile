@@ -1,16 +1,12 @@
-# -------- Stage 1: Build the app using Maven --------
-FROM maven:3.9.4-eclipse-temurin-21 AS build
+# Stage 1: Build with Java 17
+FROM maven:3.9.4-eclipse-temurin-17 AS build
 WORKDIR /app
 COPY . .
 RUN mvn clean package -DskipTests
 
-# -------- Stage 2: Run the app with Java 17 --------
+# Stage 2: Run with Java 17
 FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
-
-# Set the port your Spring Boot app uses
+COPY --from=build /app/target/transportation_app_backend-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 5000
-
-# Run the JAR file
 ENTRYPOINT ["java", "-jar", "app.jar"]
