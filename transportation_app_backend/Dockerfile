@@ -1,20 +1,16 @@
-# -------- Stage 1: Build with Maven and Java 21 --------
+# -------- Stage 1: Build the app using Maven --------
 FROM maven:3.9.4-eclipse-temurin-21 AS build
 WORKDIR /app
-
-# Copy all files and build the application
 COPY . .
 RUN mvn clean package -DskipTests
 
-# -------- Stage 2: Runtime with minimal Java 21 JDK --------
-FROM eclipse-temurin:21
+# -------- Stage 2: Run the app with Java 17 --------
+FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 
-# Copy built JAR from previous stage
-COPY --from=build /app/target/transportation_app_backend-0.0.1-SNAPSHOT.jar app.jar
-
-# Expose the port defined in application.properties
+# Set the port your Spring Boot app uses
 EXPOSE 5000
 
-# Run the Spring Boot app
+# Run the JAR file
 ENTRYPOINT ["java", "-jar", "app.jar"]
