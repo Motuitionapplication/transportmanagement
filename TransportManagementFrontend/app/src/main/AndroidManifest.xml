@@ -167,6 +167,18 @@
             android:exported="true"
             android:label="Driver Details" />
 
+        <!-- Admin Section -->
+        <activity android:name=".AdminProfileActivity" />
+        <activity android:name=".ComplaintActivity" />
+        <activity android:name=".BackupActivity" />
+        <activity android:name=".UserManagementActivity" />
+        <activity android:name=".AnalyticsActivity" />
+        <activity android:name=".VehicleManagementActivity" />
+        <activity android:name=".OwnerManagementActivity" />
+        <activity android:name=".DriverManagementActivity" />
+        <activity android:name=".LiveTrackingActivity" />
+        <activity android:name=".FinancialManagementActivity" />
+        <activity android:name=".DisputeManagementActivity" />
 
         <!-- Google Maps API Key -->
         <meta-data

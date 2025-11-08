@@ -37,8 +37,13 @@ public interface ApiService {
     @POST("AddUpdateOwner")
     Call<String> registerOwner(@Body OwnerRegisterRequest registerRequest);
 
-    @PUT("update/{ownerId}")
-    Call<String> updateOwner(@Path("ownerId") int ownerId, @Body OwnerRegisterRequest request);
+    @PUT("owners/username/{username}")
+    Call<String> updateOwnerByUsername(
+            @Path("username") String username,
+            @Body OwnerRegisterRequest request
+    );
+    @GET("owners/username/{username}")
+    Call<OwnerParameter> getOwnerByUsername(@Path("username") String username);
 
     @POST("createOwner")
         // Your backend endpoint for full owner creation
@@ -68,4 +73,30 @@ public interface ApiService {
     // Fetch driver details by vehicle number (Updated)
     @GET("api/owners/drivers/{vehicleNumber}")
     Call<List<DriverParameter>> getDriverByVehicle(@Path("vehicleNumber") String vehicleNumber);
+
+    @POST("admin/login")
+    Call<AdminLoginResponse> loginAdmin(@Body AdminLoginRequest request);
+
+    @GET("api/admin/users")
+    Call<List<UserModel>> getAllUsers();
+
+    @PUT("api/admin/users/approve/{userId}")
+    Call<Void> approveUser(@Path("userId") Long userId);
+
+    @GET("api/admin/profile")
+    Call<AdminRequest> getAdminProfile();
+
+    @PUT("api/admin/profile/update")
+    Call<Void> updateAdminProfile(@Body AdminRequest admin);
+
+    @POST("api/admin/subadmin")
+    Call<Void> createSubAdmin(@Body AdminRequest subadmin);
+
+    @GET("api/admin/backup")
+    Call<Void> backupSystem();
+
+    @GET("api/admin/complaints")
+    Call<List<Complaint>> getAllComplaints();
+    @GET("api/admin/vehicles")
+    Call<List<Vehicle>> getAllVehicles();
 }

@@ -72,7 +72,6 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra("USERNAME", username);
                         intent.putExtra("ROLE", selectedRole);
                         intent.putExtra("FIRST_NAME", loginResponse.getOwner().getFirstName());
-                        intent.putExtra("ownerId", String.valueOf(loginResponse.getOwner().getId()));
                         startActivity(intent);
                         finish();
                     } else {
@@ -113,7 +112,33 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
 
-        } else {
+        } else if (selectedRole.equalsIgnoreCase("admin")) {
+            AdminLoginRequest loginRequest = new AdminLoginRequest(username, password);
+            Call<AdminLoginResponse> call = apiService.loginAdmin(loginRequest);
+
+            call.enqueue(new Callback<AdminLoginResponse>() {
+                @Override
+                public void onResponse(Call<AdminLoginResponse> call, Response<AdminLoginResponse> response) {
+                    if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                        String adminUsername = response.body().getUser().getUsername();
+
+                        Intent intent = new Intent(LoginActivity.this, AdminHomeActivity.class);
+                        intent.putExtra("USERNAME", adminUsername);
+                        intent.putExtra("ROLE", selectedRole); // still passing "admin"
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Admin login failed. Check credentials.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AdminLoginResponse> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this, "Admin login error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+    } else {
             // Assume Customer
             CustomerLoginRequest loginRequest = new CustomerLoginRequest(username, password);
             Call<CustomerLoginResponse> call = apiService.loginUser(loginRequest);

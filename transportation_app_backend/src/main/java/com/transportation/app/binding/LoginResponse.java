@@ -8,13 +8,13 @@ public class LoginResponse {
 	
 	private String status;
     
-	private Optional<UserParameter> user;
+	private Optional<CustomerParameter> user;
 	
-	public Optional<UserParameter> getUser() {
+	public Optional<CustomerParameter> getUser() {
 		return user;
 	}
 
-	public void setUser(Optional<UserParameter> user2) {
+	public void setUser(Optional<CustomerParameter> user2) {
 		this.user = user2;
 	}
 

@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -49,6 +48,7 @@ public class OwnerProfileActivity extends AppCompatActivity {
     private CheckBox cbCopyPresentToPermanent;
 
     private Integer ownerId = null; // To track existing owner
+    private String ownerUsername = null; // To track existing owner by username
 
     // Pages views
     private ViewGroup pagePersonal, pageAddress, pageAccount, pageVehicle;
@@ -77,7 +77,7 @@ public class OwnerProfileActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
-         apiService = retrofit.create(ApiService.class);
+        apiService = retrofit.create(ApiService.class);
 
         // Initialize all UI references
         initializeFields();
@@ -86,17 +86,8 @@ public class OwnerProfileActivity extends AppCompatActivity {
         progressDialog.setMessage("Please wait...");
         progressDialog.setCancelable(false);
 
-        // Get ownerId from intent for edit mode (if present)
-        String ownerIdStr = getIntent().getStringExtra("ownerId");
-        if (!TextUtils.isEmpty(ownerIdStr)) {
-            try {
-                ownerId = Integer.parseInt(ownerIdStr);
-            } catch (NumberFormatException e) {
-                e.printStackTrace(); // Optional: log the error
-                ownerId = null; // fallback if parsing fails
-            }
-        }
-
+        // Get username from intent for edit mode (if present)
+        ownerUsername = getIntent().getStringExtra("username");
 
         // Checkbox listener to copy present to permanent
         cbCopyPresentToPermanent.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
@@ -121,9 +112,9 @@ public class OwnerProfileActivity extends AppCompatActivity {
         // Show first page by default
         showPage(0); // This also calls updateButtonVisibility()
 
-        if (ownerId != null) {
-            // Edit mode
-            populateFields(ownerId);
+        if (ownerUsername != null && !ownerUsername.isEmpty()) {
+            // Edit mode - fetch by username
+            populateFieldsByUsername(ownerUsername);
             setInputsEnabled(false);             // Disable input fields
             btnSave.setEnabled(false);           // Disable Save button
             btnSave.setVisibility(View.GONE);    // Hide Save button
@@ -136,7 +127,6 @@ public class OwnerProfileActivity extends AppCompatActivity {
             updateButtonVisibility();            // Adjust Save visibility based on initial page
         }
     }
-
 
     private void initializeFields() {
         // Personal Info
@@ -238,11 +228,11 @@ public class OwnerProfileActivity extends AppCompatActivity {
         btnPrev.setVisibility(pageIndex == 0 ? View.GONE : View.VISIBLE);
         btnNext.setVisibility(pageIndex == TOTAL_PAGES - 1 ? View.GONE : View.VISIBLE);
 
-        // Edit button visible only if inputs disabled and ownerId exists
-        btnEdit.setVisibility((!btnSave.isEnabled() && ownerId != null) ? View.VISIBLE : View.GONE);
+        // Edit button visible only if inputs disabled and ownerUsername exists
+        btnEdit.setVisibility((!btnSave.isEnabled() && ownerUsername != null) ? View.VISIBLE : View.GONE);
 
-        // Set Save button text according to whether ownerId is null
-        btnSave.setText(ownerId == null ? "Save" : "Update");
+        // Set Save button text according to whether ownerUsername is null
+        btnSave.setText(ownerUsername == null ? "Save" : "Update");
 
         // Update Save button visibility via centralized method
         updateButtonVisibility();
@@ -282,20 +272,19 @@ public class OwnerProfileActivity extends AppCompatActivity {
             return;
         }
 
-
-    // Show loading indicator
+        // Show loading indicator
         progressDialog.show();
 
         // Collect data from input fields
         OwnerRegisterRequest request = collectInputData();
 
         Call<String> call;
-        if (ownerId == null) {
-            // Create new owner
+        if (ownerUsername == null) {
+            // Create new owner (no username provided)
             call = apiService.createOwner(request.getOwner());
         } else {
-            // Update existing owner
-            call = apiService.updateOwner(ownerId, request);
+            // Update existing owner using username (instead of ownerId)
+            call = apiService.updateOwnerByUsername(ownerUsername, request);
         }
 
         call.enqueue(new Callback<String>() {
@@ -306,7 +295,7 @@ public class OwnerProfileActivity extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
                     Toast.makeText(OwnerProfileActivity.this,
-                            ownerId == null ? "Profile created successfully" : "Profile updated successfully",
+                            ownerUsername == null ? "Profile created successfully" : "Profile updated successfully",
                             Toast.LENGTH_SHORT).show();
 
                     // Optionally handle ownerId update here
@@ -349,7 +338,6 @@ public class OwnerProfileActivity extends AppCompatActivity {
             return false;
         }
 
-
         return true; // All validations passed
     }
 
@@ -370,7 +358,6 @@ public class OwnerProfileActivity extends AppCompatActivity {
         }
         return "Unknown error";
     }
-
 
     private OwnerRegisterRequest collectInputData() {
         OwnerParameter ownerParameter = new OwnerParameter();
@@ -443,15 +430,15 @@ public class OwnerProfileActivity extends AppCompatActivity {
         return field.getText().toString().trim();
     }
 
-
-    private void populateFields(int ownerId) {
+    private void populateFieldsByUsername(String inputUsername) {
         progressDialog.show();
-        apiService.getOwnerById(ownerId).enqueue(new Callback<OwnerParameter>() {
+        apiService.getOwnerByUsername(inputUsername).enqueue(new Callback<OwnerParameter>() {
             @Override
             public void onResponse(Call<OwnerParameter> call, Response<OwnerParameter> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful() && response.body() != null) {
                     OwnerParameter ownerParameter = response.body();
+                    ownerId = ownerParameter.getId(); // Store the ownerId for updates
 
                     // Personal Info
                     setTextSafe(firstName, ownerParameter.getFirstName());
@@ -530,7 +517,6 @@ public class OwnerProfileActivity extends AppCompatActivity {
         editText.setText(value != null ? value : "");
     }
 
-
     private void setInputsEnabled(boolean enabled) {
         // Personal Info
         firstName.setEnabled(enabled);
@@ -582,7 +568,6 @@ public class OwnerProfileActivity extends AppCompatActivity {
         btnSave.setEnabled(enabled);
     }
 
-    // This method is unchanged
     private void setPermanentAddressFieldsEnabled(boolean enabled) {
         permProofType.setEnabled(enabled);
         permProofNumber.setEnabled(enabled);
@@ -596,6 +581,7 @@ public class OwnerProfileActivity extends AppCompatActivity {
         permMob.setEnabled(enabled);
         permType.setEnabled(enabled);
     }
+
     private void copyPresentToPermanentAddress() {
         permProofType.setText(presProofType.getText().toString());
         permProofNumber.setText(presProofNumber.getText().toString());
@@ -609,5 +595,4 @@ public class OwnerProfileActivity extends AppCompatActivity {
         permMob.setText(presMob.getText().toString());
         permType.setText(presType.getText().toString());
     }
-
 }
